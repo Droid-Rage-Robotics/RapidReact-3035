@@ -10,6 +10,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 /** A command that releases the hatch. */
 public class ReleaseHatch extends InstantCommand {
   public ReleaseHatch(HatchSubsystem subsystem) {
-    super(subsystem::releaseHatch, subsystem);
+    // super(subsystem::releaseHatch, subsystem);
   }
 }

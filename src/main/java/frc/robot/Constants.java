@@ -19,35 +19,55 @@ public final class Constants {
         public static final boolean kLeftEncoderReversed = false;
         public static final boolean kRightEncoderReversed = true;
 
-        public static final double kEncoderDistancePerPulse =
+        public static final double kEncoderDistancePerRevolution =
             // Assumes the encoders are directly mounted on the wheel shafts
-            (kWheelDiameterInches * Math.PI) / (double) kEncoderCPR;        
+            (kWheelDiameterInches * Math.PI);   // / (double) kEncoderCPR;      // we might need to divide by the encoder CPR maybe?
     }
+
     public static final class DrivePorts {
-        public static final int[] kDrivetrainPorts = {
-            0, // Left Front
-            1, // Left Middle
-            2, // Left Back
-            3, // Right Front
-            4, // Right Middle
-            5  // Right Back
+        public static final int
+            leftEncoder = 0,
+            rightEncoder = 1;
         
-        };
-        public static final int[] kEncoderPorts = {
-            0, // Left Front
-            1, // Left Middle
-            2, // Left Back
-            3, // Right Front
-            4, // Right Middle
-            5  // Right Back
-        };
+        public static final int 
+            leftFront = 0,
+            rightFront = 1,
+            leftRear = 2,
+            rightRear = 4;
     }
 
-
-    public static final class HatchPorts {
-        // public static final int kHatchSolenoidModule = 0;
-        public static final int[] kHatchSolenoidPorts = new int[] {0, 1};
+    public static final class ClimberPorts {
+        public static final int 
+            right = 0,
+            left = 1;
     }
+
+    public static final class Intake {
+        public static final class Piston {
+            public static final int 
+                right = 0,
+                left = 1;
+        }
+
+        public static final class Motor {
+            public static final int 
+                right = 0,
+                left = 1;
+        }
+    }
+
+    public static final class Indexer {
+        public static final int 
+            front = 0,
+            back = 1;
+    }
+
+    public static final class Shooter {
+        public static final int
+            right = 0,
+            left = 1;
+    }
+    
     
     // Unused (idk what it is)
     public static final class AutoConstants {
@@ -56,7 +76,7 @@ public final class Constants {
         public static final double kAutoDriveSpeed = 0.5;
     }
     
-    // Unused (idk what it is)
+    
     public static final class OIConstants {
         public static final int kDriverControllerPort = 0;
     }

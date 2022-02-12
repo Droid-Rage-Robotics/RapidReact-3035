@@ -21,10 +21,10 @@ public class GrabHatch extends CommandBase {
     addRequirements(m_hatchSubsystem);
   }
 
-  @Override
-  public void initialize() {
-    m_hatchSubsystem.grabHatch();
-  }
+  // @Override
+  // public void initialize() {
+  //   // m_hatchSubsystem.grabHatch();
+  // }
 
   @Override
   public boolean isFinished() {

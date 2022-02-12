@@ -4,47 +4,54 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+
+import edu.wpi.first.wpilibj.DigitalSource;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.DrivePorts;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxAlternateEncoder.Type;
+
 
 public class DriveSubsystem extends SubsystemBase {
+  private CANSparkMax
+    leftFront = new CANSparkMax(DrivePorts.leftFront, MotorType.kBrushless),
+    leftRear = new CANSparkMax(DrivePorts.leftRear, MotorType.kBrushless),
+    rightFront = new CANSparkMax(DrivePorts.rightFront, MotorType.kBrushless),
+    rightRear = new CANSparkMax(DrivePorts.rightRear, MotorType.kBrushless);
+
   // The motors on the left side of the drive.
   private final MotorControllerGroup m_leftMotors =
       new MotorControllerGroup(
-          new PWMSparkMax(DrivePorts.kDrivetrainPorts[0]),
-          new PWMSparkMax(DrivePorts.kDrivetrainPorts[1]),
-          new PWMSparkMax(DrivePorts.kDrivetrainPorts[2]));
+        leftFront,
+        leftRear
+      );
 
   // The motors on the right side of the drive.
   private final MotorControllerGroup m_rightMotors =
       new MotorControllerGroup(
-        new PWMSparkMax(DrivePorts.kDrivetrainPorts[3]),
-        new PWMSparkMax(DrivePorts.kDrivetrainPorts[4]),
-        new PWMSparkMax(DrivePorts.kDrivetrainPorts[5]));
+        rightFront,
+        rightRear
+      );
 
+     
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
 
   // The left-side drive encoder
-  private final Encoder m_leftEncoder =
-      new Encoder(
-          DrivePorts.kEncoderPorts[0],
-          DrivePorts.kEncoderPorts[1],
-          DrivePorts.kEncoderPorts[2],
-          DriveConstants.kLeftEncoderReversed);
+  private final DutyCycleEncoder leftEncoder =
+      new DutyCycleEncoder(DrivePorts.leftEncoder);
 
   // The right-side drive encoder
-  private final Encoder m_rightEncoder =
-      new Encoder(
-          DrivePorts.kEncoderPorts[3],
-          DrivePorts.kEncoderPorts[4],
-          DrivePorts.kEncoderPorts[5],
-          DriveConstants.kRightEncoderReversed);
+  private final DutyCycleEncoder rightEncoder =
+      new DutyCycleEncoder(DrivePorts.rightEncoder);
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
@@ -54,8 +61,9 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightMotors.setInverted(true);
 
     // Sets the distance per pulse for the encoders
-    m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-    m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+    // leftFront.getEncoder(SparkMaxAlternateEncoder.Type, countsPerRev)
+    leftEncoder.setDistancePerRotation(DriveConstants.kEncoderDistancePerRevolution);
+    rightEncoder.setDistancePerRotation(DriveConstants.kEncoderDistancePerRevolution);
   }
 
   /**
@@ -66,12 +74,13 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void arcadeDrive(double fwd, double rot) {
     m_drive.arcadeDrive(fwd, rot);
+   
   }
 
   /** Resets the drive encoders to currently read a position of 0. */
   public void resetEncoders() {
-    m_leftEncoder.reset();
-    m_rightEncoder.reset();
+    leftEncoder.reset();
+    rightEncoder.reset();
   }
 
   /**
@@ -80,7 +89,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the average of the TWO encoder readings
    */
   public double getAverageEncoderDistance() {
-    return (m_leftEncoder.getDistance() + m_rightEncoder.getDistance()) / 2.0;
+    return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2.0;
   }
 
   /**
@@ -88,8 +97,8 @@ public class DriveSubsystem extends SubsystemBase {
    *
    * @return the left drive encoder
    */
-  public Encoder getLeftEncoder() {
-    return m_leftEncoder;
+  public DutyCycleEncoder getLeftEncoder() {
+    return leftEncoder;
   }
 
   /**
@@ -97,8 +106,8 @@ public class DriveSubsystem extends SubsystemBase {
    *
    * @return the right drive encoder
    */
-  public Encoder getRightEncoder() {
-    return m_rightEncoder;
+  public DutyCycleEncoder getRightEncoder() {
+    return rightEncoder;
   }
 
   /**
