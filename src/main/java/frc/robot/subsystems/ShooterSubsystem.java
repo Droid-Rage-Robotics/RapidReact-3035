@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.DigitalSource;
@@ -17,3 +18,5 @@ import com.revrobotics.SparkMaxAlternateEncoder.Type;
 
 
 public class ShooterSubsystem extends SubsystemBase {
+    WPI_TalonFX shooter = new WPI_TalonFX(deviceNumber, canbus)
+}
