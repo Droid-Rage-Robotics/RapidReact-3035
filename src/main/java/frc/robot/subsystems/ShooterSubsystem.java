@@ -18,5 +18,5 @@ import com.revrobotics.SparkMaxAlternateEncoder.Type;
 
 
 public class ShooterSubsystem extends SubsystemBase {
-    WPI_TalonFX shooter = new WPI_TalonFX(deviceNumber, canbus)
+    WPI_TalonFX shooter = new WPI_TalonFX(1,2);
 }
