@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAlternateEncoder.Type;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -21,7 +22,6 @@ public class ShooterSubsystem extends SubsystemBase {
         shooter1 = new WPI_TalonFX(Shooter.right),
         shooter2 = new WPI_TalonFX(Shooter.left);
 
-    private boolean shoot = false;
 
     public void robotInit () {
 

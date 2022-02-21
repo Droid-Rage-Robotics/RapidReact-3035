@@ -14,6 +14,9 @@ public class IntakeSubsystem extends SubsystemBase {
       OUTTAKE_SPEED = -1;
 
   
+    Solenoid exampleSolenoidPH = new Solenoid(PneumaticsModuleType.REVPH, 1);
+    private boolean shoot = false;
+  
     /** Creates a new ExampleSubsystem. */
   public IntakeSubsystem() {
     
@@ -35,9 +38,9 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   
-  private void set(double speed) {intakeMotor.set(speed); }
+  /*private void set(double speed) {intakeMotor.set(speed); }
 
   public void intake() {set(INTAKE_SPEED); }
 
-  public void outtake() {set(OUTTAKE_SPEED); }
+  public void outtake() {set(OUTTAKE_SPEED); }*/
 }
