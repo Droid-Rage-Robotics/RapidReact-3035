@@ -7,8 +7,7 @@ import edu.wpi.first.wpilibj.DigitalSource;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.DrivePorts;
+import frc.robot.Constants.Shooter;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
@@ -18,5 +17,26 @@ import com.revrobotics.SparkMaxAlternateEncoder.Type;
 
 
 public class ShooterSubsystem extends SubsystemBase {
-    WPI_TalonFX shooter = new WPI_TalonFX(1,2);
+    WPI_TalonFX
+        shooter1 = new WPI_TalonFX(Shooter.right),
+        shooter2 = new WPI_TalonFX(Shooter.left);
+
+    private boolean shoot = false;
+
+    public void robotInit () {
+
+    }
+        
+      /** Creates a new ExampleSubsystem. */
+    public ShooterSubsystem() {}
+        
+    @Override
+    public void periodic() {
+       // This method will be called once per scheduler run
+     }
+      
+     @Override
+    public void simulationPeriodic() {
+      // This method will be called once per scheduler run during simulation
+    }
 }

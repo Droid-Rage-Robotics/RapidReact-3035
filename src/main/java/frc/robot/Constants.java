@@ -45,8 +45,7 @@ public final class Constants {
     public static final class Intake {
         public static final class Piston {
             public static final int 
-                right = 0,
-                left = 1;
+                intakeMotor = 0;
         }
 
         public static final class Motor {

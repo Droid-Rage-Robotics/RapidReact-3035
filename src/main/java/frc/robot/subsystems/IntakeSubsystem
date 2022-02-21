@@ -7,21 +7,37 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSubsystem extends SubsystemBase {
-    private 775ProMax
-        front = new 775ProMax(DrivePorts.front, MotorType.kBrushless),
-        back = new 775ProMax(DrivePorts.back, MotorType.kBrushless);
-        
+    private REVNEOS
+        intakeMotor = new REVNEOS(Intake.intakeMotor, MotorType.kBrushless);
+    public static double 
+      INTAKE_SPEED = 1,
+      OUTTAKE_SPEED = -1;
+
   
     /** Creates a new ExampleSubsystem. */
-  public IntakeSubsystem() {}
+  public IntakeSubsystem() {
+    
+  }
   
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    Util.logger(this, telemetry, Level.INFO, "Intake Motor Speed: ", intakeMotor.get());
   }
 
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
+
+  public void stop () {
+    intakeMotor = 0;
+  }
+
+  
+  private void set(double speed) {intakeMotor.set(speed); }
+
+  public void intake() {set(INTAKE_SPEED); }
+
+  public void outtake() {set(OUTTAKE_SPEED); }
 }

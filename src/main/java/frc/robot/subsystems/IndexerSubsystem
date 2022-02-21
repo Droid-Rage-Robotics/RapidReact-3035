@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IndexerSubsystem extends SubsystemBase {
     private 775ProMax
-        front = new 775ProMax(DrivePorts.front, MotorType.kBrushless),
-        back = new 775ProMax(DrivePorts.back, MotorType.kBrushless);
+        frontIndexer = new 775ProMax(Indexer.front, MotorType.kBrushless),
+        backIndexer = new 775ProMax(Indexer.back, MotorType.kBrushless);
         
   
     /** Creates a new ExampleSubsystem. */

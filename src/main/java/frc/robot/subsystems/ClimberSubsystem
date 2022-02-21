@@ -7,11 +7,16 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClimberSubsystem extends SubsystemBase {
-    private 775ProMax
-        front = new 775ProMax(DrivePorts.front, MotorType.kBrushless),
-        back = new 775ProMax(DrivePorts.back, MotorType.kBrushless);
-        
+    private REVNEO
+      climberRight = new REVNEOS(Climber.right, MotorType.kBrushless),
+      climberLeft = new REVNEOS(Climber.left, MotorType.kBrushless),
   
+
+  public void robotInit () {
+
+    
+  }
+
     /** Creates a new ExampleSubsystem. */
   public ClimberSubsystem() {}
   
