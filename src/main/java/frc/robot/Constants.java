@@ -62,9 +62,15 @@ public final class Constants {
     }
 
     public static final class Shooter {
-        public static final int
-            right = 0,
-            left = 1;
+        public static final int 
+            PrimaryDeviceID = 0,
+            SecondaryDeviceID = 1;
+        public static final String 
+            primaryCanbus = "idk",
+            secondaryCanbus = "idk";
+        public static final double velocity = 204.8; // I believe 20480 is 1 revolution per minute
+        public static final boolean secondaryInverted = false;
+        public static final boolean primaryInverted = false;
     }
     
     
