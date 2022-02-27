@@ -12,13 +12,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import frc.lib.util.Logger;
-
+import frc.lib.util.TalconFXSetup;
 import frc.robot.DroidRagePreferences;
 import frc.robot.Robot;
 import frc.robot.Constants.Shooter;
 //import frc.robot.telemetry.Log;
-
-import frc.robot.subsystems.Shooter.TalconFXSetup;
 
 public class ShooterSubsytem2 extends SubsystemBase {
   //public static final String name = Log._launcher;
