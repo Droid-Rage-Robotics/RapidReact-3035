@@ -12,7 +12,7 @@ import java.util.List;
 
 public class NormalAuto extends SequentialCommandGroup {
 
-    public NormalAuto(Drivetrain drivetrain){
+    public NormalAuto(DriveSubsystem drivetrain){
         new Rotation2d();
         new Rotation2d();
         CustomRamseteCommand splinetofirstball =

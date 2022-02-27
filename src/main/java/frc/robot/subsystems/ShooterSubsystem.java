@@ -10,10 +10,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-//import frc.lib.util.Logger;
-import frc.lib.util.TalonFXSetup;
 import frc.robot.DroidRagePreferences;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.utils.TalonFXSetup;
 
 public class ShooterSubsystem extends SubsystemBase {
   //public static final String name = Log._launcher;
