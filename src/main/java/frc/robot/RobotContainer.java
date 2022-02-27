@@ -7,7 +7,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-
 import frc.robot.commands.Intake.IntakeCommand;
 import frc.robot.commands.Intake.IntakeCommand.IntakeType;
 import frc.robot.commands.Autos.NormalAuto;
@@ -19,6 +18,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.*;
 
 
@@ -32,7 +32,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem drivetrain = new DriveSubsystem();
   private final ShooterSubsystem shooter = new ShooterSubsystem();
-  private final IndexerSubsystem index = new IndexerSubsystem(); 
+  private final IndexerSubsystem indexer = new IndexerSubsystem(); 
   private final IntakeSubsystem intake = new IntakeSubsystem(); 
   private final ClimberSubsystem climber = new ClimberSubsystem(); 
   
@@ -44,10 +44,16 @@ public class RobotContainer {
   private JoystickButton driverBButton = new JoystickButton(driverStick, 2);
   private JoystickButton driverLeftShoulder = new JoystickButton(driverStick, 5);
 
-  private JoystickButton operatorAButton = new JoystickButton(operatorStick, 1);
-  private JoystickButton operatorBButton = new JoystickButton(operatorStick, 2);
-  private JoystickButton operatorLeftShoulder = new JoystickButton(operatorStick, 5);
-  private JoystickButton operatorRightShoulder = new JoystickButton(operatorStick, 6);
+  private Trigger driverOuttake = new Trigger(() -> operatorStick.getRawAxis(2) > 0.2);
+  private Trigger driverIntake = new Trigger(() -> operatorStick.getRawAxis(3) < -0.2);
+
+
+  private JoystickButton opClimberRetractButton = new JoystickButton(operatorStick, 4); //Y Button
+  private JoystickButton opClimberExtendButton = new JoystickButton(operatorStick, 2);  //B Button
+
+  private Trigger opIndexerUp = new Trigger(() -> operatorStick.getRawAxis(3) < -0.2);  //Right Trigger
+  private Trigger opIndexerDown = new Trigger(() -> operatorStick.getRawAxis(2) < -0.2);  //Lefy Trigger
+
   private JoystickButton operatorYButton = new JoystickButton(operatorStick, 4);
   private JoystickButton operatorXButton = new JoystickButton(operatorStick, 3);
   private JoystickButton operatorUnrestrictedShooting = new JoystickButton(operatorStick, 8);
@@ -71,17 +77,19 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //Intake and extake 
-    operatorAButton.whileActiveContinuous(new IntakeCommand(intake, IntakeType.INTAKE));
-    operatorBButton.whileActiveContinuous(new IntakeCommand(intake, IntakeType.OUTTAKE));
-
-    
+    //Intake and outtake
+    driverIntake.whenActive(new IntakeCommand(intake, IntakeType.INTAKE));    //Intake
+    driverOuttake.whenActive(new IntakeCommand(intake, IntakeType.OUTTAKE));   //Outtake
 
     //Extend and Contract Climber
-    operatorXButton.whileHeld(new ClimberCommand(climber, ClimberMotionType.EXTEND));
-    operatorYButton.whileHeld(new ClimberCommand(climber, ClimberMotionType.RETRACT));
+    opClimberExtendButton.whileHeld(new ClimberCommand(climber, ClimberMotionType.EXTEND));
+    opClimberRetractButton.whileHeld(new ClimberCommand(climber, ClimberMotionType.RETRACT));
 
-    //AlignToTarget added here when complete
+    //Indexer Up and Down
+    //opIndexerUp.whenActive();    //Indexer Up
+    //opIndexerDown.whenActive();   //Indexer Down
+
+    
   }
 
   /**
