@@ -10,18 +10,18 @@ public class IntakeSubsystem extends SubsystemBase {
     private CANSparkMax intakeMotor;
 
     public IntakeSubsystem() {
-        intakeMotor = new CANSparkMax(IntakeConstants.kIntakeMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+        intakeMotor = new CANSparkMax(IntakeConstants.IntakeMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         intakeMotor.setSmartCurrentLimit(40);
 
     }
 
     public void intakeBalls() {
-        setIntakePower(IntakeConstants.kIntakePower);
+        setIntakePower(IntakeConstants.IntakePower);
     }
     
     public void outtakeBalls() {
-        setIntakePower(-IntakeConstants.kIntakePower);
+        setIntakePower(-IntakeConstants.IntakePower);
     }
 
     public void disable() {

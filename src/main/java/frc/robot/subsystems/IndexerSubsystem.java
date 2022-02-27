@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.IndexerConstants;
 
 public class IndexerSubsystem extends SubsystemBase {
     private 775ProMax
@@ -16,11 +17,11 @@ public class IndexerSubsystem extends SubsystemBase {
   public IndexerSubsystem() {}
   
 
-  @Override
+  /*@Override
   public void initialize() {
     m_indexerSubsystem.stopIndexer();
     // This method will be called once per scheduler run
-  }
+  }*/
   
   @Override
   public void periodic() {

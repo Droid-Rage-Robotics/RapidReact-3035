@@ -2,15 +2,15 @@ package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.IntakeSubsytem;
+import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeCommand extends CommandBase{
 
-    private Intake intake; 
+    private IntakeSubsystem intake; 
     private IntakeType intakeType;
 
     
-    public IntakeCommand(Intake intake, IntakeType intakeType, Serializer serializer){
+    public IntakeCommand(IntakeSubsystem intake, IntakeType intakeType){
         this.intake = intake;
         this.intakeType = intakeType;
    
@@ -22,12 +22,12 @@ public class IntakeCommand extends CommandBase{
         switch(intakeType){
             case OUTTAKE:
             intake.outtakeBalls(); 
-            Index.setIndexState(Index.IndexState.EXTAKING); 
+            //Indexer.setIndexState(IndexerSubsystem.IndexState.EXTAKING); 
             break;
             
             case INTAKE:
             intake.intakeBalls(); 
-            Index.setIndexState(Index.IndexState.INTAKING);
+            //Index.setIndexState(IndexerSubsystem.IndexState.INTAKING);
             break;
         }
     }

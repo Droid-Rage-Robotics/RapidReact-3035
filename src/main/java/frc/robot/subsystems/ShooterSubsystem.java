@@ -7,18 +7,16 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import frc.lib.util.Logger;
 import frc.lib.util.TalonFXSetup;
 import frc.robot.DroidRagePreferences;
-import frc.robot.Robot;
 //import frc.robot.telemetry.Log;
 import frc.robot.ShooterConstants;
 
-public class ShooterSubsytem extends SubsystemBase {
+public class ShooterSubsystem extends SubsystemBase {
   //public static final String name = Log._launcher;
   public final WPI_TalonFX motorLeft;
   public final WPI_TalonFX motorRight;
@@ -32,7 +30,7 @@ public class ShooterSubsytem extends SubsystemBase {
   /**
    * Creates a new Intake.
    */
-  public ShooterSubsytem() {
+  public ShooterSubsystem() {
     //setName(name);
     //Pid
 
