@@ -35,8 +35,13 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void stop () {
     intakeMotor = 0;
+    intakeMotor.OUTTAKE_SPEED;
   }
 
+  public void start () {
+    intakeMotor = -1;
+    intakeMotor.INTAKE_SPEED;
+  }
   
   /*private void set(double speed) {intakeMotor.set(speed); }
 

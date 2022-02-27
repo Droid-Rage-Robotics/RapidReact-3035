@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ClimberSubsystem extends SubsystemBase {
     private REVNEO
       climberRight = new REVNEOS(Climber.right, MotorType.kBrushless),
-      climberLeft = new REVNEOS(Climber.left, MotorType.kBrushless),
+      climberLeft = new REVNEOS(Climber.left, MotorType.kBrushless);
+    
   
 
   public void robotInit () {
