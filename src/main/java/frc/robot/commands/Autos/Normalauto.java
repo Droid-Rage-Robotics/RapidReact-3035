@@ -12,12 +12,12 @@ import java.util.List;
 
 public class NormalAuto extends SequentialCommandGroup {
 
-    public NormalAuto(DriveSubsystem drivetrain){
+    public NormalAuto(DriveSubsystem drivetrain1){
         new Rotation2d();
         new Rotation2d();
         CustomRamseteCommand splinetofirstball =
             RamseteGenerator.getRamseteCommand(
-            drivetrain,
+            drivetrain1,
             List.of(
                 new Pose2d(Units.feetToMeters(28.75), Units.feetToMeters(19.26), Rotation2d.fromDegrees(0.00)),
                 new Pose2d(Units.feetToMeters(38.07), Units.feetToMeters(20.28), Rotation2d.fromDegrees(0.00))
@@ -26,7 +26,7 @@ public class NormalAuto extends SequentialCommandGroup {
         );
         CustomRamseteCommand splinetosecondball =
         RamseteGenerator.getRamseteCommand(
-        drivetrain,
+        drivetrain1,
         List.of(
             new Pose2d(Units.feetToMeters(38.1), Units.feetToMeters(19.3), Rotation2d.fromDegrees(0.00)),
             new Pose2d(Units.feetToMeters(29), Units.feetToMeters(25.63), Rotation2d.fromDegrees(0.00))
@@ -36,14 +36,14 @@ public class NormalAuto extends SequentialCommandGroup {
             addCommands(
                 sequence(
                 // hopefully the code for shooter here new AutomaticShoot(shooter, conveyor, intake, 2620, false, 3), //
-                 new InstantCommand(() -> drivetrain.resetOdometry(splinetofirstball.getInitialPose())),
+                 new InstantCommand(() -> drivetrain1.resetOdometry(splinetofirstball.getInitialPose())),
                      deadline(
                          splinetofirstball
                          //new IntakeCommand(intake, IntakeCommand.IntakeType.INTAKE)
                              ),
                              deadline(
                         // hopefully the code for shooter here new AutomaticShoot(shooter, conveyor, intake, 2620, false, 3), //
-                        splinetosecondball.andThen(() -> drivetrain.tankDriveVolts(0,0))
+                        splinetosecondball.andThen(() -> drivetrain1.tankDriveVolts(0,0))
                              )
         )
     );
