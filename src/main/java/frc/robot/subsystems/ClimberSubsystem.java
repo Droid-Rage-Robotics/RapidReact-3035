@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.*;
 import com.revrobotics.CANSparkMax.ControlType;
 
-import frc.robot.Constants.ClimberConstants;
+import frc.robot.Constants.Constants.ClimberConstants;
 
 
 public class ClimberSubsystem {

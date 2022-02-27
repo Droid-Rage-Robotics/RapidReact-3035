@@ -1,173 +1,312 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
 
+import com.revrobotics.*;
 import com.revrobotics.CANSparkMax;
-
-// import edu.wpi.first.wpilibj.DigitalSource;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
-// import edu.wpi.first.wpilibj.Encoder;
+import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMaxLowLevel;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.DrivePorts;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-// import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
-// import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-// import com.revrobotics.SparkMaxAlternateEncoder.Type;
+import frc.robot.Constants.Constants.DriveConstants;
+import frc.robot.commands.Driver.DriverControl;
 
 public class DriveSubsystem extends SubsystemBase {
-  /**
-   * SPARK MAX controllers are intialized over CAN by constructing a CANSparkMax
-   * object
-   * 
-   * The CAN ID, which can be configured using the SPARK MAX Client, is passed as
-   * the
-   * first parameter
-   * 
-   * The motor type is passed as the second parameter. Motor type can either be:
-   * com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless
-   * com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushed
-   * 
-   * The example below initializes four brushless motors with CAN IDs 1 and 2.
-   * Change
-   * these parameters to match your setup
-   */
-  private CANSparkMax 
-      leftFront = new CANSparkMax(DrivePorts.leftFront, MotorType.kBrushless),
-      leftRear = new CANSparkMax(DrivePorts.leftRear, MotorType.kBrushless),
-      rightFront = new CANSparkMax(DrivePorts.rightFront, MotorType.kBrushless),
-      rightRear = new CANSparkMax(DrivePorts.rightRear, MotorType.kBrushless);
 
-  /**
-   * The RestoreFactoryDefaults method can be used to reset the configuration
-   * parameters
-   * in the SPARK MAX to their factory default state. If no argument is passed,
-   * these
-   * parameters will not persist between power cycles
-   */
-  // It appears that these do not work anymore
+    // motors
+    private CANSparkMax leftFrontMotor;
+    private CANSparkMax leftRearMotor;
+    private CANSparkMax rightRearMotor;
+    private CANSparkMax rightFrontMotor;
 
-  // leftFront.restoreFactoryDefaults();
-  // leftRear.restoreFactoryDefaults();
+    // neo encoder
+    private RelativeEncoder leftNeoEncoder;
+    private RelativeEncoder rightNeoEncoder;
 
-  // The motors on the left side of the drive.
-  private final MotorControllerGroup m_leftMotors = new MotorControllerGroup(
-      leftFront,
-      leftRear);
+    // Encoders
+    private final Encoder leftEncoder = new Encoder(
+            DriveConstants.kLeftEncoderPorts[0],
+            DriveConstants.kLeftEncoderPorts[1],
+            false,
+            CounterBase.EncodingType.k4X
+    );
 
-  // The motors on the right side of the drive.
-  private final MotorControllerGroup m_rightMotors = new MotorControllerGroup(
-      rightFront,
-      rightRear);
+    private final Encoder rightEncoder = new Encoder(
+            DriveConstants.kRightEncoderPorts[0],
+            DriveConstants.kRightEncoderPorts[1],
+            true,
+            CounterBase.EncodingType.k4X
+    );
 
-  // The robot's drive
-  private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
+    // Gyro
 
-  // The left-side drive encoder
-  private final DutyCycleEncoder leftEncoder = new DutyCycleEncoder(DrivePorts.leftEncoder);
+    private AHRS navx = new AHRS(SPI.Port.kMXP);
 
-  // The right-side drive encoder
-  private final DutyCycleEncoder rightEncoder = new DutyCycleEncoder(DrivePorts.rightEncoder);
+    private DifferentialDrive drive;
 
-  /** Creates a new DriveSubsystem. */
-  public DriveSubsystem() {
-    // We need to invert one side of the drivetrain so that positive voltages
-    // result in both sides moving forward. Depending on how your robot's
-    // gearbox is constructed, you might have to invert the left side instead.
-    m_rightMotors.setInverted(true);
+    private DifferentialDriveOdometry externalOdometry;
+    private DifferentialDriveOdometry internalOdometry;
 
-    // We can optionally set the input deadband aka deadzone
-    // This is set to 0.02 by default
-    // m_drive.setDeadband(0.02);
+    private boolean isControlsFlipped = false;
 
-    // Sets the distance per pulse for the encoders
-    // leftFront.getEncoder(SparkMaxAlternateEncoder.Type, countsPerRev)
-    leftEncoder.setDistancePerRotation(DriveConstants.kEncoderDistancePerRevolution);
-    rightEncoder.setDistancePerRotation(DriveConstants.kEncoderDistancePerRevolution);
+    private NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
 
-    // Motor safety forces motors to turn off by default. it track
-    // how long it has been and automagically turns off the motors
-    // by default all drive objects enable motor safety
-    // m_drive.setSafetyEnabled(enabled);
-    // dont disable it unless you need to for some reason
+    public DriveSubsystem() {
+        leftFrontMotor = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
+        leftRearMotor = new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless);
+        rightFrontMotor = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
+        rightRearMotor = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
+
+        leftRearMotor.follow(leftFrontMotor);
+        rightRearMotor.follow(rightFrontMotor);
+
+        leftFrontMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        leftRearMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
+
+        rightFrontMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        rightRearMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
+
+        leftFrontMotor.enableVoltageCompensation(12.0);
+        rightFrontMotor.enableVoltageCompensation(12.0);
+
+        leftFrontMotor.setSmartCurrentLimit(60);
+        leftRearMotor.setSmartCurrentLimit(60);
+
+        rightFrontMotor.setSmartCurrentLimit(60);
+        rightRearMotor.setSmartCurrentLimit(60);
+
+        rightFrontMotor.setInverted(true);
+        rightRearMotor.setInverted(true);
+
+        drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
+        drive.setSafetyEnabled(false);
+
+        leftEncoder.reset();
+        rightEncoder.reset();
+
+        leftEncoder.setDistancePerPulse(2 * Math.PI * DriveConstants.kWheelRadius / DriveConstants.kShaftEncoderResolution);
+        rightEncoder.setDistancePerPulse(2 * Math.PI * DriveConstants.kWheelRadius / DriveConstants.kShaftEncoderResolution);
+
+        leftNeoEncoder = leftFrontMotor.getEncoder();
+        rightNeoEncoder = rightFrontMotor.getEncoder();
+
+        leftNeoEncoder.setPosition(0);
+        rightNeoEncoder.setPosition(0);
+
+        drive = new DifferentialDrive(leftFrontMotor, rightRearMotor);
+        drive.setSafetyEnabled(false);
+
+        externalOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+        internalOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+
+        leftFrontMotor.getPIDController();
+        rightRearMotor.getPIDController();
+
+        resetAll();
+    }
 
     /**
-     * Drive Modes
-     * Note
-     * The DifferentialDrive class contains three different default modes of driving your robot’s motors.
-     * Tank Drive, which controls the left and right side independently
-     * Arcade Drive, which controls a forward and turn speed
-     * Curvature Drive, a subset of Arcade Drive, which makes your robot handle like a car with constant-curvature turns.
+     * Returns the currently-estimated pose of the robot.
+     *
+     * @return The pose.
      */
-    // Try all 3. they all have advantages
+    public Pose2d getPose() {
+        return externalOdometry.getPoseMeters();
+    }
 
-  }
+    /**
+     * Returns the current wheel speeds of the robot.
+     *
+     * @return The current wheel speeds.
+     */
+    public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+        return new DifferentialDriveWheelSpeeds(leftEncoder.getRate(), rightEncoder.getRate());
+    }
 
-  /**
-   * Drives the robot using arcade controls.
-   *
-   * @param fwd the commanded forward movement
-   * @param rot the commanded rotation
-   */
-  public void arcadeDrive(double fwd, double rot) {
-    m_drive.arcadeDrive(fwd, rot);
+    /**
+     * Resets the odometry to the specified pose.
+     *
+     * @param pose The pose to which to set the odometry.
+     */
+    public void resetOdometry(Pose2d pose) {
+        resetEncoders();
+        navx.zeroYaw();
+        internalOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
+        externalOdometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
+    }
 
-  }
+    /**
+     * Drives the robot using arcade controls.
+     *
+     * @param fwd the commanded forward movement
+     * @param rot the commanded rotation
+     */
+    public void arcadeDrive(double fwd, double rot) {
+        drive.arcadeDrive(fwd, rot);
+    }
 
-  public void tankDrive(double leftSpeed, double rightSpeed) {
-    m_drive.tankDrive(leftSpeed, rightSpeed);
 
-  }
+    public void curvatureDrive(double fwd, double rot) {
+        drive.curvatureDrive(fwd, rot, true);
+    }
 
-  public void Cu(double xSpeed, double zRotation, boolean allowTurnInPlace) {
-    m_drive.curvatureDrive(xSpeed, zRotation, allowTurnInPlace);
+    /**
+     * Controls the left and right sides of the drive directly with voltages.
+     *
+     * @param leftVolts  the commanded left output
+     * @param rightVolts the commanded right output
+     */
+    public void tankDriveVolts(double leftVolts, double rightVolts) {
+        leftFrontMotor.setVoltage(leftVolts);
+        rightFrontMotor.setVoltage(rightVolts);
+    }
 
-  }
+    /**
+     * Resets the drive encoders to currently read a position of 0.
+     */
+    public void resetEncoders() {
+        leftEncoder.reset();
+        rightEncoder.reset();
+        leftNeoEncoder.setPosition(0);
+        rightNeoEncoder.setPosition(0);
+    }
 
-  /** Resets the drive encoders to currently read a position of 0. */
-  public void resetEncoders() {
-    leftEncoder.reset();
-    rightEncoder.reset();
-  }
+    /**
+     * Gets the average distance of the two encoders.
+     *
+     * @return the average of the two encoder readings
+     */
+    public double getAverageEncoderDistance() {
+        return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2.0;
+    }
 
-  /**
-   * Gets the average distance of the TWO encoders.
-   *
-   * @return the average of the TWO encoder readings
-   */
-  public double getAverageEncoderDistance() {
-    return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2.0;
-  }
+    /**
+     * Gets the left drive encoder.
+     *
+     * @return the left drive encoder
+     */
+    public Encoder getLeftEncoder() {
+        return leftEncoder;
+    }
 
-  /**
-   * Gets the left drive encoder.
-   *
-   * @return the left drive encoder
-   */
-  public DutyCycleEncoder getLeftEncoder() {
-    return leftEncoder;
-  }
+    /**
+     * Gets the right drive encoder.
+     *
+     * @return the right drive encoder
+     */
+    public Encoder getRightEncoder() {
+        return rightEncoder;
+    }
 
-  /**
-   * Gets the right drive encoder.
-   *
-   * @return the right drive encoder
-   */
-  public DutyCycleEncoder getRightEncoder() {
-    return rightEncoder;
-  }
+    /**
+     * Sets the max output of the drive.  Useful for scaling the drive to drive more slowly.
+     *
+     * @param maxOutput the maximum output to which the drive will be constrained
+     */
+    public void setMaxOutput(double maxOutput) {
+        drive.setMaxOutput(maxOutput);
+    }
 
-  /**
-   * Sets the max output of the drive. Useful for scaling the drive to drive more
-   * slowly.
-   *
-   * @param maxOutput the maximum output to which the drive will be constrained
-   */
-  public void setMaxOutput(double maxOutput) {
-    m_drive.setMaxOutput(maxOutput);
-  }
+
+    /**
+     * Zeroes the heading of the robot.
+     */
+    public void zeroHeading() {
+        navx.zeroYaw();
+    }
+
+    /**
+     * Returns the heading of the robot.
+     *
+     * @return the robot's heading in degrees, from 180 to 180
+     */
+    public double getHeading() {
+        return navx.getRotation2d().getDegrees();
+    }
+
+    /**
+     * @return True if external encoders and internal encoders conflict
+     */
+   public boolean isEncoderError() {
+        return internalOdometry.getPoseMeters().getTranslation().getDistance(externalOdometry.getPoseMeters().getTranslation()) > 0.5;
+    }
+    
+
+    /**
+     * Returns the turn rate of the robot.
+     *
+     * @return The turn rate of the robot, in degrees per second
+     */
+    public double getTurnRate() {
+        return navx.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    }
+
+    public DifferentialDriveKinematics getKinematics() {
+        return DriveConstants.kDriveKinematics;
+    }
+    
+
+    public void resetAll() {
+        resetOdometry(new Pose2d());
+        navx.reset();
+    }
+
+    public void setControlsFlipped(boolean controlsFlipped) {
+        isControlsFlipped = controlsFlipped;
+    }
+
+    public boolean isControlsFlipped() {
+        return isControlsFlipped;
+    }
+
+    public void initDefaultCommands(Joystick joystick) {
+        setDefaultCommand(new DriverControl(
+                this,
+                () -> joystick.getRawAxis(1),
+                () -> joystick.getRawAxis(4)
+        ));
+    }
+
+    @Override
+    public void periodic() {
+        double leftDist = leftEncoder.getDistance();
+        double rightDist = rightEncoder.getDistance();
+
+        // Update the odometry in the periodic block
+        externalOdometry.update(Rotation2d.fromDegrees(getHeading()),
+                leftDist,
+                rightDist);
+
+        internalOdometry.update(Rotation2d.fromDegrees(getHeading()),
+                (-leftNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * DriveConstants.kWheelRadius,
+                (rightNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * DriveConstants.kWheelRadius);
+
+        live_dashboard.getEntry("robotX").setDouble(Units.metersToFeet(getPose().getTranslation().getX()));
+        live_dashboard.getEntry("robotY").setDouble(Units.metersToFeet(getPose().getTranslation().getY()));
+        live_dashboard.getEntry("robotHeading").setDouble(getPose().getRotation().getRadians());
+
+        SmartDashboard.putNumber("robotX", Units.metersToFeet(getPose().getTranslation().getX()));
+        SmartDashboard.putNumber("robotY", Units.metersToFeet(getPose().getTranslation().getY()));
+        SmartDashboard.putNumber("robotHeading", getPose().getRotation().getDegrees());
+
+        SmartDashboard.putNumber("Internal RobotX", Units.metersToFeet(internalOdometry.getPoseMeters().getTranslation().getX()));
+        SmartDashboard.putNumber("Internal RobotY", Units.metersToFeet(internalOdometry.getPoseMeters().getTranslation().getY()));
+
+        SmartDashboard.putNumber("Left Encoder = ", leftEncoder.getDistance());
+        SmartDashboard.putNumber("Right Encoder = ", rightEncoder.getDistance());
+
+        SmartDashboard.putNumber("NEO left Encoder", (leftNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * DriveConstants.kWheelRadius);
+        SmartDashboard.putNumber("NEO right encoder", (rightNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * DriveConstants.kWheelRadius);
+
+    }
+
 }

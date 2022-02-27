@@ -13,8 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import frc.lib.util.Logger;
 import frc.lib.util.TalonFXSetup;
 import frc.robot.DroidRagePreferences;
-//import frc.robot.telemetry.Log;
-import frc.robot.ShooterConstants;
+import frc.robot.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
   //public static final String name = Log._launcher;
