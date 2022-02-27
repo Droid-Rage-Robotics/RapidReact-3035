@@ -30,23 +30,26 @@ public final class Constants {
             rightEncoder = 1;
         
         public static final int 
-            leftFront = 0,
-            rightFront = 1,
-            leftRear = 2,
+            leftFront = 1,
+            rightFront = 2,
+            leftRear = 3,
             rightRear = 4;
     }
 
-    public static final class ClimberPorts {
+    public static final class ClimberConstants {
         public static final int 
-            right = 0,
-            left = 1;
+            kRightMotorPort = 0,
+            kLeftMotorPort = 1;
     }
 
-    public static final class Intake {
-        public static final class Piston {
-            public static final int 
-                intakeMotor = 0;
-        }
+    public static final class IntakeConstants {
+        public static int kIntakeMotorPort = 1;
+        public static int kLSerializerPort = 2;
+        public static int kRSerializerPort = 3;
+
+        public static double kIntakePower = 1; // was 1.0
+        public static double kSerializerPower = 0.5; //was 0.6
+    }
 
         public static final class Motor {
             public static final int 
@@ -55,13 +58,13 @@ public final class Constants {
         }
     }
 
-    public static final class Indexer {
+    public static final class IndexerConstants {
         public static final int 
             front = 0,
             back = 1;
     }
 
-    public static final class Shooter {
+    public static final class ShooterConstants {
         public static final int 
             PrimaryDeviceID = 0,
             SecondaryDeviceID = 1;

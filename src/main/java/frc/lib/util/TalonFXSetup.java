@@ -9,7 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 
-public class TalconFXSetup {
+public class TalonFXSetup {
     public static void defaultSetup(TalonFX motor, boolean isInverted, double currentLimit){
         motor.configFactoryDefault();
         motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);

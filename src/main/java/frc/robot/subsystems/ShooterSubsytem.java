@@ -1,5 +1,5 @@
-//Created by Spectrum3847
-package frc.robot.subsystems.Shooter;
+
+package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -12,13 +12,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import frc.lib.util.Logger;
-import frc.lib.util.TalconFXSetup;
+import frc.lib.util.TalonFXSetup;
 import frc.robot.DroidRagePreferences;
 import frc.robot.Robot;
-import frc.robot.Constants.Shooter;
 //import frc.robot.telemetry.Log;
+import frc.robot.ShooterConstants;
 
-public class ShooterSubsytem2 extends SubsystemBase {
+public class ShooterSubsytem extends SubsystemBase {
   //public static final String name = Log._launcher;
   public final WPI_TalonFX motorLeft;
   public final WPI_TalonFX motorRight;
@@ -32,7 +32,7 @@ public class ShooterSubsytem2 extends SubsystemBase {
   /**
    * Creates a new Intake.
    */
-  public ShooterSubsytem2() {
+  public ShooterSubsytem() {
     //setName(name);
     //Pid
 
@@ -43,7 +43,7 @@ public class ShooterSubsytem2 extends SubsystemBase {
     iZone = (int) DroidRagePreferences.getNumber("Launcher I-Zone", 150);
 
     
-    motorLeft = new WPI_TalonFX(Shooter.kLauncherMotorLeft);
+    motorLeft = new WPI_TalonFX(ShooterConstants.kLauncherMotorLeft);
     motorLeft.setInverted(true);
     SupplyCurrentLimitConfiguration supplyCurrentLimit = new SupplyCurrentLimitConfiguration(true, 40, 45, 0.5);
     motorLeft.configSupplyCurrentLimit(supplyCurrentLimit);
@@ -58,8 +58,8 @@ public class ShooterSubsytem2 extends SubsystemBase {
 
     motorLeft.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
-    motorRight = new WPI_TalonFX(Shooter.kFollowerMotorRight);
-    motorRight.setInverted(false);   //should be inverse of motorLeft
+    motorRight = new WPI_TalonFX(ShooterConstants.kFollowerMotorRight);
+    motorRight.setInverted(false);   //should be inverse of motorLeft //MAKE SURE WE CHECK THE MOTORS SPINNING BEFOR TEST
     motorRight.configSupplyCurrentLimit(supplyCurrentLimit);
     motorRight.follow(motorLeft);
     motorRight.setNeutralMode(NeutralMode.Coast);

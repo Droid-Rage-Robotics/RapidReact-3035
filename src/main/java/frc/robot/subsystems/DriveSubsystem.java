@@ -36,7 +36,8 @@ public class DriveSubsystem extends SubsystemBase {
    * Change
    * these parameters to match your setup
    */
-  private CANSparkMax leftFront = new CANSparkMax(DrivePorts.leftFront, MotorType.kBrushless),
+  private CANSparkMax 
+      leftFront = new CANSparkMax(DrivePorts.leftFront, MotorType.kBrushless),
       leftRear = new CANSparkMax(DrivePorts.leftRear, MotorType.kBrushless),
       rightFront = new CANSparkMax(DrivePorts.rightFront, MotorType.kBrushless),
       rightRear = new CANSparkMax(DrivePorts.rightRear, MotorType.kBrushless);
