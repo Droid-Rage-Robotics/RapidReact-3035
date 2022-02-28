@@ -29,16 +29,16 @@ public class ClimberNoEncoderSubsystem {
         public void setPower(double power){
             lClimberMotor.set(power);
         }
-    //RetractPower
-        public void retract(){
-                setPower(-0.3);
-        }
-    //ExtendPower
-        public void extend(){
-                setPower(0.5);
-        }
-    //DisableClimber
-        public void disable() {
-            lClimberMotor.set(0);
-        }
+        //RetractPower
+            public void retract(){
+                    setPower(-0.3);
+            }
+        //ExtendPower
+            public void extend(){
+                    setPower(0.5);
+            }
+        //DisableClimber
+            public void disable() {
+                lClimberMotor.set(0);
+            }
 }

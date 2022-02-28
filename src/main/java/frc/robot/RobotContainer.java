@@ -62,7 +62,7 @@ public class RobotContainer {
   //Indexer Up and Down - Operator
       private Trigger opIndexerUp = new Trigger(() -> operatorStick.getRawAxis(3) < -0.2);      //Right Trigger
       private Trigger opIndexerDown = new Trigger(() -> operatorStick.getRawAxis(2) < -0.2);    //Left Trigger
-  
+      //() -> - lamda
 
 
   /*The container for the robot. Contains subsystems, OI devices, and commands.*/

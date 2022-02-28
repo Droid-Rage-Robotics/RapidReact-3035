@@ -108,8 +108,6 @@ public final class Constants {
                     left = 1;
             }
         }
-
-
     
         /*// Unused (idk what it is)
         public final class AutoConstants {
