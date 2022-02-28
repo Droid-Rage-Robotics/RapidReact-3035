@@ -4,13 +4,15 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.IndexerConstants;
+// import frc.robot.Constants.IndexerConstants;
 
 public class IndexerSubsystem extends SubsystemBase {
-    private 775ProMax
-        frontIndexer = new 775ProMax(Indexer.front, MotorType.kBrushless),
-        backIndexer = new 775ProMax(Indexer.back, MotorType.kBrushless);
+    private VictorSPX
+        frontIndexer = new VictorSPX(0),
+        backIndexer = new VictorSPX(1);
         
   
     /** Creates a new ExampleSubsystem. */

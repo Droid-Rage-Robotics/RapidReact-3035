@@ -28,7 +28,7 @@ public class ShooterConstants {
         public static final int kTowerMotorFront = 42;
         public static final int kTowerMotorRear = 43;
         
-        public static final int kLauncherMotorLeft = 50;
+        public static final int kShooterMotorLeft = 50;
         public static final int kFollowerMotorRight = 51;
 
         public static final int kClimberMotor = 60;

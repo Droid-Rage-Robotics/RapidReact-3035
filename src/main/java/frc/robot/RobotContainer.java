@@ -34,15 +34,12 @@ public class RobotContainer {
   private final ShooterSubsystem shooter = new ShooterSubsystem();
   private final IndexerSubsystem indexer = new IndexerSubsystem(); 
   private final IntakeSubsystem intake = new IntakeSubsystem(); 
-  private final ClimberSubsystem climber = new ClimberSubsystem(); 
+  private final ClimberNoEncoderSubsystem climber = new ClimberNoEncoderSubsystem(); 
   
 
   private static Joystick driverStick = new Joystick(0);
   private static Joystick operatorStick = new Joystick(1);
 
-  private JoystickButton driverAButton = new JoystickButton(driverStick, 1);
-  private JoystickButton driverBButton = new JoystickButton(driverStick, 2);
-  private JoystickButton driverLeftShoulder = new JoystickButton(driverStick, 5);
 
   private Trigger driverOuttake = new Trigger(() -> operatorStick.getRawAxis(2) > 0.2);
   private Trigger driverIntake = new Trigger(() -> operatorStick.getRawAxis(3) < -0.2);
@@ -51,13 +48,11 @@ public class RobotContainer {
   private JoystickButton opClimberRetractButton = new JoystickButton(operatorStick, 4); //Y Button
   private JoystickButton opClimberExtendButton = new JoystickButton(operatorStick, 2);  //B Button
 
-  private Trigger opIndexerUp = new Trigger(() -> operatorStick.getRawAxis(3) < -0.2);  //Right Trigger
-  private Trigger opIndexerDown = new Trigger(() -> operatorStick.getRawAxis(2) < -0.2);  //Lefy Trigger
+  private JoystickButton opShoot = new JoystickButton(driverStick, 5); //LB
+  private JoystickButton opShootStop = new JoystickButton(driverStick, 6); //TB
 
-  private JoystickButton operatorYButton = new JoystickButton(operatorStick, 4);
-  private JoystickButton operatorXButton = new JoystickButton(operatorStick, 3);
-  private JoystickButton operatorUnrestrictedShooting = new JoystickButton(operatorStick, 8);
-  private JoystickButton operatorUnjamButton = new JoystickButton(operatorStick, 7);
+  private Trigger opIndexerUp = new Trigger(() -> operatorStick.getRawAxis(3) < -0.2);  //Right Trigger
+  private Trigger opIndexerDown = new Trigger(() -> operatorStick.getRawAxis(2) < -0.2);  //Left Trigger
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -78,12 +73,17 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     //Intake and outtake
-    driverIntake.whenActive(new IntakeCommand(intake, IntakeType.INTAKE));    //Intake
-    driverOuttake.whenActive(new IntakeCommand(intake, IntakeType.OUTTAKE));   //Outtake
+    driverIntake.whenActive(intake::intakeBalls).whenInactive(intake::disable);    //Intake
+    driverOuttake.whenActive(intake::outtakeBalls).whenInactive(intake::disable);   //Outtake
 
     //Extend and Contract Climber
-    opClimberExtendButton.whileHeld(new ClimberCommand(climber, ClimberMotionType.EXTEND));
-    opClimberRetractButton.whileHeld(new ClimberCommand(climber, ClimberMotionType.RETRACT));
+    opClimberExtendButton.whileHeld(climber::extend).whenInactive(climber::disable);
+    opClimberRetractButton.whileHeld(climber::retract).whenInactive(climber::disable);
+
+    opShoot.whileHeld(shooter::shootLow);
+    opShootStop.whileHeld(shooter::disable);
+
+    
 
     //Indexer Up and Down
     //opIndexerUp.whenActive();    //Indexer Up

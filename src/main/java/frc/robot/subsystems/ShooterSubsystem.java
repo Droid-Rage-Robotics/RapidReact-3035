@@ -15,58 +15,51 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.utils.TalonFXSetup;
 
 public class ShooterSubsystem extends SubsystemBase {
-  //public static final String name = Log._launcher;
-  public final WPI_TalonFX motorLeft;
-  public final WPI_TalonFX motorRight;
-  public final double closeShoot = 0;
-  public final double intitationLineShot = 0.6;
-  public final double farShot = 1.0;
+  public final WPI_TalonFX motorPrimary;
+  public final WPI_TalonFX motorSecondary;
 
   private double kP, kI, kD, kF;
   private int iZone;
 
-  /**
-   * Creates a new Intake.
-   */
-  public ShooterSubsystem() {
-    //setName(name);
-    //Pid
 
-    kP = DroidRagePreferences.getNumber("Launcher kP", 0.0465);
-    kI = DroidRagePreferences.getNumber("Launcher kI", 0.0005);
-    kD = DroidRagePreferences.getNumber("Launcher kD", 0.0);
-    kF = DroidRagePreferences.getNumber("Launcher kF", 0.048);
-    iZone = (int) DroidRagePreferences.getNumber("Launcher I-Zone", 150);
+  public ShooterSubsystem() {
+
+    kP = DroidRagePreferences.getNumber("Shooter kP", 0.0465);
+    kI = DroidRagePreferences.getNumber("Shooter kI", 0.0005);
+    kD = DroidRagePreferences.getNumber("Shooter kD", 0.0);
+    kF = DroidRagePreferences.getNumber("Shooter kF", 0.048);
+    iZone = (int) DroidRagePreferences.getNumber("Shooter I-Zone", 150);
 
     
-    motorLeft = new WPI_TalonFX(ShooterConstants.kLauncherMotorLeft);
-    motorLeft.setInverted(true);
+    motorPrimary = new WPI_TalonFX(ShooterConstants.kShooterMotorLeft);
+    motorPrimary.setInverted(true);
     SupplyCurrentLimitConfiguration supplyCurrentLimit = new SupplyCurrentLimitConfiguration(true, 40, 45, 0.5);
-    motorLeft.configSupplyCurrentLimit(supplyCurrentLimit);
-    motorLeft.setNeutralMode(NeutralMode.Coast);
+    motorPrimary.configSupplyCurrentLimit(supplyCurrentLimit);
+    motorPrimary.setNeutralMode(NeutralMode.Coast);
 
-    motorLeft.config_kP(0, kP);
-    motorLeft.config_kI(0, kI);   
-    motorLeft.config_kD(0, kD);  
-    motorLeft.config_kF(0, kF);  
-    motorLeft.config_IntegralZone(0, iZone);
+    motorPrimary.config_kP(0, kP);
+    motorPrimary.config_kI(0, kI);   
+    motorPrimary.config_kD(0, kD);  
+    motorPrimary.config_kF(0, kF);  
+    motorPrimary.config_IntegralZone(0, iZone);
     //motorLeft.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10);
 
-    motorLeft.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    motorPrimary.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
-    motorRight = new WPI_TalonFX(ShooterConstants.kFollowerMotorRight);
-    motorRight.setInverted(false);   //should be inverse of motorLeft //MAKE SURE WE CHECK THE MOTORS SPINNING BEFOR TEST
-    motorRight.configSupplyCurrentLimit(supplyCurrentLimit);
-    motorRight.follow(motorLeft);
-    motorRight.setNeutralMode(NeutralMode.Coast);
+    motorSecondary = new WPI_TalonFX(ShooterConstants.kFollowerMotorRight);
+    motorSecondary.setInverted(false);  //MAKE SURE WE CHECK THE MOTORS SPINNING BEFOR TEST
+    motorSecondary.configSupplyCurrentLimit(supplyCurrentLimit);
+    motorSecondary.follow(motorPrimary);
+    motorSecondary.setNeutralMode(NeutralMode.Coast);
 
     
-    TalonFXSetup.velocityStatusFrames(motorRight);
-    TalonFXSetup.velocityStatusFrames(motorLeft);
+    TalonFXSetup.velocityStatusFrames(motorSecondary);
+    TalonFXSetup.velocityStatusFrames(motorPrimary);
 
-    DroidRagePreferences.getNumber("Launcher Setpoint", 1000);
+  
+    DroidRagePreferences.getNumber("Shooter Setpoint", 1000);
 
-    this.setDefaultCommand(new RunCommand(() -> stop() , this));
+    this.setDefaultCommand(new RunCommand(() -> disable() , this));
   }
 
   public void periodic() {
@@ -74,22 +67,22 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void setManualOutput(double speed){
-    motorLeft.set(ControlMode.PercentOutput, speed);
+    motorPrimary.set(ControlMode.PercentOutput, speed);
   }
 
   public void setVelocity( double velocity){
-    motorLeft.set(ControlMode.Velocity, velocity);
+    motorPrimary.set(ControlMode.Velocity, velocity);
   }
 
   public void DashboardVelocity(){
     //4096 sensor units per rev
     //velocity is in sensor units per 100ms (0.1 secs)
-    //launcher belt is 42 to 24
+    //Shooter belt is 42 to 24
     //60000 milisecs in 1 min
     //RPM to U/100ms is rotations*4096 / 60000ms
-    double wheelRpm = DroidRagePreferences.getNumber("Launcher Setpoint", 1000);
+    double wheelRpm = DroidRagePreferences.getNumber("Shooter Setpoint", 1000);
     double motorVelocity = (wheelRpm / 600 * 2048) / 1.75;
-    motorLeft.set(ControlMode.Velocity, motorVelocity);
+    motorPrimary.set(ControlMode.Velocity, motorVelocity);
   }
 
   public void setRPM(double wheelRPM){
@@ -100,36 +93,35 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public double getWheelRPM() {
-    return (motorLeft.getSelectedSensorVelocity() * 1.75) / 2048 * 600;
-  }
-  public void full(){
-    setManualOutput(1.0);
+    return (motorPrimary.getSelectedSensorVelocity() * 1.75) / 2048 * 600;
   }
 
-  public void stop(){
-    motorLeft.set(ControlMode.PercentOutput,0);
+  // public boolean isAtRPM() {
+  //   return getWheelRPM() == motorPrimary.getClosedLoopTarget();
+  // }
+
+  public void fullSpeed(){
+    setManualOutput(1.0);
+  }
+  
+  public void shootLow() {
+    setRPM(200);
+  }
+
+  public void shootHigh() {
+    setRPM(300);
+  }
+
+  public void disable(){
+    motorPrimary.set(ControlMode.PercentOutput,0);
   }
 
   public void dashboard() {
-  SmartDashboard.putNumber("Launcher/Velocity", motorLeft.getSelectedSensorVelocity());
-  SmartDashboard.putNumber("Launcher/WheelRPM", getWheelRPM());
-  SmartDashboard.putNumber("Launcher/OutputPercentage", motorLeft.getMotorOutputPercent());
-  SmartDashboard.putNumber("Launcher/LeftCurrent", motorLeft.getSupplyCurrent());
+  SmartDashboard.putNumber("Shooter Velocity", motorPrimary.getSelectedSensorVelocity());
+  SmartDashboard.putNumber("WheelRPM", getWheelRPM());
+  SmartDashboard.putNumber("Shooter OutputPercentage", motorPrimary.getMotorOutputPercent());
+  SmartDashboard.putNumber("Shooter LeftCurrent", motorPrimary.getSupplyCurrent());
   }
 
-  /*public static void printDebug(String msg){
-    Logger.println(msg, name, Logger.low1);
-  }
-  
-  public static void printInfo(String msg){
-    Logger.println(msg, name, Logger.normal2);
-  }
-  
-  public static void printWarning(String msg) {
-    Logger.println(msg, name, Logger.high3);
-  }
-
-  public static void printError(String msg) {
-    Logger.println(msg, name, Logger.critical4);
-  }*/
+ 
 }
