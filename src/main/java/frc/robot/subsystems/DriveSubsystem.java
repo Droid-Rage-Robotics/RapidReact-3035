@@ -1,119 +1,132 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.*;
-import com.revrobotics.CANSparkMax;
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import com.revrobotics.RelativeEncoder;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.util.Units;
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+
+import edu.wpi.first.wpilibj.CounterBase;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants.DriveConstants;
 import frc.robot.commands.Driver.DriverControl;
 
 public class DriveSubsystem extends SubsystemBase {
+    //Motors
+        private CANSparkMax 
+            leftFrontMotor,
+            leftRearMotor,
+            rightRearMotor,
+            rightFrontMotor;
 
-    // motors
-    private CANSparkMax leftFrontMotor;
-    private CANSparkMax leftRearMotor;
-    private CANSparkMax rightRearMotor;
-    private CANSparkMax rightFrontMotor;
+    //NeoEncoders
+        private RelativeEncoder 
+            leftNeoEncoder,
+            rightNeoEncoder;
 
-    // neo encoder
-    private RelativeEncoder leftNeoEncoder;
-    private RelativeEncoder rightNeoEncoder;
-
-    // Encoders
-    private final Encoder leftEncoder = new Encoder(
+    //Encoders
+        private final Encoder leftEncoder = new Encoder(        //Left Encoder
             DriveConstants.kLeftEncoderPorts[0],
             DriveConstants.kLeftEncoderPorts[1],
             false,
             CounterBase.EncodingType.k4X
-    );
-
-    private final Encoder rightEncoder = new Encoder(
-            DriveConstants.kRightEncoderPorts[0],
-            DriveConstants.kRightEncoderPorts[1],
-            true,
-            CounterBase.EncodingType.k4X
-    );
+        );
+        private final Encoder rightEncoder = new Encoder(        //Right Encoder
+                DriveConstants.kRightEncoderPorts[0],
+                DriveConstants.kRightEncoderPorts[1],
+                true,
+                CounterBase.EncodingType.k4X
+        );
 
     // Gyro
+        private AHRS navx = new AHRS(SPI.Port.kMXP);
 
-    private AHRS navx = new AHRS(SPI.Port.kMXP);
+        private DifferentialDrive drive;
 
-    private DifferentialDrive drive;
+        private DifferentialDriveOdometry externalOdometry;
+        private DifferentialDriveOdometry internalOdometry;
 
-    private DifferentialDriveOdometry externalOdometry;
-    private DifferentialDriveOdometry internalOdometry;
+        private boolean isControlsFlipped = false;
 
-    private boolean isControlsFlipped = false;
-
-    private NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
+        private NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
 
     public DriveSubsystem() {
-        leftFrontMotor = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
-        leftRearMotor = new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless);
-        rightFrontMotor = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
-        rightRearMotor = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
+        //Motor Ports 
+            leftFrontMotor = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
+            leftRearMotor = new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless);
+            rightFrontMotor = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
+            rightRearMotor = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-        leftRearMotor.follow(leftFrontMotor);
-        rightRearMotor.follow(rightFrontMotor);
+        //Rear Motors follow Front Motors
+            leftRearMotor.follow(leftFrontMotor);
+            rightRearMotor.follow(rightFrontMotor);
 
-        leftFrontMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        leftRearMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        //Front Motors are on Brake and Rear Motors on Coast
+            leftFrontMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+            rightFrontMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+            leftRearMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
+            rightRearMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
 
-        rightFrontMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        rightRearMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
+            leftFrontMotor.enableVoltageCompensation(12.0);
+            rightFrontMotor.enableVoltageCompensation(12.0);
 
-        leftFrontMotor.enableVoltageCompensation(12.0);
-        rightFrontMotor.enableVoltageCompensation(12.0);
+        //Motor Limits
+            leftFrontMotor.setSmartCurrentLimit(60);
+            leftRearMotor.setSmartCurrentLimit(60);
+            rightFrontMotor.setSmartCurrentLimit(60);
+            rightRearMotor.setSmartCurrentLimit(60);
 
-        leftFrontMotor.setSmartCurrentLimit(60);
-        leftRearMotor.setSmartCurrentLimit(60);
+        //Right Motors are Inverted
+            rightFrontMotor.setInverted(true);
+            rightRearMotor.setInverted(true);
 
-        rightFrontMotor.setSmartCurrentLimit(60);
-        rightRearMotor.setSmartCurrentLimit(60);
+            drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
+            drive.setSafetyEnabled(false);
 
-        rightFrontMotor.setInverted(true);
-        rightRearMotor.setInverted(true);
+        //Encoders
+            leftEncoder.reset();
+            rightEncoder.reset();
 
-        drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
-        drive.setSafetyEnabled(false);
+            leftEncoder.setDistancePerPulse(2 * Math.PI * DriveConstants.kWheelRadius / DriveConstants.kShaftEncoderResolution);
+            rightEncoder.setDistancePerPulse(2 * Math.PI * DriveConstants.kWheelRadius / DriveConstants.kShaftEncoderResolution);
 
-        leftEncoder.reset();
-        rightEncoder.reset();
+            leftNeoEncoder = leftFrontMotor.getEncoder();
+            rightNeoEncoder = rightFrontMotor.getEncoder();
 
-        leftEncoder.setDistancePerPulse(2 * Math.PI * DriveConstants.kWheelRadius / DriveConstants.kShaftEncoderResolution);
-        rightEncoder.setDistancePerPulse(2 * Math.PI * DriveConstants.kWheelRadius / DriveConstants.kShaftEncoderResolution);
+            leftNeoEncoder.setPosition(0);
+            rightNeoEncoder.setPosition(0);
 
-        leftNeoEncoder = leftFrontMotor.getEncoder();
-        rightNeoEncoder = rightFrontMotor.getEncoder();
+            drive = new DifferentialDrive(leftFrontMotor, rightRearMotor);
+            drive.setSafetyEnabled(false);
 
-        leftNeoEncoder.setPosition(0);
-        rightNeoEncoder.setPosition(0);
+            externalOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+            internalOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
 
-        drive = new DifferentialDrive(leftFrontMotor, rightRearMotor);
-        drive.setSafetyEnabled(false);
+        //PID Controller
+            leftFrontMotor.getPIDController();
+            rightRearMotor.getPIDController();
 
-        externalOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
-        internalOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
-
-        leftFrontMotor.getPIDController();
-        rightRearMotor.getPIDController();
-
-        resetAll();
+            resetAll();
     }
 
+
+    
     /**
      * Returns the currently-estimated pose of the robot.
      *

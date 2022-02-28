@@ -1,5 +1,7 @@
 package frc.robot.utils;
 
+import java.util.List;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -11,10 +13,9 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.constraint.CentripetalAccelerationConstraint;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.math.util.Units;
+
 import frc.robot.Constants.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
-
-import java.util.List;
 
 public class RamseteGenerator {
     private static TrajectoryConfig getConfig(double maxVel, double maxA, boolean isReversed) {
