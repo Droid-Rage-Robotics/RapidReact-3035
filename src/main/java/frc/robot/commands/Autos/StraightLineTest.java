@@ -12,7 +12,7 @@ import java.util.List;
 
 public class StraightLineTest extends SequentialCommandGroup {
 
-    public StraightLineTest(DriveSubsystem drivetrain){
+    public StraightLineTest(Drive drivetrain){
         new Rotation2d();
         new Rotation2d();
         CustomRamseteCommand StraightLine =

@@ -4,11 +4,11 @@
 
 package frc.robot;
 
-import frc.robot.commands.Intake.IntakeCommand;
-import frc.robot.commands.Intake.IntakeCommand.IntakeType;
-import frc.robot.commands.Climber.ClimberCommand;
-import frc.robot.commands.Climber.ClimberCommand.ClimberMotionType;
-import frc.robot.subsystems.*;
+// import frc.robot.commands.Intake.IntakeCommand;
+// import frc.robot.commands.Intake.IntakeCommand.IntakeType;
+// import frc.robot.commands.Climber.ClimberCommand;
+// import frc.robot.commands.Climber.ClimberCommand.ClimberMotionType;
+// import frc.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -22,11 +22,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autos.NormalAuto;
 import frc.robot.commands.Autos.StraightLineTest;
 
-import frc.robot.subsystems.ClimberNoEncoderSubsystem;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+// import frc.robot.subsystems.ClimberNoEncoderSubsystem;
+import frc.robot.subsystems.Drive;
+// import frc.robot.subsystems.IndexerSubsystem;
+// import frc.robot.subsystems.IntakeSubsystem;
+// import frc.robot.subsystems.ShooterSubsystem;
 
 
 /**
@@ -37,35 +37,35 @@ import frc.robot.subsystems.ShooterSubsystem;
  */
 public class RobotContainer {
   //Defined Robot Subsystems
-      private final DriveSubsystem drivetrain = new DriveSubsystem();
-      private final ShooterSubsystem shooter = new ShooterSubsystem();
-      private final IndexerSubsystem indexer = new IndexerSubsystem(); 
-      private final IntakeSubsystem intake = new IntakeSubsystem(); 
-      private final ClimberNoEncoderSubsystem climber = new ClimberNoEncoderSubsystem(); 
+      private final Drive drivetrain = new Drive();
+      // private final ShooterSubsystem shooter = new ShooterSubsystem();
+      // private final IndexerSubsystem indexer = new IndexerSubsystem(); 
+      // private final IntakeSubsystem intake = new IntakeSubsystem(); 
+      // private final ClimberNoEncoderSubsystem climber = new ClimberNoEncoderSubsystem(); 
     
-  //Driver and Operaator Joystick
+  // Driver and Operaator Joystick
       private static Joystick driverStick = new Joystick(0);
       private static Joystick operatorStick = new Joystick(1);
 
-  //Triggers for Intake and Outtake - Driver
-      private Trigger driverOuttake = new Trigger(() -> operatorStick.getRawAxis(2) > 0.2);   //Left Trigger
-      private Trigger driverIntake = new Trigger(() -> operatorStick.getRawAxis(3) < -0.2);   //Right Trigger
+  // Triggers for Intake and Outtake - Driver
+      // private Trigger driverOuttake = new Trigger(() -> operatorStick.getRawAxis(2) > 0.2);   //Left Trigger
+      // private Trigger driverIntake = new Trigger(() -> operatorStick.getRawAxis(3) < -0.2);   //Right Trigger
 
-  //Climber Extend and Retract - Operator
-      private JoystickButton opClimberRetractButton = new JoystickButton(operatorStick, 4); //Y Button
-      private JoystickButton opClimberExtendButton = new JoystickButton(operatorStick, 2);  //B Button
+  // Climber Extend and Retract - Operator
+      // private JoystickButton opClimberRetractButton = new JoystickButton(operatorStick, 4); //Y Button
+      // private JoystickButton opClimberExtendButton = new JoystickButton(operatorStick, 2);  //B Button
 
-  //Shooter On and Off - Operator
-      private JoystickButton opShoot = new JoystickButton(driverStick, 5);        //Left Bumper
-      private JoystickButton opShootStop = new JoystickButton(driverStick, 6);    //Right Bumper
+  // Shooter On and Off - Operator
+      // private JoystickButton opShoot = new JoystickButton(driverStick, 5);        //Left Bumper
+      // private JoystickButton opShootStop = new JoystickButton(driverStick, 6);    //Right Bumper
 
-  //Indexer Up and Down - Operator
-      private Trigger opIndexerUp = new Trigger(() -> operatorStick.getRawAxis(3) < -0.2);      //Right Trigger
-      private Trigger opIndexerDown = new Trigger(() -> operatorStick.getRawAxis(2) < -0.2);    //Left Trigger
+  // Indexer Up and Down - Operator
+      // private Trigger opIndexerUp = new Trigger(() -> operatorStick.getRawAxis(3) < -0.2);      //Right Trigger
+      // private Trigger opIndexerDown = new Trigger(() -> operatorStick.getRawAxis(2) < -0.2);    //Left Trigger
       //() -> - lamda
 
 
-  /*The container for the robot. Contains subsystems, OI devices, and commands.*/
+  /* The container for the robot. Contains subsystems, OI devices, and commands.*/
       public RobotContainer() {
         // Configure the button bindings
         configureButtonBindings();
@@ -86,15 +86,15 @@ public class RobotContainer {
   //Add Commands to Buttons
       private void configureButtonBindings() {
         //Intake and outtake
-            driverIntake.whenActive(intake::intakeBalls).whenInactive(intake::disable);    //Intake
-            driverOuttake.whenActive(intake::outtakeBalls).whenInactive(intake::disable);   //Outtake
+            // driverIntake.whenActive(intake::intakeBalls).whenInactive(intake::disable);    //Intake
+            // driverOuttake.whenActive(intake::outtakeBalls).whenInactive(intake::disable);   //Outtake
 
         //Extend and Contract Climber
-            opClimberExtendButton.whileHeld(climber::extend).whenInactive(climber::disable);      //Extend
-            opClimberRetractButton.whileHeld(climber::retract).whenInactive(climber::disable);    //Retract
-        //Shooter On and Off
-            opShoot.whileHeld(shooter::shootLow);       //On
-            opShootStop.whileHeld(shooter::disable);    //Off
+            // opClimberExtendButton.whileHeld(climber::extend).whenInactive(climber::disable);      //Extend
+            // opClimberRetractButton.whileHeld(climber::retract).whenInactive(climber::disable);    //Retract
+        // //Shooter On and Off
+        //     opShoot.whileHeld(shooter::shootLow);       //On
+        //     opShootStop.whileHeld(shooter::disable);    //Off
 
         //Indexer Up and Down
             //opIndexerUp.whenActive();     //Indexer Up

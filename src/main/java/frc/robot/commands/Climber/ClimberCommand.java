@@ -1,13 +1,13 @@
 package frc.robot.commands.Climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ClimberEncoderSubsystem;
+import frc.robot.subsystems.ClimberEncoder;
 
 public class ClimberCommand extends CommandBase {
-    public ClimberEncoderSubsystem climber;
+    public ClimberEncoder climber;
     public ClimberMotionType ClimberMotionType;
 
-    public ClimberCommand(ClimberEncoderSubsystem climber, ClimberMotionType climberMotionType){
+    public ClimberCommand(ClimberEncoder climber, ClimberMotionType climberMotionType){
         this.climber = climber;
         this.ClimberMotionType = climberMotionType;
     }

@@ -14,7 +14,7 @@ import frc.robot.DroidRagePreferences;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.utils.TalonFXSetup;
 
-public class ShooterSubsystem extends SubsystemBase {
+public class Shooter extends SubsystemBase {
   public final WPI_TalonFX motorPrimary;
   public final WPI_TalonFX motorSecondary;
 
@@ -22,7 +22,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private int iZone;
 
 
-  public ShooterSubsystem() {
+  public Shooter() {
     //PID values from Droid Rage Preferences
         kP = DroidRagePreferences.getNumber("Shooter kP", 0.0465);
         kI = DroidRagePreferences.getNumber("Shooter kI", 0.0005);

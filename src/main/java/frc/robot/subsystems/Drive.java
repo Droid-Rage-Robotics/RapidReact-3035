@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants.DriveConstants;
 import frc.robot.commands.Driver.DriverControl;
 
-public class DriveSubsystem extends SubsystemBase {
+public class Drive extends SubsystemBase {
     //Motors
         private CANSparkMax 
             leftFrontMotor,
@@ -42,14 +42,14 @@ public class DriveSubsystem extends SubsystemBase {
 
     //Encoders
         private final Encoder leftEncoder = new Encoder(        //Left Encoder
-            DriveConstants.kLeftEncoderPorts[0],
-            DriveConstants.kLeftEncoderPorts[1],
+            0,
+            0,
             false,
             CounterBase.EncodingType.k4X
         );
         private final Encoder rightEncoder = new Encoder(        //Right Encoder
-                DriveConstants.kRightEncoderPorts[0],
-                DriveConstants.kRightEncoderPorts[1],
+                0,
+                0,
                 true,
                 CounterBase.EncodingType.k4X
         );
@@ -66,12 +66,12 @@ public class DriveSubsystem extends SubsystemBase {
 
         private NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
 
-    public DriveSubsystem() {
+    public Drive() {
         //Motor Ports 
-            leftFrontMotor = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
-            leftRearMotor = new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless);
-            rightFrontMotor = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
-            rightRearMotor = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
+            leftFrontMotor = new CANSparkMax(DriveConstants.leftFront, CANSparkMaxLowLevel.MotorType.kBrushless);
+            leftRearMotor = new CANSparkMax(DriveConstants.leftRear, CANSparkMaxLowLevel.MotorType.kBrushless);
+            rightFrontMotor = new CANSparkMax(DriveConstants.rightFront, CANSparkMaxLowLevel.MotorType.kBrushless);
+            rightRearMotor = new CANSparkMax(DriveConstants.rightRear, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         //Rear Motors follow Front Motors
             leftRearMotor.follow(leftFrontMotor);

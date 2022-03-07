@@ -6,12 +6,12 @@ import com.revrobotics.*;
 import frc.robot.Constants.Constants.ClimberConstants;
 
 
-public class ClimberNoEncoderSubsystem {
+public class ClimberNoEncoder {
     private CANSparkMax 
         lClimberMotor,
         rClimberMotor;
 
-    public ClimberNoEncoderSubsystem(){
+    public ClimberNoEncoder(){
         //MotorPorts
             lClimberMotor = new CANSparkMax(ClimberConstants.kLeftMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
             rClimberMotor = new CANSparkMax(ClimberConstants.kRightMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);

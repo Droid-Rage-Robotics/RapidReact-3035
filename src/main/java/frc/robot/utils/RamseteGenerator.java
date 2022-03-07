@@ -15,7 +15,7 @@ import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstrai
 import edu.wpi.first.math.util.Units;
 
 import frc.robot.Constants.Constants.DriveConstants;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Drive;
 
 public class RamseteGenerator {
     private static TrajectoryConfig getConfig(double maxVel, double maxA, boolean isReversed) {
@@ -41,7 +41,7 @@ public class RamseteGenerator {
 
     }
 
-    public static CustomRamseteCommand getRamseteCommand(DriveSubsystem drivetrain,
+    public static CustomRamseteCommand getRamseteCommand(Drive drivetrain,
                                                          Pose2d startPose,
                                                          List<Translation2d> internalPoints,
                                                          Pose2d endPose,
@@ -60,7 +60,7 @@ public class RamseteGenerator {
     }
 
 
-    public static CustomRamseteCommand getRamseteCommand(DriveSubsystem drivetrain,
+    public static CustomRamseteCommand getRamseteCommand(Drive drivetrain,
                                                          List<Pose2d> waypoints,
                                                          double velocity, double acceleration, boolean isReversed) {
         Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
@@ -71,7 +71,7 @@ public class RamseteGenerator {
         return getCustomRamseteCommand(drivetrain, trajectory);
     }
 
-    private static CustomRamseteCommand getCustomRamseteCommand(DriveSubsystem drivetrain, Trajectory trajectory) {
+    private static CustomRamseteCommand getCustomRamseteCommand(Drive drivetrain, Trajectory trajectory) {
         return new CustomRamseteCommand(
                 trajectory,
                 drivetrain::getPose,

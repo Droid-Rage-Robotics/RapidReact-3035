@@ -4,13 +4,13 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Drive;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class HalveDriveSpeed extends CommandBase {
-  private final DriveSubsystem m_drive;
+  private final Drive m_drive;
 
-  public HalveDriveSpeed(DriveSubsystem drive) {
+  public HalveDriveSpeed(Drive drive) {
     m_drive = drive;
   }
 

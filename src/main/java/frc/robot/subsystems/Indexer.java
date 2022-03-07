@@ -10,13 +10,13 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IndexerConstants;
 
-public class IndexerSubsystem extends SubsystemBase {
+public class Indexer extends SubsystemBase {
     private VictorSPX
         frontIndexer,
         backIndexer;
   
     /** Creates a new ExampleSubsystem. */
-      public IndexerSubsystem() {
+      public Indexer() {
         frontIndexer = new VictorSPX(IndexerConstants.frontIndexer);
         backIndexer = new VictorSPX(IndexerConstants.backIndexer);
 

@@ -49,6 +49,13 @@ public final class Constants {
             public static double kDriveI = 0;
             public static double kDriveD = 0;
 
+            public static int leftFront = 3,
+            leftRear = 2,
+            rightFront = 5,
+            rightRear = 4;
+
+
+
             public static int[] kLeftEncoderPorts = new int[]{0, 1};
             public static int[] kRightEncoderPorts = new int[]{2, 3};
 
@@ -65,9 +72,9 @@ public final class Constants {
                 rightEncoder = 1;
             
             public static final int 
-                leftFront = 1,
-                rightFront = 2,
-                leftRear = 3,
+                leftFront = 3,
+                rightFront = 5,
+                leftRear = 2,
                 rightRear = 4;
         }
 
@@ -90,8 +97,8 @@ public final class Constants {
             public static double servoLockPosition = 1;
             public static double servoUnlockPosition = -1;
 
-            public static int kLeftMotorPort = 13;
-            public static int kRightMotorPort = 14;
+            public static int kLeftMotorPort = 6;
+            public static int kRightMotorPort = 7;
         }
 
 

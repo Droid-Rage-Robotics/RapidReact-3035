@@ -6,7 +6,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 import frc.robot.Constants.Constants.ClimberConstants;
 
 
-public class ClimberEncoderSubsystem {
+public class ClimberEncoder {
     private CANSparkMax 
         lClimberMotor,
         rClimberMotor;
@@ -15,7 +15,7 @@ public class ClimberEncoderSubsystem {
     private RelativeEncoder climberEncoder;
     private double targetHeightInches = 0.0;
 
-    public ClimberEncoderSubsystem(){
+    public ClimberEncoder(){
         //Climber Motor Ports
             lClimberMotor = new CANSparkMax(ClimberConstants.kLeftMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
             rClimberMotor = new CANSparkMax(ClimberConstants.kRightMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);

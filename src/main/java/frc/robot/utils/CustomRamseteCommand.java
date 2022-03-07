@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Drive;
 
 /**
  * A command that uses a RAMSETE controller ({@link RamseteController}) to follow a trajectory
@@ -54,7 +54,7 @@ public class CustomRamseteCommand extends CommandBase {
     private final BiConsumer<Double, Double> m_output;
     private DifferentialDriveWheelSpeeds m_prevSpeeds;
     private double m_prevTime;
-    private DriveSubsystem drivetrain;
+    private Drive drivetrain;
 
     NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
 
@@ -106,7 +106,7 @@ public class CustomRamseteCommand extends CommandBase {
         m_usePID = true;
 
         addRequirements(requirements);
-        this.drivetrain = (DriveSubsystem) requirements[0];
+        this.drivetrain = (Drive) requirements[0];
     }
 
     /**
