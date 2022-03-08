@@ -42,14 +42,14 @@ public class Drive extends SubsystemBase {
 
     //Encoders
         private final Encoder leftEncoder = new Encoder(        //Left Encoder
-            0,
-            0,
+            4,
+            1,
             false,
             CounterBase.EncodingType.k4X
         );
         private final Encoder rightEncoder = new Encoder(        //Right Encoder
-                0,
-                0,
+                2,
+                3,
                 true,
                 CounterBase.EncodingType.k4X
         );

@@ -19,6 +19,8 @@ public class ClimberCommand extends CommandBase {
             climber.setClimberDown();
             case RETRACT:
             climber.setClimberDown();
+            default:
+                break;
         }
     }
 

@@ -50,14 +50,14 @@ public final class Constants {
             public static double kDriveD = 0;
 
             public static int leftFront = 3,
-            leftRear = 2,
-            rightFront = 5,
-            rightRear = 4;
+                              leftRear = 2,
+                              rightFront = 5,
+                              rightRear = 4;
 
 
 
-            public static int[] kLeftEncoderPorts = new int[]{0, 1};
-            public static int[] kRightEncoderPorts = new int[]{2, 3};
+            // public static int[] kLeftEncoderPorts = new int[]{0, 1};
+            // public static int[] kRightEncoderPorts = new int[]{2, 3};
 
             public static boolean kLeftEncoderReversed = false;
             public static boolean kRightEncoderReversed = true;
@@ -67,9 +67,9 @@ public final class Constants {
             public static DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(DriveConstants.kTrackWidth);
         }
         public static final class DrivePorts {
-            public static final int
-                leftEncoder = 0,
-                rightEncoder = 1;
+            // public static final int
+            //     leftEncoder = 0,
+            //     rightEncoder = 1;
             
             public static final int 
                 leftFront = 3,

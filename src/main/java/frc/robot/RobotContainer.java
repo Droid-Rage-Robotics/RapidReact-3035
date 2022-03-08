@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Autos.NormalAuto;
 import frc.robot.commands.Autos.StraightLineTest;
 
-// import frc.robot.subsystems.ClimberNoEncoderSubsystem;
+import frc.robot.subsystems.ClimberNoEncoder;
 import frc.robot.subsystems.Drive;
 // import frc.robot.subsystems.IndexerSubsystem;
 // import frc.robot.subsystems.IntakeSubsystem;
@@ -41,7 +41,7 @@ public class RobotContainer {
       // private final ShooterSubsystem shooter = new ShooterSubsystem();
       // private final IndexerSubsystem indexer = new IndexerSubsystem(); 
       // private final IntakeSubsystem intake = new IntakeSubsystem(); 
-      // private final ClimberNoEncoderSubsystem climber = new ClimberNoEncoderSubsystem(); 
+      private final ClimberNoEncoder climber = new ClimberNoEncoder(); 
     
   // Driver and Operaator Joystick
       private static Joystick driverStick = new Joystick(0);
@@ -52,8 +52,8 @@ public class RobotContainer {
       // private Trigger driverIntake = new Trigger(() -> operatorStick.getRawAxis(3) < -0.2);   //Right Trigger
 
   // Climber Extend and Retract - Operator
-      // private JoystickButton opClimberRetractButton = new JoystickButton(operatorStick, 4); //Y Button
-      // private JoystickButton opClimberExtendButton = new JoystickButton(operatorStick, 2);  //B Button
+      private JoystickButton opClimberRetractButton = new JoystickButton(operatorStick, 4); //Y Button
+      private JoystickButton opClimberExtendButton = new JoystickButton(operatorStick, 2);  //B Button
 
   // Shooter On and Off - Operator
       // private JoystickButton opShoot = new JoystickButton(driverStick, 5);        //Left Bumper
@@ -90,8 +90,8 @@ public class RobotContainer {
             // driverOuttake.whenActive(intake::outtakeBalls).whenInactive(intake::disable);   //Outtake
 
         //Extend and Contract Climber
-            // opClimberExtendButton.whileHeld(climber::extend).whenInactive(climber::disable);      //Extend
-            // opClimberRetractButton.whileHeld(climber::retract).whenInactive(climber::disable);    //Retract
+            opClimberExtendButton.whileHeld(climber::extend).whenInactive(climber::disable);      //Extend
+            opClimberRetractButton.whileHeld(climber::retract).whenInactive(climber::disable);    //Retract
         // //Shooter On and Off
         //     opShoot.whileHeld(shooter::shootLow);       //On
         //     opShootStop.whileHeld(shooter::disable);    //Off
