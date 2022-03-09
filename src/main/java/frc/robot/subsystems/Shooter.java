@@ -1,4 +1,4 @@
-
+/*
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,18 +19,18 @@ public class Shooter extends SubsystemBase {
   public final WPI_TalonFX motorPrimary;
   public final WPI_TalonFX motorSecondary;
 
-  private double kP, kI, kD, kF;
-  private int iZone;
+  // private double kP, kI, kD, kF;
+  // private int iZone;
 
 
   public Shooter() {
 
     //PID values from Droid Rage Preferences
-        kP = MyPreferences.getNumber("Shooter kP", 0.0465);
-        kI = DroidRagePreferences.shooterkI;
-        kD = DroidRagePreferences.Preferences.getDouble("Shooter kD", 0.0);
-        kF = MyPreferences.getNumber("Shooter kF", 0.048);
-        iZone = (int) MyPreferences.getNumber("Shooter I-Zone", 150);
+        // kP = Preferences.getNumber("Shooter kP", 0.0465);
+        // kI = Preferences.shooterkI;
+        // kD = DroidRagePreferences.Preferences.getDouble("Shooter kD", 0.0);
+        // kF = MyPreferences.getNumber("Shooter kF", 0.048);
+        // iZone = (int) MyPreferences.getNumber("Shooter I-Zone", 150);
 
         motorPrimary = new WPI_TalonFX(ShooterConstants.kShooterPort);
         motorPrimary.setInverted(true);
@@ -95,9 +96,9 @@ public class Shooter extends SubsystemBase {
           return (motorPrimary.getSelectedSensorVelocity() * 1.75) / 2048 * 600;
         }
 
-        /*public boolean isAtRPM() {
+        public boolean isAtRPM() {
           return getWheelRPM() == motorPrimary.getClosedLoopTarget();
-        }*/
+        }
 
         public void fullSpeed(){
           setManualOutput(1.0);
@@ -124,3 +125,4 @@ public class Shooter extends SubsystemBase {
 
  
 }
+*/
