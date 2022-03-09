@@ -19,11 +19,15 @@ import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.DriveConstants.*;
+
+import java.util.function.DoubleSupplier;
+
 import frc.robot.commands.Driver.DriverControl;
 
 public class Drive extends SubsystemBase {
@@ -282,11 +286,11 @@ public class Drive extends SubsystemBase {
         return isControlsFlipped;
     }
 
-    public void initDefaultCommands(Joystick joystick) {
+    public void initDefaultCommands(DoubleSupplier forward, DoubleSupplier rotate) {
         setDefaultCommand(new DriverControl(
                 this,
-                () -> joystick.getRawAxis(1),
-                () -> joystick.getRawAxis(4)
+                forward,
+                rotate
         ));
     }
 

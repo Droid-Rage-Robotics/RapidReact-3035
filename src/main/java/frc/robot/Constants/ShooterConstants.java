@@ -3,7 +3,7 @@ package frc.robot.Constants;
 public class ShooterConstants {
         public static final int 
             kShooterPort = 0,
-            SecondaryDeviceID = 1;
+            kSecondShooterPort = 1;
 
         public static final double velocity = 204.8; // I believe 20480 is 1 revolution per minute
         

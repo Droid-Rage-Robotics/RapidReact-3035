@@ -14,42 +14,61 @@ public class Intake extends SubsystemBase {
         //Intake Motor
         private CANSparkMax intakeMotor;
 
-        private Compressor pcmCompressor  = new Compressor(0, PneumaticsModuleType.CTREPCM);
-        private Compressor phCompressor  = new Compressor(1, PneumaticsModuleType.REVPH);
+        private Compressor pcmCompressor1  = new Compressor(0, PneumaticsModuleType.CTREPCM);
+        private Compressor pcmCompressor2  = new Compressor(1, PneumaticsModuleType.CTREPCM);
 
-        private boolean enabled = pcmCompressor.enabled();
-        private boolean pressureSwitch = pcmCompressor.getPressureSwitchValue();
-        private double current = pcmCompressor.getCurrent();
+        private boolean enabled = pcmCompressor1.enabled();
+        private boolean pressureSwitch = pcmCompressor1.getPressureSwitchValue();
+        private double current = pcmCompressor1.getCurrent();
         
+        //We use CTRE  Pneumatics Control Module
         //2 double solenoids for 2 pistons
-        private DoubleSolenoid leftliftDoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 2);
-        private DoubleSolenoid rightLiftDoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 3, 4);
+        private DoubleSolenoid lLiftDoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 2);
+        private DoubleSolenoid rLiftDoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 3, 4);
      
     public Intake() {
-        leftliftDoubleSolenoid.set(Value.kForward);
-        leftliftDoubleSolenoid.set(Value.kForward);
-        pcmCompressor.enableDigital();
-        pcmCompressor.disable();
+        lLiftDoubleSolenoid.set(Value.kOff);
+        lLiftDoubleSolenoid.set(Value.kForward);
+        lLiftDoubleSolenoid.set(Value.kReverse);
+        pcmCompressor1.enableDigital();
+        pcmCompressor1.disable();
 
+        rLiftDoubleSolenoid.set(Value.kOff);
+        rLiftDoubleSolenoid.set(Value.kForward);
+        rLiftDoubleSolenoid.set(Value.kReverse);
+        pcmCompressor2.enableDigital();
+        pcmCompressor2.disable();
 
+    
+        lLiftDoubleSolenoid.get();
+        rLiftDoubleSolenoid.get();
 
-
-        intakeMotor = new CANSparkMax(IntakeConstants.IntakeMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
         //Intake Current Limit
         intakeMotor.setSmartCurrentLimit(40);
-        // liftDoubleSolenoid.get();
+
+        intakeMotor = new CANSparkMax(IntakeConstants.IntakeMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);    
     }
+
+
     //Intake
         public void intakeBalls() {
             setIntakePower(IntakeConstants.IntakePower);
+            lLiftDoubleSolenoid.set(Value.kForward);
+            rLiftDoubleSolenoid.set(Value.kForward);
         }
     //Outtake
         public void outtakeBalls() {
             setIntakePower(-IntakeConstants.IntakePower);
+            lLiftDoubleSolenoid.set(Value.kForward);
+            rLiftDoubleSolenoid.set(Value.kForward);
         }
     //Disable
-        public void disable() {
+        public void disableIntake() {
             setIntakePower(0);
+        }
+        public void intakeLift() {
+            lLiftDoubleSolenoid.set(Value.kReverse);
+            rLiftDoubleSolenoid.set(Value.kReverse);
         }
     //Set Intake Power
         public void setIntakePower(double power){

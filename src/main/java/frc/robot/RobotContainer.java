@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import javax.naming.ldap.Control;
+
 // import frc.robot.commands.Intake.IntakeCommand;
 // import frc.robot.commands.Intake.IntakeCommand.IntakeType;
 // import frc.robot.commands.Climber.ClimberCommand;
@@ -18,15 +20,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
+import frc.robot.Constants.ControllerConstants;
+import frc.robot.Controls.XboxButton;
+import frc.robot.Controls.XboxDPAD;
+import frc.robot.Controls.XboxTrigger;
 import frc.robot.commands.Autos.NormalAuto;
 import frc.robot.commands.Autos.StraightLineTest;
 
 import frc.robot.subsystems.ClimberNoEncoder;
 import frc.robot.subsystems.Drive;
-// import frc.robot.subsystems.IndexerSubsystem;
-// import frc.robot.subsystems.IntakeSubsystem;
-// import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake;
+// import frc.robot.subsystems;
 
 
 /**
@@ -38,28 +43,28 @@ import frc.robot.subsystems.Drive;
 public class RobotContainer {
   //Defined Robot Subsystems
       private final Drive drivetrain = new Drive();
-      // private final ShooterSubsystem shooter = new ShooterSubsystem();
-      // private final IndexerSubsystem indexer = new IndexerSubsystem(); 
-      // private final IntakeSubsystem intake = new IntakeSubsystem(); 
+      private final Shooter shooter = new Shooter();
+      private final Intake indexer = new Intake(); 
+      private final Intake intake = new Intake(); 
       private final ClimberNoEncoder climber = new ClimberNoEncoder(); 
     
 
-      private Controller controllers = Controller.ControllerBuilder(0, 1)
+      private Controllers controllers = new Controllers.ControllerBuilder(ControllerConstants.kDriverControllerPort, ControllerConstants.kOperatorControllerPort)
+        .driver()
+          .add("outtake", XboxTrigger.LT)
+          .add("intake", XboxTrigger.RT)
+          .add("intakeLift", XboxButton.RB)
+        .operator()
+          .add("extendClimber", XboxDPAD.UP)
+          .add("retractClimber", XboxDPAD.DOWN)
+          .add("shootLow", XboxButton.LB)
+          .add("shootStop", XboxButton.RB)
+        .build();
+
   // Driver and Operaator Joystick
       // private static Joystick driverStick = new Joystick(0);
       // private static Joystick operatorStick = new Joystick(1);
 
-  // Triggers for Intake and Outtake - Driver
-      // private Trigger driverOuttake = new Trigger(() -> operatorStick.getRawAxis(2) > 0.2);   //Left Trigger
-      // private Trigger driverIntake = new Trigger(() -> operatorStick.getRawAxis(3) < -0.2);   //Right Trigger
-
-  // Climber Extend and Retract - Operator
-      private JoystickButton opClimberRetractButton = new JoystickButton(operatorStick, 4); //Y Button
-      private JoystickButton opClimberExtendButton = new JoystickButton(operatorStick, 2);  //B Button
-
-  // Shooter On and Off - Operator
-      // private JoystickButton opShoot = new JoystickButton(driverStick, 5);        //Left Bumper
-      // private JoystickButton opShootStop = new JoystickButton(driverStick, 6);    //Right Bumper
 
   // Indexer Up and Down - Operator
       // private Trigger opIndexerUp = new Trigger(() -> operatorStick.getRawAxis(3) < -0.2);      //Right Trigger
@@ -75,7 +80,10 @@ public class RobotContainer {
       }
 
       public void initDefaultCommands() {
-        drivetrain.initDefaultCommands(driverStick);
+        drivetrain.initDefaultCommands(
+            () -> controllers.getDriver().getLeftY(), 
+            () -> controllers.getDriver().getRightX()
+          );
       }
 
   /**
@@ -88,15 +96,22 @@ public class RobotContainer {
   //Add Commands to Buttons
       private void configureButtonBindings() {
         //Intake and outtake
-            // driverIntake.whenActive(intake::intakeBalls).whenInactive(intake::disable);    //Intake
-            // driverOuttake.whenActive(intake::outtakeBalls).whenInactive(intake::disable);   //Outtake
+        // controllers.get("intake").whenActive(command).whenInactive(command)
+            controllers.get("intake").whenActive(intake::intakeBalls).whenInactive(intake::disableIntake);    //Intake
+            controllers.get("outtake").whenActive(intake::outtakeBalls).whenInactive(intake::disableIntake);   //Outtake
+        
+        //In and Out Intake
+          
 
         //Extend and Contract Climber
-            opClimberExtendButton.whileHeld(climber::extend).whenInactive(climber::disable);      //Extend
-            opClimberRetractButton.whileHeld(climber::retract).whenInactive(climber::disable);    //Retract
-        // //Shooter On and Off
-        //     opShoot.whileHeld(shooter::shootLow);       //On
-        //     opShootStop.whileHeld(shooter::disable);    //Off
+            controllers.get("extendClimber").whenActive(climber::extend).whenInactive(climber::disable);      //Extend
+            controllers.get("retractClimber").whenActive(climber::extend).whenInactive(climber::retract);    //Retract
+        
+        //Shooter On and Off
+            controllers.get("shootLow").whenActive(shooter::shootLow);    //Low
+            controllers.get("shootHigh").whenActive(shooter::shootHigh);  //High
+            controllers.get("shootFullSpeed").whenActive(shooter::fullSpeed);  //Low
+            controllers.get("shootStop").whenActive(shooter::disable);   //Off
 
         //Indexer Up and Down
             //opIndexerUp.whenActive();     //Indexer Up
