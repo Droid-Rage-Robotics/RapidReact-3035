@@ -3,11 +3,11 @@ package frc.robot.subsystems;
 import com.revrobotics.*;
 import com.revrobotics.CANSparkMax.ControlType;
 
-import frc.robot.Constants.Constants.ClimberConstants;
+import frc.robot.Constants.ClimberConstants;
 
 
 public class ClimberEncoder {
-    private CANSparkMax 
+    /*private CANSparkMax 
         lClimberMotor,
         rClimberMotor;
     
@@ -92,5 +92,5 @@ public class ClimberEncoder {
 
         public double getPosition() {
             return climberEncoder.getPosition();
-        }
+        }*/
 }

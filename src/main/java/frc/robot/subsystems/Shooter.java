@@ -23,14 +23,15 @@ public class Shooter extends SubsystemBase {
 
 
   public Shooter() {
-    //PID values from Droid Rage Preferences
-        kP = DroidRagePreferences.getNumber("Shooter kP", 0.0465);
-        kI = DroidRagePreferences.getNumber("Shooter kI", 0.0005);
-        kD = DroidRagePreferences.getNumber("Shooter kD", 0.0);
-        kF = DroidRagePreferences.getNumber("Shooter kF", 0.048);
-        iZone = (int) DroidRagePreferences.getNumber("Shooter I-Zone", 150);
 
-        motorPrimary = new WPI_TalonFX(ShooterConstants.kShooterMotorLeft);
+    //PID values from Droid Rage Preferences
+        kP = MyPreferences.getNumber("Shooter kP", 0.0465);
+        kI = DroidRagePreferences.shooterkI;
+        kD = DroidRagePreferences.Preferences.getDouble("Shooter kD", 0.0);
+        kF = MyPreferences.getNumber("Shooter kF", 0.048);
+        iZone = (int) MyPreferences.getNumber("Shooter I-Zone", 150);
+
+        motorPrimary = new WPI_TalonFX(ShooterConstants.kShooterPort);
         motorPrimary.setInverted(true);
         SupplyCurrentLimitConfiguration supplyCurrentLimit = new SupplyCurrentLimitConfiguration(true, 40, 45, 0.5);
         motorPrimary.configSupplyCurrentLimit(supplyCurrentLimit);
@@ -47,7 +48,7 @@ public class Shooter extends SubsystemBase {
         motorPrimary.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
     //Config for motorPrimary
-        motorSecondary = new WPI_TalonFX(ShooterConstants.kFollowerMotorRight);
+        motorSecondary = new WPI_TalonFX(ShooterConstants.PrimaryDeviceID);
         motorSecondary.setInverted(false);  //MAKE SURE WE CHECK THE MOTORS SPINNING BEFOR TEST
         motorSecondary.configSupplyCurrentLimit(supplyCurrentLimit);
         motorSecondary.follow(motorPrimary);
@@ -56,7 +57,7 @@ public class Shooter extends SubsystemBase {
     
         TalonFXSetup.velocityStatusFrames(motorSecondary);
         TalonFXSetup.velocityStatusFrames(motorPrimary);
-        DroidRagePreferences.getNumber("Shooter Setpoint", 1000);
+        MyPreferences.getNumber("Shooter Setpoint", 1000);
         this.setDefaultCommand(new RunCommand(() -> disable() , this));
   }
 
@@ -78,7 +79,7 @@ public class Shooter extends SubsystemBase {
           //Shooter belt is 42 to 24
           //60000 milisecs in 1 min
           //RPM to U/100ms is rotations*4096 / 60000ms
-          double wheelRpm = DroidRagePreferences.getNumber("Shooter Setpoint", 1000);
+          double wheelRpm = MyPreferences.getNumber("Shooter Setpoint", 1000);
           double motorVelocity = (wheelRpm / 600 * 2048) / 1.75;
           motorPrimary.set(ControlMode.Velocity, motorVelocity);
         }

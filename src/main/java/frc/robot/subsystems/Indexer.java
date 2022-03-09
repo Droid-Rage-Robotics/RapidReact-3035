@@ -17,8 +17,8 @@ public class Indexer extends SubsystemBase {
   
     /** Creates a new ExampleSubsystem. */
       public Indexer() {
-        frontIndexer = new VictorSPX(IndexerConstants.frontIndexer);
-        backIndexer = new VictorSPX(IndexerConstants.backIndexer);
+        frontIndexer = new VictorSPX(IndexerConstants.frontIndexerPort);
+        backIndexer = new VictorSPX(IndexerConstants.backIndexerPort);
 
         //Invert Back Motor
           backIndexer.setInverted(true);

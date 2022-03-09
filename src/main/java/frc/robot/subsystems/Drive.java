@@ -24,33 +24,33 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.Constants.DriveConstants;
+import static frc.robot.Constants.DriveConstants.*;
 import frc.robot.commands.Driver.DriverControl;
 
 public class Drive extends SubsystemBase {
-    //Motors
+    // Motors
         private CANSparkMax 
             leftFrontMotor,
             leftRearMotor,
             rightRearMotor,
             rightFrontMotor;
 
-    //NeoEncoders
-        private RelativeEncoder 
-            leftNeoEncoder,
-            rightNeoEncoder;
+    // NeoEncoders
+        // private RelativeEncoder leftNeoEncoder,
+        // rightNeoEncoder;
 
-    //Encoders
+
+    // Encoders
         private final Encoder leftEncoder = new Encoder(        //Left Encoder
-            4,
-            1,
-            false,
+            kLeftEncoderPorts[0],
+            kLeftEncoderPorts[1],
+            kLeftEncoderReversed,
             CounterBase.EncodingType.k4X
         );
         private final Encoder rightEncoder = new Encoder(        //Right Encoder
-                2,
-                3,
-                true,
+                kRightEncoderPorts[0],
+                kRightEncoderPorts[1],
+                kRightEncoderReversed,
                 CounterBase.EncodingType.k4X
         );
 
@@ -67,50 +67,52 @@ public class Drive extends SubsystemBase {
         private NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
 
     public Drive() {
-        //Motor Ports 
-            leftFrontMotor = new CANSparkMax(DriveConstants.leftFront, CANSparkMaxLowLevel.MotorType.kBrushless);
-            leftRearMotor = new CANSparkMax(DriveConstants.leftRear, CANSparkMaxLowLevel.MotorType.kBrushless);
-            rightFrontMotor = new CANSparkMax(DriveConstants.rightFront, CANSparkMaxLowLevel.MotorType.kBrushless);
-            rightRearMotor = new CANSparkMax(DriveConstants.rightRear, CANSparkMaxLowLevel.MotorType.kBrushless);
+        // Motor Ports 
+            leftFrontMotor = new CANSparkMax (kLeftFrontID, CANSparkMaxLowLevel.MotorType.kBrushless);
+            leftRearMotor = new CANSparkMax  (kLeftRearID, CANSparkMaxLowLevel.MotorType.kBrushless);
+            rightFrontMotor = new CANSparkMax(kRightFrontID, CANSparkMaxLowLevel.MotorType.kBrushless);
+            rightRearMotor = new CANSparkMax (kRightRearID, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-        //Rear Motors follow Front Motors
+        // Rear Motors follow Front Motors
             leftRearMotor.follow(leftFrontMotor);
             rightRearMotor.follow(rightFrontMotor);
 
-        //Front Motors are on Brake and Rear Motors on Coast
-            leftFrontMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-            rightFrontMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-            leftRearMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
-            rightRearMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        // Front Motors are on Brake and Rear Motors on Coast
+            leftFrontMotor.setIdleMode (kLeftFrontIdleMode);
+            rightFrontMotor.setIdleMode(kRightFrontIdleMode);
+            leftRearMotor.setIdleMode  (kLeftRearIdleMode);
+            rightRearMotor.setIdleMode (kRightRearIdleMode);
 
-            leftFrontMotor.enableVoltageCompensation(12.0);
-            rightFrontMotor.enableVoltageCompensation(12.0);
+            leftFrontMotor.enableVoltageCompensation(kVoltageCompensation);
+            rightFrontMotor.enableVoltageCompensation(kVoltageCompensation);
 
-        //Motor Limits
-            leftFrontMotor.setSmartCurrentLimit(60);
-            leftRearMotor.setSmartCurrentLimit(60);
-            rightFrontMotor.setSmartCurrentLimit(60);
-            rightRearMotor.setSmartCurrentLimit(60);
+        // Motor Limits
+            leftFrontMotor.setSmartCurrentLimit(kSmartLimit);
+            leftRearMotor.setSmartCurrentLimit(kSmartLimit);
+            rightFrontMotor.setSmartCurrentLimit(kSmartLimit);
+            rightRearMotor.setSmartCurrentLimit(kSmartLimit);
 
-        //Right Motors are Inverted
-            rightFrontMotor.setInverted(true);
-            rightRearMotor.setInverted(true);
+        // Right Motors are Inverted
+            leftFrontMotor.setInverted(kLeftFrontReversed);
+            leftRearMotor.setInverted(kLeftRearReversed);
+            rightFrontMotor.setInverted(kRightFrontReversed);
+            rightRearMotor.setInverted(kRightRearReversed);
 
             drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
             drive.setSafetyEnabled(false);
 
-        //Encoders
+        // Encoders
             leftEncoder.reset();
             rightEncoder.reset();
 
-            leftEncoder.setDistancePerPulse(2 * Math.PI * DriveConstants.kWheelRadius / DriveConstants.kShaftEncoderResolution);
-            rightEncoder.setDistancePerPulse(2 * Math.PI * DriveConstants.kWheelRadius / DriveConstants.kShaftEncoderResolution);
+            leftEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kThroughBoreEncoderResolution);
+            rightEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kThroughBoreEncoderResolution);
 
-            leftNeoEncoder = leftFrontMotor.getEncoder();
-            rightNeoEncoder = rightFrontMotor.getEncoder();
+            // leftNeoEncoder = leftFrontMotor.getEncoder();
+            // rightNeoEncoder = rightFrontMotor.getEncoder();
 
-            leftNeoEncoder.setPosition(0);
-            rightNeoEncoder.setPosition(0);
+            // leftNeoEncoder.setPosition(0);
+            // rightNeoEncoder.setPosition(0);
 
             drive = new DifferentialDrive(leftFrontMotor, rightRearMotor);
             drive.setSafetyEnabled(false);
@@ -118,7 +120,7 @@ public class Drive extends SubsystemBase {
             externalOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
             internalOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
 
-        //PID Controller
+        // PID Controller
             leftFrontMotor.getPIDController();
             rightRearMotor.getPIDController();
 
@@ -189,8 +191,8 @@ public class Drive extends SubsystemBase {
     public void resetEncoders() {
         leftEncoder.reset();
         rightEncoder.reset();
-        leftNeoEncoder.setPosition(0);
-        rightNeoEncoder.setPosition(0);
+        // leftNeoEncoder.setPosition(0);
+        // rightNeoEncoder.setPosition(0);
     }
 
     /**
@@ -260,11 +262,11 @@ public class Drive extends SubsystemBase {
      * @return The turn rate of the robot, in degrees per second
      */
     public double getTurnRate() {
-        return navx.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+        return navx.getRate() * (kGyroReversed ? -1.0 : 1.0);
     }
 
     public DifferentialDriveKinematics getKinematics() {
-        return DriveConstants.kDriveKinematics;
+        return kDriveKinematics;
     }
     
 
@@ -299,9 +301,13 @@ public class Drive extends SubsystemBase {
                 leftDist,
                 rightDist);
 
+                // TODO:  there is a very good change i messed up the math here
+        // internalOdometry.update(Rotation2d.fromDegrees(getHeading()),
+        //         (-leftNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * kWheelRadius,
+        //         (rightNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * kWheelRadius);
         internalOdometry.update(Rotation2d.fromDegrees(getHeading()),
-                (-leftNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * DriveConstants.kWheelRadius,
-                (rightNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * DriveConstants.kWheelRadius);
+            -leftEncoder.getDistance(),
+            rightEncoder.getDistance());
 
         live_dashboard.getEntry("robotX").setDouble(Units.metersToFeet(getPose().getTranslation().getX()));
         live_dashboard.getEntry("robotY").setDouble(Units.metersToFeet(getPose().getTranslation().getY()));
@@ -317,9 +323,12 @@ public class Drive extends SubsystemBase {
         SmartDashboard.putNumber("Left Encoder = ", leftEncoder.getDistance());
         SmartDashboard.putNumber("Right Encoder = ", rightEncoder.getDistance());
 
-        SmartDashboard.putNumber("NEO left Encoder", (leftNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * DriveConstants.kWheelRadius);
-        SmartDashboard.putNumber("NEO right encoder", (rightNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * DriveConstants.kWheelRadius);
+        // TODO: there is a good change i messed up the math
+        // SmartDashboard.putNumber("NEO left Encoder", (leftNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * kWheelRadius);
+        // SmartDashboard.putNumber("NEO right encoder", (rightNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * kWheelRadius);
 
+        SmartDashboard.putNumber("NEO left Encoder", leftEncoder.getDistance());
+        SmartDashboard.putNumber("NEO right encoder", rightEncoder.getDistance());
     }
 
 }

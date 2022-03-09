@@ -21,7 +21,7 @@ public class IntakeCommand extends CommandBase{
         switch(intakeType){
             case OUTTAKE:
             intake.outtakeBalls(); 
-            //Indexer.setIndexState(IndexerSubsystem.IndexState.EXTAKING); 
+            Indexer.setIndexState(IndexerSubsystem.IndexState.EXTAKING); 
             break;
             
             case INTAKE:

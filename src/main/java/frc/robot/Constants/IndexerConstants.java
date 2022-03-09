@@ -1,12 +1,11 @@
 package frc.robot.Constants;
 
-public class IndexerConstants {
-    //Indexer
+public final class IndexerConstants {
         public static final int
-            frontIndexer = 0,
-            backIndexer = 1;
+            frontIndexerPort = 0,
+            backIndexerPort = 1; 
 
-        public static double 
+        public static final double 
             upSpeed = 0.5,
             downSpeed = -0.5,
             stopSpeed = 0;
