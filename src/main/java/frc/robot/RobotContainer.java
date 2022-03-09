@@ -43,9 +43,11 @@ public class RobotContainer {
       // private final IntakeSubsystem intake = new IntakeSubsystem(); 
       private final ClimberNoEncoder climber = new ClimberNoEncoder(); 
     
+
+      private Controller controllers = Controller.ControllerBuilder(0, 1)
   // Driver and Operaator Joystick
-      private static Joystick driverStick = new Joystick(0);
-      private static Joystick operatorStick = new Joystick(1);
+      // private static Joystick driverStick = new Joystick(0);
+      // private static Joystick operatorStick = new Joystick(1);
 
   // Triggers for Intake and Outtake - Driver
       // private Trigger driverOuttake = new Trigger(() -> operatorStick.getRawAxis(2) > 0.2);   //Left Trigger

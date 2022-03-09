@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.Preferences;
 public class DroidRagePreferences {
 
   double ShooterkP = Preferences.getDouble("shooterkP", 0);
-  double ShootrkI = Preferences.getDouble("shooterkI", 7);
+  double ShootrkI = Preferences.getDouble("shooterkI", 0);
   double shooterkD = Preferences.getDouble("shooterkD", 2.8);
   double shooterkF = Preferences.getDouble("Shooter kF", 0);
 
