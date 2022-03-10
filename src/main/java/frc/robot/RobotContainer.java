@@ -29,6 +29,7 @@ import frc.robot.commands.Autos.StraightLineTest;
 
 import frc.robot.subsystems.ClimberNoEncoder;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
 // import frc.robot.subsystems;
@@ -44,12 +45,13 @@ public class RobotContainer {
   //Defined Robot Subsystems
       private final Drive drivetrain = new Drive();
       private final Shooter shooter = new Shooter();
-      private final Intake indexer = new Intake(); 
-      private final Intake intake = new Intake(); 
+      private final Indexer indexer = new Indexer(); 
+      // private final Intake intake = new Intake(); 
       private final ClimberNoEncoder climber = new ClimberNoEncoder(); 
-    
 
-      private Controllers controllers = new Controllers.ControllerBuilder(ControllerConstants.kDriverControllerPort, ControllerConstants.kOperatorControllerPort)
+      private String hi;
+      
+      private Controllers controllers = new Controllers.ControllerBuilder()
         .driver()
           .add("outtake", XboxTrigger.LT)
           .add("intake", XboxTrigger.RT)
@@ -97,8 +99,8 @@ public class RobotContainer {
       private void configureButtonBindings() {
         //Intake and outtake
         // controllers.get("intake").whenActive(command).whenInactive(command)
-            controllers.get("intake").whenActive(intake::intakeBalls).whenInactive(intake::disableIntake);    //Intake
-            controllers.get("outtake").whenActive(intake::outtakeBalls).whenInactive(intake::disableIntake);   //Outtake
+            // controllers.get("intake").whenActive(intake::intakeBalls).whenInactive(intake::disableIntake);    //Intake
+            // controllers.get("outtake").whenActive(intake::outtakeBalls).whenInactive(intake::disableIntake);   //Outtake
         
         //In and Out Intake
           
@@ -109,8 +111,8 @@ public class RobotContainer {
         
         //Shooter On and Off
             controllers.get("shootLow").whenActive(shooter::shootLow);    //Low
-            controllers.get("shootHigh").whenActive(shooter::shootHigh);  //High
-            controllers.get("shootFullSpeed").whenActive(shooter::fullSpeed);  //Low
+            // controllers.get("shootHigh").whenActive(shooter::shootHigh);  //High
+            // controllers.get("shootFullSpeed").whenActive(shooter::fullSpeed);  //Low
             controllers.get("shootStop").whenActive(shooter::disable);   //Off
 
         //Indexer Up and Down

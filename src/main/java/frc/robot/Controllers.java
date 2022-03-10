@@ -14,7 +14,7 @@ import frc.robot.Controls.XboxTrigger;
 public class Controllers {
     private XboxController[] xboxControllers;
 
-    private ArrayList<Trigger> joystickButtons = new ArrayList<Trigger>();
+    private ArrayList<Trigger> joystickButtons;
     private HashMap<String, Integer> actionToButtonIndex;
 
     public Controllers (ControllerBuilder builder) {
@@ -40,15 +40,18 @@ public class Controllers {
     }
 
     public static class ControllerBuilder {
-        private XboxController[] xboxControllers;
+        private XboxController[] xboxControllers = {
+            new XboxController(0),
+            new XboxController(1)
+        };
 
         private ArrayList<Trigger> actions = new ArrayList<Trigger>();
-        private HashMap<String, Integer> actionToButtonIndex;
+        private HashMap<String, Integer> actionToButtonIndex = new HashMap<String, Integer>();
         int selected = 0;
 
-        public ControllerBuilder(int driverPort, int operatorPort) {
-                xboxControllers[0] = new XboxController(driverPort);
-                xboxControllers[1] = new XboxController(operatorPort);
+        public ControllerBuilder(/*int driverPort, int operatorPort*/) {
+                // xboxControllers[0] = new XboxController(driverPort);
+                // xboxControllers[1] = new XboxController(operatorPort);
         }
 
 

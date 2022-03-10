@@ -2,7 +2,7 @@ package frc.robot.Constants;
 
 public final class IndexerConstants {
         public static final int
-            frontIndexerPort = 0,
+            frontIndexerPort = 8,
             backIndexerPort = 1; 
 
         public static final double 
