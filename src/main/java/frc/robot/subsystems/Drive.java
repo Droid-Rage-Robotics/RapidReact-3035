@@ -93,8 +93,6 @@ public class Drive extends SubsystemBase {
             // leftNeoEncoder.setPosition(0);
             // rightNeoEncoder.setPosition(0);
 
-            drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
-            drive.setSafetyEnabled(false);
 
             externalOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
             internalOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
