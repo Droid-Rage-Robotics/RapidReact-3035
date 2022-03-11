@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import javax.naming.ldap.Control;
+// import javax.naming.ldap.Control;
 
 import edu.wpi.first.cameraserver.CameraServer;
 
@@ -15,17 +15,17 @@ import edu.wpi.first.cameraserver.CameraServer;
 // import frc.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
+// import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.ControllerConstants;
-import frc.robot.Controls.XboxButton;
-import frc.robot.Controls.XboxDPAD;
-import frc.robot.Controls.XboxTrigger;
+// import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+// import edu.wpi.first.wpilibj2.command.button.Trigger;
+// import frc.robot.Constants.ControllerConstants;
+// import frc.robot.Controls.XboxButton;
+// import frc.robot.Controls.XboxDPAD;
+// import frc.robot.Controls.XboxTrigger;
 import frc.robot.commands.Autos.NormalAuto;
 import frc.robot.commands.Autos.StraightLineTest;
 import frc.robot.commands.Shooter.ShootingSequence;
@@ -93,7 +93,7 @@ public class RobotContainer {
 
         //controller 0
         .addCommandsToControllerPort(0)
-          .add("intake", RT)
+          .add("intake", RT)    //Intake and Indexer
             .whenActive(intake::lift, intake)
             .whenActive(intake::intakeBalls, intake)
             .whenActive(indexer::intakeFrontIndexer, indexer)
@@ -101,7 +101,7 @@ public class RobotContainer {
             .whenInactive(intake::disableIntake, intake)
             .whenInactive(indexer::disableFrontIndexer, indexer)
                       
-          .add("outtake", LT)
+          .add("outtake", LT)   //Outtake 
             .whenActive(intake::lift, intake)
             .whenActive(indexer::outtakeBothIndexer, indexer)
             .whenActive(intake::outtakeBalls, intake)
@@ -109,34 +109,41 @@ public class RobotContainer {
             .whenInactive(indexer::disableBothIndexer, indexer)
             .whenInactive(intake::disableIntake, intake)
             
-          .add("intakeDrop", LB)
+          .add("intakeDrop", DPAD_DOWN)   //Intake Down
             .whenActive(intake::lower, intake)
-          .add("intakeLift", RB)
+            
+          .add("intakeLift", DPAD_UP)   //Intake Up
             .whenActive(intake::lift, intake)
+
+          .add("slowMode", RB)    //Slow Mode
+            .whenActive(drivetrain::kNormalDrive, drivetrain)
+
+          .add("turboMode", LB)   //Turbo Mode
+            .whenActive(drivetrain::kTurboDrive, drivetrain)
           .finish()
 
 
         //controller 1  
         .addCommandsToControllerPort(1)
-          .add("shootLow", A)
+          .add("shootLow", X)   //Low
             .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
             .whenInactive(shooter::disable, shooter)
             .whenInactive(indexer::disableBothIndexer, indexer)
-          .add("shootHigh", B)
+          .add("shootHigh", B)    //High
             .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
             .whenInactive(shooter::disable, shooter)
             .whenInactive(indexer::disableBothIndexer, indexer)
-          .add("sendIt", X)
+          .add("sendIt", Y)   //(No PID COntrol, Percent Output instead)
             .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
             .whenInactive(shooter::disable, shooter)
             .whenInactive(indexer::disableBothIndexer, indexer)
 
-          .add("climberExtend", DPAD_UP)
+          .add("climberExtend", DPAD_UP)    //Climber Up
             .whenActive(climber::extend)
 
             .whenInactive(climber::disable)
 
-          .add("climberRetract", DPAD_DOWN)
+          .add("climberRetract", DPAD_DOWN)   //Climber Down
             .whenActive(climber::retract)
 
             .whenInactive(climber::disable)

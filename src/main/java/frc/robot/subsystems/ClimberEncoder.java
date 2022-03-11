@@ -1,9 +1,9 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.*;
-import com.revrobotics.CANSparkMax.ControlType;
+// import com.revrobotics.*;
+// import com.revrobotics.CANSparkMax.ControlType;
 
-import frc.robot.Constants.ClimberConstants;
+// import frc.robot.Constants.ClimberConstants;
 
 
 public class ClimberEncoder {

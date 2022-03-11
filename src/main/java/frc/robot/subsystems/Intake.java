@@ -27,9 +27,7 @@ public class Intake extends SubsystemBase {
      
     public Intake() {
         m_LeftLiftDoubleSolenoid.set(Value.kForward);
-        m_RightLiftDoubleSolenoid.set(Value.kForward);
-
-        
+        m_RightLiftDoubleSolenoid.set(Value.kForward); 
     }
 
 
@@ -39,20 +37,23 @@ public class Intake extends SubsystemBase {
             // lLiftDoubleSolenoid.set(Value.kForward);
             // rLiftDoubleSolenoid.set(Value.kForward);
         }
+
     //Outtake
         public void outtakeBalls() {
             setIntakePower(-IntakeConstants.IntakePower);
             // lLiftDoubleSolenoid.set(Value.kForward);
             // rLiftDoubleSolenoid.set(Value.kForward);
         }
+
     //Disable
         public void disableIntake() {
             setIntakePower(0);
         }
-        public void intakeLift() {
-            // lLiftDoubleSolenoid.set(Value.kReverse);
-            // rLiftDoubleSolenoid.set(Value.kReverse);
-        }
+
+        // public void intakeLift() {
+        //     // lLiftDoubleSolenoid.set(Value.kReverse);
+        //     // rLiftDoubleSolenoid.set(Value.kReverse);
+        // }
     //Set Intake Power
         public void setIntakePower(double power){
             intakeMotor.set(power);
@@ -84,7 +85,7 @@ public class Intake extends SubsystemBase {
             m_RightLiftDoubleSolenoid.set(Value.kReverse);
         }
 
-        public void setCompressorOff() { // this one is probably wrong
+        public void setCompressorOff() {        // this one is probably wrong
             m_LeftLiftDoubleSolenoid.set(Value.kOff);
             m_RightLiftDoubleSolenoid.set(Value.kOff);
         }

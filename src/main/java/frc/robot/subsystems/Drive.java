@@ -146,6 +146,20 @@ public class Drive extends SubsystemBase {
         drive.arcadeDrive(fwd, rot);
     }
 
+    public void kSlowDrive() {
+        drive.setMaxOutput(slowModeSpeed);
+    }
+
+    public void kNormalDrive() {
+            drive.setMaxOutput(normalModeSpeed);
+    }
+
+    public void kTurboDrive() {
+        drive.setMaxOutput(turboModeSpeed);
+    }
+
+    
+
 
     public void curvatureDrive(double fwd, double rot) {
         drive.curvatureDrive(fwd, rot, true);
@@ -278,7 +292,7 @@ public class Drive extends SubsystemBase {
                 leftDist,
                 rightDist);
 
-                // TODO:  there is a very good change i messed up the math here
+                // TODO:  there is a very good chance I messed up the math here
         // internalOdometry.update(Rotation2d.fromDegrees(getHeading()),
         //         (-leftNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * kWheelRadius,
         //         (rightNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * kWheelRadius);
