@@ -33,16 +33,16 @@ public class Shooter extends SubsystemBase {
         iZone = (int) Preferences.getDouble("Shooter I-Zone", 150);
 
         motorPrimary = new WPI_TalonFX(ShooterConstants.kShooterPort);
-        motorPrimary.setInverted(true);
+        motorPrimary.setInverted(false);
         SupplyCurrentLimitConfiguration supplyCurrentLimit = new SupplyCurrentLimitConfiguration(true, 40, 45, 0.5);
         motorPrimary.configSupplyCurrentLimit(supplyCurrentLimit);
         motorPrimary.setNeutralMode(NeutralMode.Coast);
 
     //Config for motorPrimary
-        motorPrimary.config_kP(0, kP);
+        motorPrimary.config_kP(10, kP);
         motorPrimary.config_kI(0, kI);   
         motorPrimary.config_kD(0, kD);  
-        motorPrimary.config_kF(0, kF);  
+        motorPrimary.config_kF(10, kF);  
         motorPrimary.config_IntegralZone(0, iZone);
         //motorLeft.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10);
 
@@ -100,16 +100,18 @@ public class Shooter extends SubsystemBase {
           return getWheelRPM() == motorPrimary.getClosedLoopTarget();
         }
 
-        public void fullSpeed(){
+        public void sendIt(){
           setManualOutput(1.0);
         }
         
         public void shootLow() {
-          setRPM(200);
+          // setRPM(200);
+          setManualOutput(0.3);
         }
 
         public void shootHigh() {
-          setRPM(300);
+          // setRPM(300);
+          setManualOutput(0.6);
         }
 
         public void disable(){

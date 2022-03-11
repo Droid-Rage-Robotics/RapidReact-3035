@@ -2,10 +2,12 @@ package frc.robot.subsystems;
 
 
 import com.revrobotics.*;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
 
 
-public class ClimberNoEncoder {
+public class ClimberNoEncoder extends SubsystemBase {
     private CANSparkMax 
         lClimberMotor,
         rClimberMotor;

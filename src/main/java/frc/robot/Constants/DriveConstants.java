@@ -21,9 +21,9 @@ public final class DriveConstants {
     kLeftRearReversed = false,
     kLeftEncoderReversed = false,
 
-    kRightFrontReversed = true,
-    kRightRearReversed = true,
-    kRightEncoderReversed = true;
+    kRightFrontReversed = false,
+    kRightRearReversed = false,
+    kRightEncoderReversed = false;
 
     public static boolean kGyroReversed = true;
 

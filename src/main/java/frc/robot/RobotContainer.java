@@ -32,7 +32,11 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
+
 // import frc.robot.subsystems;
+import static frc.robot.Controls.XboxButton.*;
+import static frc.robot.Controls.XboxDPAD.*;
+import static frc.robot.Controls.XboxTrigger.*;
 
 
 /**
@@ -46,32 +50,17 @@ public class RobotContainer {
       private final Drive drivetrain = new Drive();
       private final Shooter shooter = new Shooter();
       private final Indexer indexer = new Indexer(); 
-      // private final Intake intake = new Intake(); 
+      private final Intake intake = new Intake(); 
       private final ClimberNoEncoder climber = new ClimberNoEncoder(); 
 
-      private String hi;
-      
-      private Controllers controllers = new Controllers.ControllerBuilder()
-        .driver()
-          .add("outtake", XboxTrigger.LT)
-          .add("intake", XboxTrigger.RT)
-          .add("intakeLift", XboxButton.RB)
-        .operator()
-          .add("extendClimber", XboxDPAD.UP)
-          .add("retractClimber", XboxDPAD.DOWN)
-          .add("shootLow", XboxButton.LB)
-          .add("shootStop", XboxButton.RB)
-        .build();
+      private XboxController driverController = new XboxController(0);
+      private XboxController operatorController = new XboxController(0);
 
-  // Driver and Operaator Joystick
-      // private static Joystick driverStick = new Joystick(0);
-      // private static Joystick operatorStick = new Joystick(1);
+      private Controllers controllers = new Controllers(
+        driverController,
+        operatorController
+      );
 
-
-  // Indexer Up and Down - Operator
-      // private Trigger opIndexerUp = new Trigger(() -> operatorStick.getRawAxis(3) < -0.2);      //Right Trigger
-      // private Trigger opIndexerDown = new Trigger(() -> operatorStick.getRawAxis(2) < -0.2);    //Left Trigger
-      //() -> - lamda
 
 
   /* The container for the robot. Contains subsystems, OI devices, and commands.*/
@@ -83,8 +72,8 @@ public class RobotContainer {
 
       public void initDefaultCommands() {
         drivetrain.initDefaultCommands(
-            () -> controllers.getDriver().getLeftY(), 
-            () -> controllers.getDriver().getRightX()
+            () -> driverController.getLeftY(), 
+            () -> driverController.getRightX()
           );
       }
 
@@ -97,29 +86,61 @@ public class RobotContainer {
 
   //Add Commands to Buttons
       private void configureButtonBindings() {
-        //Intake and outtake
-        // controllers.get("intake").whenActive(command).whenInactive(command)
-            // controllers.get("intake").whenActive(intake::intakeBalls).whenInactive(intake::disableIntake);    //Intake
-            // controllers.get("outtake").whenActive(intake::outtakeBalls).whenInactive(intake::disableIntake);   //Outtake
-        
-        //In and Out Intake
+        controllers
+
+        //controller 0
+          .addCommandsToController(0)
+            .add("intake", RT)
           
+              .whenActive(intake::lift, intake) // TODO: get this working
+              .whenActive(intake::intakeBalls, intake)
+              .whenActive(indexer::intakeFrontIndexer, indexer)
 
-        //Extend and Contract Climber
-            controllers.get("extendClimber").whenActive(climber::extend).whenInactive(climber::disable);      //Extend
-            controllers.get("retractClimber").whenActive(climber::extend).whenInactive(climber::retract);    //Retract
-        
-        //Shooter On and Off
-            controllers.get("shootLow").whenActive(shooter::shootLow);    //Low
-            // controllers.get("shootHigh").whenActive(shooter::shootHigh);  //High
-            // controllers.get("shootFullSpeed").whenActive(shooter::fullSpeed);  //Low
-            controllers.get("shootStop").whenActive(shooter::disable);   //Off
+              .whenInactive(intake::disableIntake, intake)
+              .whenInactive(indexer::disableFrontIndexer, indexer)
+                       
+            .add("outtake", LT)
+              .whenActive(intake::lift, intake)
+              .whenActive(indexer::outtakeBothIndexer, indexer)
+              .whenActive(intake::outtakeBalls, intake)
+              
+              .whenInactive(indexer::disableBothIndexer, indexer)
+              .whenInactive(intake::disableIntake, intake)
+              
+            .add("intakeDrop", LB)
+              .whenActive(intake::drop, intake)
+            .add("intakeLift", RB)
+              .whenActive(intake::lift, intake)
+                    .finish()
 
-        //Indexer Up and Down
-            //opIndexerUp.whenActive();     //Indexer Up
-            //opIndexerDown.whenActive();   //Indexer Down
+
+        //controller 1  
+        .addCommandsToController(1)
+          .add("shoot", A)
+            .whileActiveContinuous(shooter::shootLow, shooter)
+            .whenInactive(shooter::disable, shooter)
+          .add("shoot", B)
+            .whileActiveContinuous(shooter::shootHigh, shooter)
+            .whenInactive(shooter::disable, shooter)
+          .add("shoot", X)
+            .whileActiveContinuous(shooter::sendIt, shooter)
+            .whenInactive(shooter::disable, shooter)
         
-        
+            // TODO: sequential commandgroup
+            //one button "revs up shooter-> shooter check if correct rpm -> both indexer motors feed into the shooter for 5 sec"
+            //there needs to be 2 of these for low and high
+            
+
+            .add("climberExtend", DPAD_UP)
+              .whenActive(climber::extend)
+
+              .whenInactive(climber::disable)
+
+            .add("climberRetract", DPAD_DOWN)
+              .whenActive(climber::retract)
+
+              .whenInactive(climber::disable)
+          .finish();
       }
 
   

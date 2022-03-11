@@ -2,7 +2,7 @@ package frc.robot.Constants;
 
 public class ShooterConstants {
         public static final int 
-            kShooterPort = 10
+            kShooterPort = 11
             // kSecondShooterPort = 1
             ;
 

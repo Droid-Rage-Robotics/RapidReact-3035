@@ -6,19 +6,21 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IndexerConstants;
 
 public class Indexer extends SubsystemBase {
-    private VictorSPX
+    private CANSparkMax
         frontIndexer,
         backIndexer;
   
     /** Creates a new ExampleSubsystem. */
       public Indexer() {
-        frontIndexer = new VictorSPX(IndexerConstants.frontIndexerPort);
-        backIndexer = new VictorSPX(IndexerConstants.backIndexerPort);
+        frontIndexer = new CANSparkMax(IndexerConstants.frontIndexerPort, MotorType.kBrushed);
+        backIndexer = new CANSparkMax(IndexerConstants.backIndexerPort, MotorType.kBrushed);
 
         //Invert Back Motor
           backIndexer.setInverted(true);
@@ -33,23 +35,54 @@ public class Indexer extends SubsystemBase {
       public void simulationPeriodic() {
         // This method will be called once per scheduler run during simulation
       }
-  //Indexer Up
-      public void upIndexer() {
-        setIndexerPower(IndexerConstants.upSpeed);
+
+      //controls the both motors
+      public void outtakeBothIndexer() {
+        setIndexPowers(-IndexerConstants.intakeSpeed);
       }
-  //Indexer Down
-      public void downIndexer() {
-        setIndexerPower(IndexerConstants.downSpeed);
+      public void intakeBothIndexer() {
+        setIndexPowers(IndexerConstants.outtakeSpeed);
       }
-  //Indexer Stop
-      public void stopIndexer() {
-        setIndexerPower(IndexerConstants.stopSpeed);
+      public void disableBothIndexer() {
+        setIndexPowers(IndexerConstants.stopSpeed);
       }
 
-  //Set Intake Power - (Used in other functions)
-      public void setIndexerPower(double power){
-        frontIndexer.set(ControlMode.PercentOutput, power);
-        backIndexer.set(ControlMode.PercentOutput, power);
+      //controls the front motors independently
+      public void intakeFrontIndexer(){
+        setFrontIndexPower(IndexerConstants.intakeSpeed);
+      }
+      public void outtakeFrontIndexer() {
+        setFrontIndexPower(-IndexerConstants.outtakeSpeed);
+      }
+      public void disableFrontIndexer() {
+        setFrontIndexPower(IndexerConstants.stopSpeed);
+      }
+
+      //controls the back motors independently
+      public void intakeBacktIndexer(){
+        setFrontIndexPower(IndexerConstants.intakeSpeed);
+      }
+      public void outtakeBackIndexer() {
+        setBackIndexPower(-IndexerConstants.outtakeSpeed);
+      }
+      public void disableBackIndexer() {
+        setBackIndexPower(IndexerConstants.stopSpeed);
+      }
+
+
+      //Set Intake Power - (Used in other functions)
+      public void setFrontIndexPower(double power){
+        frontIndexer.set(power);
+        
+      }
+
+      public void setBackIndexPower(double power) {
+        backIndexer.set(power);
+      }
+
+      public void setIndexPowers(double power) {
+        setFrontIndexPower(power);
+        setBackIndexPower(power);
       }
     
   /*@Override

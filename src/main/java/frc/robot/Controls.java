@@ -13,23 +13,23 @@ public class Controls {
     }
 
     public enum XboxDPAD {
-        UP,  RIGHT,  
-        DOWN,  LEFT,
-        UNPRESSED
+        DPAD_UP,  DPAD_RIGHT,  
+        DPAD_DOWN,  DPAD_LEFT,
+        DPAD_UNPRESSED
     }
     
     public static int buttonToButtonNumber(XboxButton xboxButton) {
         switch (xboxButton) {
-            case A:      return 0;
-            case B:      return 1;
-            case X:      return 2;
-            case Y:      return 3;
-            case LB:     return 4;
-            case RB:     return 5;
-            case BACK:   return 6;
-            case START:  return 7;
-            case LS:     return 8;
-            case RS:     return 9;
+            case A:      return 1;
+            case B:      return 2;
+            case X:      return 3;
+            case Y:      return 4;
+            case LB:     return 5;
+            case RB:     return 6;
+            case BACK:   return 7;
+            case START:  return 8;
+            case LS:     return 9;
+            case RS:     return 10;
             default:     return 0;
         }
     }
@@ -44,11 +44,11 @@ public class Controls {
 
     public static int dpadToHatDegrees(XboxDPAD xboxDPAD) {
         switch (xboxDPAD) {
-            case UP: return 0;
-            case RIGHT: return 90;
-            case DOWN: return 180;
-            case LEFT: return 270;
-            case UNPRESSED: return -1;
+            case DPAD_UP: return 0;
+            case DPAD_RIGHT: return 90;
+            case DPAD_DOWN: return 180;
+            case DPAD_LEFT: return 270;
+            case DPAD_UNPRESSED: return -1;
             default: return -1;
             
         }

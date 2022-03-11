@@ -76,31 +76,7 @@ public class Drive extends SubsystemBase {
             rightFrontMotor = new CANSparkMax(kRightFrontID, CANSparkMaxLowLevel.MotorType.kBrushless);
             rightRearMotor = new CANSparkMax (kRightRearID, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-        // Rear Motors follow Front Motors
-            leftRearMotor.follow(leftFrontMotor);
-            rightRearMotor.follow(rightFrontMotor);
-
-        // Front Motors are on Brake and Rear Motors on Coast
-            leftFrontMotor.setIdleMode (kLeftFrontIdleMode);
-            rightFrontMotor.setIdleMode(kRightFrontIdleMode);
-            leftRearMotor.setIdleMode  (kLeftRearIdleMode);
-            rightRearMotor.setIdleMode (kRightRearIdleMode);
-
-            leftFrontMotor.enableVoltageCompensation(kVoltageCompensation);
-            rightFrontMotor.enableVoltageCompensation(kVoltageCompensation);
-
-        // Motor Limits
-            leftFrontMotor.setSmartCurrentLimit(kSmartLimit);
-            leftRearMotor.setSmartCurrentLimit(kSmartLimit);
-            rightFrontMotor.setSmartCurrentLimit(kSmartLimit);
-            rightRearMotor.setSmartCurrentLimit(kSmartLimit);
-
-        // Right Motors are Inverted
-            leftFrontMotor.setInverted(kLeftFrontReversed);
-            leftRearMotor.setInverted(kLeftRearReversed);
-            rightFrontMotor.setInverted(kRightFrontReversed);
-            rightRearMotor.setInverted(kRightRearReversed);
-
+            rightFrontMotor.setInverted(true);
             drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
             drive.setSafetyEnabled(false);
 
@@ -117,7 +93,7 @@ public class Drive extends SubsystemBase {
             // leftNeoEncoder.setPosition(0);
             // rightNeoEncoder.setPosition(0);
 
-            drive = new DifferentialDrive(leftFrontMotor, rightRearMotor);
+            drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
             drive.setSafetyEnabled(false);
 
             externalOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
@@ -125,7 +101,7 @@ public class Drive extends SubsystemBase {
 
         // PID Controller
             leftFrontMotor.getPIDController();
-            rightRearMotor.getPIDController();
+            rightFrontMotor.getPIDController();
 
             resetAll();
     }

@@ -3,10 +3,10 @@ package frc.robot.Constants;
 public final class IndexerConstants {
         public static final int
             frontIndexerPort = 8,
-            backIndexerPort = 1; 
+            backIndexerPort = 10; 
 
         public static final double 
-            upSpeed = 0.5,
-            downSpeed = -0.5,
+            intakeSpeed = 0.5,
+            outtakeSpeed = -0.5,
             stopSpeed = 0;
 }
