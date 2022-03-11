@@ -32,7 +32,7 @@ public class Controllers {
      * @return Returns {@link SpecialTrigger} so it can be chained
      */
 
-    public SuperSpecialTrigger addCommandsToController(int port) {
+    public SuperSpecialTrigger addCommandsToControllerPort(int port) {
         
         return new SuperSpecialTrigger(this, port, () -> xboxControllers.get(port).isConnected());
     }

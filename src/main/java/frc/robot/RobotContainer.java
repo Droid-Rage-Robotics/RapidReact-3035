@@ -6,6 +6,8 @@ package frc.robot;
 
 import javax.naming.ldap.Control;
 
+import edu.wpi.first.cameraserver.CameraServer;
+
 // import frc.robot.commands.Intake.IntakeCommand;
 // import frc.robot.commands.Intake.IntakeCommand.IntakeType;
 // import frc.robot.commands.Climber.ClimberCommand;
@@ -26,7 +28,7 @@ import frc.robot.Controls.XboxDPAD;
 import frc.robot.Controls.XboxTrigger;
 import frc.robot.commands.Autos.NormalAuto;
 import frc.robot.commands.Autos.StraightLineTest;
-
+import frc.robot.commands.Shooter.ShootingSequence;
 import frc.robot.subsystems.ClimberNoEncoder;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer;
@@ -54,7 +56,7 @@ public class RobotContainer {
       private final ClimberNoEncoder climber = new ClimberNoEncoder(); 
 
       private XboxController driverController = new XboxController(0);
-      private XboxController operatorController = new XboxController(0);
+      private XboxController operatorController = new XboxController(1);
 
       private Controllers controllers = new Controllers(
         driverController,
@@ -74,7 +76,8 @@ public class RobotContainer {
         drivetrain.initDefaultCommands(
             () -> driverController.getLeftY(), 
             () -> driverController.getRightX()
-          );
+        );
+        CameraServer.startAutomaticCapture();
       }
 
   /**
@@ -89,57 +92,54 @@ public class RobotContainer {
         controllers
 
         //controller 0
-          .addCommandsToController(0)
-            .add("intake", RT)
-          
-              .whenActive(intake::lift, intake) // TODO: get this working
-              .whenActive(intake::intakeBalls, intake)
-              .whenActive(indexer::intakeFrontIndexer, indexer)
+        .addCommandsToControllerPort(0)
+          .add("intake", RT)
+            .whenActive(intake::lift, intake)
+            .whenActive(intake::intakeBalls, intake)
+            .whenActive(indexer::intakeFrontIndexer, indexer)
 
-              .whenInactive(intake::disableIntake, intake)
-              .whenInactive(indexer::disableFrontIndexer, indexer)
-                       
-            .add("outtake", LT)
-              .whenActive(intake::lift, intake)
-              .whenActive(indexer::outtakeBothIndexer, indexer)
-              .whenActive(intake::outtakeBalls, intake)
-              
-              .whenInactive(indexer::disableBothIndexer, indexer)
-              .whenInactive(intake::disableIntake, intake)
-              
-            .add("intakeDrop", LB)
-              .whenActive(intake::drop, intake)
-            .add("intakeLift", RB)
-              .whenActive(intake::lift, intake)
-                    .finish()
+            .whenInactive(intake::disableIntake, intake)
+            .whenInactive(indexer::disableFrontIndexer, indexer)
+                      
+          .add("outtake", LT)
+            .whenActive(intake::lift, intake)
+            .whenActive(indexer::outtakeBothIndexer, indexer)
+            .whenActive(intake::outtakeBalls, intake)
+            
+            .whenInactive(indexer::disableBothIndexer, indexer)
+            .whenInactive(intake::disableIntake, intake)
+            
+          .add("intakeDrop", LB)
+            .whenActive(intake::lower, intake)
+          .add("intakeLift", RB)
+            .whenActive(intake::lift, intake)
+          .finish()
 
 
         //controller 1  
-        .addCommandsToController(1)
-          .add("shoot", A)
-            .whileActiveContinuous(shooter::shootLow, shooter)
+        .addCommandsToControllerPort(1)
+          .add("shootLow", A)
+            .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow))
             .whenInactive(shooter::disable, shooter)
-          .add("shoot", B)
-            .whileActiveContinuous(shooter::shootHigh, shooter)
+            .whenInactive(indexer::disableBothIndexer, indexer)
+          .add("shootHigh", B)
+            .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow))
             .whenInactive(shooter::disable, shooter)
-          .add("shoot", X)
-            .whileActiveContinuous(shooter::sendIt, shooter)
+            .whenInactive(indexer::disableBothIndexer, indexer)
+          .add("sendIt", X)
+            .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow))
             .whenInactive(shooter::disable, shooter)
-        
-            // TODO: sequential commandgroup
-            //one button "revs up shooter-> shooter check if correct rpm -> both indexer motors feed into the shooter for 5 sec"
-            //there needs to be 2 of these for low and high
-            
+            .whenInactive(indexer::disableBothIndexer, indexer)
 
-            .add("climberExtend", DPAD_UP)
-              .whenActive(climber::extend)
+          .add("climberExtend", DPAD_UP)
+            .whenActive(climber::extend)
 
-              .whenInactive(climber::disable)
+            .whenInactive(climber::disable)
 
-            .add("climberRetract", DPAD_DOWN)
-              .whenActive(climber::retract)
+          .add("climberRetract", DPAD_DOWN)
+            .whenActive(climber::retract)
 
-              .whenInactive(climber::disable)
+            .whenInactive(climber::disable)
           .finish();
       }
 
@@ -150,8 +150,9 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public NormalAuto getNormalauto() {
+  public Command getNormalauto() {
     return new NormalAuto(drivetrain);
+
   }
 
   public Command getNothingAuto(){
@@ -160,5 +161,10 @@ public class RobotContainer {
 
   public Command getStraightLineAuto(){
     return new StraightLineTest(drivetrain);
+  }
+
+  public Command getShootAndThatsItCommand() {
+    return new ShootingSequence(shooter, indexer, shooter::shootAuto);
+
   }
 }
