@@ -17,18 +17,18 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.Drive.DriverControl;
+
 import static frc.robot.Constants.DriveConstants.*;
 
 import java.util.function.DoubleSupplier;
-
-import frc.robot.commands.Driver.DriverControl;
 
 public class Drive extends SubsystemBase {
     // Motors
@@ -37,7 +37,7 @@ public class Drive extends SubsystemBase {
             leftRearMotor,
             rightRearMotor,
             rightFrontMotor;
-
+        
     // NeoEncoders
         // private RelativeEncoder leftNeoEncoder,
         // rightNeoEncoder;
@@ -103,8 +103,15 @@ public class Drive extends SubsystemBase {
 
             resetAll();
     }
+    public void tankDrive(double leftPower, double rightPower) {
+        leftFrontMotor.set(leftPower);
+        rightFrontMotor.set(rightPower);
+    }
 
 
+    public void SimpleDriveForward(double power) {
+        tankDrive(DriveConstants.kslowModeSpeed, DriveConstants.kslowModeSpeed);
+    }
     
     /**
      * Returns the currently-estimated pose of the robot.
@@ -145,6 +152,20 @@ public class Drive extends SubsystemBase {
     public void arcadeDrive(double fwd, double rot) {
         drive.arcadeDrive(fwd, rot);
     }
+
+    public void kSlowDrive() {
+        drive.setMaxOutput(kslowModeSpeed);
+    }
+
+    public void kNormalDrive() {
+            drive.setMaxOutput(knormalModeSpeed);
+    }
+
+    public void kTurboDrive() {
+        drive.setMaxOutput(kturboModeSpeed);
+    }
+
+    
 
 
     public void curvatureDrive(double fwd, double rot) {
@@ -268,6 +289,7 @@ public class Drive extends SubsystemBase {
         ));
     }
 
+
     @Override
     public void periodic() {
         double leftDist = leftEncoder.getDistance();
@@ -278,7 +300,7 @@ public class Drive extends SubsystemBase {
                 leftDist,
                 rightDist);
 
-                // TODO:  there is a very good change i messed up the math here
+                // TODO:  there is a very good chance I messed up the math here
         // internalOdometry.update(Rotation2d.fromDegrees(getHeading()),
         //         (-leftNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * kWheelRadius,
         //         (rightNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * kWheelRadius);

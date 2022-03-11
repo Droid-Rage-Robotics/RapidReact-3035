@@ -114,6 +114,16 @@ public class Shooter extends SubsystemBase {
           setManualOutput(0.6);
         }
 
+        public void shootLowAuto() {
+          // setRPM(200);
+          setManualOutput(0.3);
+        }
+
+        public void shootHighAuto() {
+          // setRPM(200);
+          setManualOutput(0.5);
+        }
+
         public void disable(){
           motorPrimary.set(ControlMode.PercentOutput, 0);
         }

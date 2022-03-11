@@ -4,7 +4,9 @@
 
 package frc.robot;
 
-import javax.naming.ldap.Control;
+// import javax.naming.ldap.Control;
+
+import edu.wpi.first.cameraserver.CameraServer;
 
 // import frc.robot.commands.Intake.IntakeCommand;
 // import frc.robot.commands.Intake.IntakeCommand.IntakeType;
@@ -13,20 +15,22 @@ import javax.naming.ldap.Control;
 // import frc.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
+// import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.ControllerConstants;
-import frc.robot.Controls.XboxButton;
 import frc.robot.Controls.XboxDPAD;
-import frc.robot.Controls.XboxTrigger;
+import frc.robot.commands.Autos.ForwardAndShootLow;
+// import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+// import edu.wpi.first.wpilibj2.command.button.Trigger;
+// import frc.robot.Constants.ControllerConstants;
+// import frc.robot.Controls.XboxButton;
+// import frc.robot.Controls.XboxDPAD;
+// import frc.robot.Controls.XboxTrigger;
 import frc.robot.commands.Autos.NormalAuto;
 import frc.robot.commands.Autos.StraightLineTest;
-
+import frc.robot.commands.Shooter.ShootingSequence;
 import frc.robot.subsystems.ClimberNoEncoder;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer;
@@ -54,7 +58,7 @@ public class RobotContainer {
       private final ClimberNoEncoder climber = new ClimberNoEncoder(); 
 
       private XboxController driverController = new XboxController(0);
-      private XboxController operatorController = new XboxController(0);
+      private XboxController operatorController = new XboxController(1);
 
       private Controllers controllers = new Controllers(
         driverController,
@@ -74,7 +78,8 @@ public class RobotContainer {
         drivetrain.initDefaultCommands(
             () -> driverController.getLeftY(), 
             () -> driverController.getRightX()
-          );
+        );
+        CameraServer.startAutomaticCapture();
       }
 
   /**
@@ -89,57 +94,94 @@ public class RobotContainer {
         controllers
 
         //controller 0
-          .addCommandsToController(0)
-            .add("intake", RT)
-          
-              .whenActive(intake::lift, intake) // TODO: get this working
-              .whenActive(intake::intakeBalls, intake)
-              .whenActive(indexer::intakeFrontIndexer, indexer)
+        .addCommandsToControllerPort(0)
+          .add("intake", RT)    //Intake and Indexer
+            .whenActive(intake::lift, intake)
+            .whenActive(intake::intakeBalls, intake)
+            .whenActive(indexer::intakeFrontIndexer, indexer)
 
-              .whenInactive(intake::disableIntake, intake)
-              .whenInactive(indexer::disableFrontIndexer, indexer)
-                       
-            .add("outtake", LT)
-              .whenActive(intake::lift, intake)
-              .whenActive(indexer::outtakeBothIndexer, indexer)
-              .whenActive(intake::outtakeBalls, intake)
-              
-              .whenInactive(indexer::disableBothIndexer, indexer)
-              .whenInactive(intake::disableIntake, intake)
-              
-            .add("intakeDrop", LB)
-              .whenActive(intake::drop, intake)
-            .add("intakeLift", RB)
-              .whenActive(intake::lift, intake)
-                    .finish()
+            .whenInactive(intake::disableIntake, intake)
+            .whenInactive(indexer::disableFrontIndexer, indexer)
+                      
+          .add("outtake", LT)   //Outtake 
+            .whenActive(intake::lift, intake)
+            .whenActive(indexer::outtakeBothIndexer, indexer)
+            .whenActive(intake::outtakeBalls, intake)
+            
+            .whenInactive(indexer::disableBothIndexer, indexer)
+            .whenInactive(intake::disableIntake, intake)
+            
+          .add("intakeDrop", DPAD_DOWN)   //Intake Down
+            .whenActive(intake::lower, intake)
+            
+          .add("intakeLift", DPAD_UP)   //Intake Up
+            .whenActive(intake::lift, intake)
+
+          .add("slowMode", RB)    //Slow Mode
+            .whenActive(drivetrain::kNormalDrive, drivetrain)
+
+          .add("turboMode", LB)   //Turbo Mode
+            .whenActive(drivetrain::kTurboDrive, drivetrain)
+
+
+          
+            .add("shootLow", X)   //Low
+            .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
+
+            .whenInactive(shooter::disable, shooter)
+
+            .whenInactive(indexer::disableBothIndexer, indexer)
+          .add("shootHigh", B)    //High
+            .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
+
+            .whenInactive(shooter::disable, shooter)
+            .whenInactive(indexer::disableBothIndexer, indexer)
+
+          .add("sendIt", Y)   //(No PID COntrol, Percent Output instead)
+            .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
+          .finish()
+
 
 
         //controller 1  
-        .addCommandsToController(1)
-          .add("shoot", A)
-            .whileActiveContinuous(shooter::shootLow, shooter)
+        .addCommandsToControllerPort(1)
+          .add("shootLow", X)   //Low
+            .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
+
             .whenInactive(shooter::disable, shooter)
-          .add("shoot", B)
-            .whileActiveContinuous(shooter::shootHigh, shooter)
+
+            .whenInactive(indexer::disableBothIndexer, indexer)
+          .add("shootHigh", B)    //High
+            .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
+
             .whenInactive(shooter::disable, shooter)
-          .add("shoot", X)
-            .whileActiveContinuous(shooter::sendIt, shooter)
-            .whenInactive(shooter::disable, shooter)
-        
-            // TODO: sequential commandgroup
-            //one button "revs up shooter-> shooter check if correct rpm -> both indexer motors feed into the shooter for 5 sec"
-            //there needs to be 2 of these for low and high
+            .whenInactive(indexer::disableBothIndexer, indexer)
+
+          .add("sendIt", Y)   //(No PID COntrol, Percent Output instead)
+            .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
             
+            .whenInactive(shooter::disable, shooter)
+            .whenInactive(indexer::disableBothIndexer, indexer)
 
-            .add("climberExtend", DPAD_UP)
-              .whenActive(climber::extend)
+          .add("climberExtend", DPAD_UP)    //Climber Up
+            .whenActive(climber::extend)
 
-              .whenInactive(climber::disable)
+            .whenInactive(climber::disable)
 
-            .add("climberRetract", DPAD_DOWN)
-              .whenActive(climber::retract)
+          .add("climberRetract", DPAD_DOWN)   //Climber Down
+            .whenActive(climber::retract)
 
-              .whenInactive(climber::disable)
+            .whenInactive(climber::disable)
+
+          .add("indexerUp", DPAD_RIGHT)   //Indexer Up
+            .whenActive(indexer::intakeFrontIndexer, indexer)
+
+            .whenInactive(indexer::disableBothIndexer, indexer)
+
+          .add("indexerDown", XboxDPAD.DPAD_DOWN)   //Indexer Down
+            .whenActive(indexer::outtakeBackIndexer, indexer)
+
+            .whenActive(indexer::disableBothIndexer, indexer)
           .finish();
       }
 
@@ -150,8 +192,9 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public NormalAuto getNormalauto() {
+  public Command getNormalauto() {
     return new NormalAuto(drivetrain);
+
   }
 
   public Command getNothingAuto(){
@@ -160,5 +203,13 @@ public class RobotContainer {
 
   public Command getStraightLineAuto(){
     return new StraightLineTest(drivetrain);
+  }
+
+  public Command getShootAndThatsItCommand() {
+    return new ShootingSequence(shooter, indexer, shooter::shootLowAuto);
+  }
+
+  public Command getForwardAndShootLowCommand() {
+    return new ForwardAndShootLow(drivetrain, shooter, indexer);
   }
 }

@@ -34,7 +34,8 @@ public class Robot extends TimedRobot {
     robotContainer = new RobotContainer();
     autoChooser = new SendableChooser<>();
 
-    autoChooser.setDefaultOption("Normal Auton", robotContainer.getNormalauto());
+    autoChooser.setDefaultOption("Shoot and thats it auto", robotContainer.getShootAndThatsItCommand());
+    autoChooser.addOption("Normal Auton", robotContainer.getNormalauto());
     autoChooser.addOption("Do Nothing", robotContainer.getNothingAuto());
     autoChooser.addOption("Straight Line Test", robotContainer.getStraightLineAuto());
 
