@@ -22,11 +22,13 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.Drive.DriverControl;
+
 import static frc.robot.Constants.DriveConstants.*;
 
 import java.util.function.DoubleSupplier;
-
-import frc.robot.commands.Driver.DriverControl;
 
 public class Drive extends SubsystemBase {
     // Motors
@@ -35,7 +37,7 @@ public class Drive extends SubsystemBase {
             leftRearMotor,
             rightRearMotor,
             rightFrontMotor;
-
+        
     // NeoEncoders
         // private RelativeEncoder leftNeoEncoder,
         // rightNeoEncoder;
@@ -103,8 +105,15 @@ public class Drive extends SubsystemBase {
 
             resetAll();
     }
+    public void tankDrive(double leftPower, double rightPower) {
+        leftFrontMotor.set(leftPower);
+        rightFrontMotor.set(rightPower);
+    }
 
 
+    public void SimpleDriveForward(double power) {
+        tankDrive(DriveConstants.kslowModeSpeed, DriveConstants.kslowModeSpeed);
+    }
     
     /**
      * Returns the currently-estimated pose of the robot.
@@ -147,15 +156,15 @@ public class Drive extends SubsystemBase {
     }
 
     public void kSlowDrive() {
-        drive.setMaxOutput(slowModeSpeed);
+        drive.setMaxOutput(kslowModeSpeed);
     }
 
     public void kNormalDrive() {
-            drive.setMaxOutput(normalModeSpeed);
+            drive.setMaxOutput(knormalModeSpeed);
     }
 
     public void kTurboDrive() {
-        drive.setMaxOutput(turboModeSpeed);
+        drive.setMaxOutput(kturboModeSpeed);
     }
 
     
@@ -281,6 +290,7 @@ public class Drive extends SubsystemBase {
                 rotate
         ));
     }
+
 
     @Override
     public void periodic() {

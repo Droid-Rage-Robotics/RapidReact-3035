@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Controls.XboxDPAD;
+import frc.robot.commands.Autos.ForwardAndShootLow;
 // import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 // import edu.wpi.first.wpilibj2.command.button.Trigger;
 // import frc.robot.Constants.ControllerConstants;
@@ -120,21 +122,44 @@ public class RobotContainer {
 
           .add("turboMode", LB)   //Turbo Mode
             .whenActive(drivetrain::kTurboDrive, drivetrain)
+
+
+          
+            .add("shootLow", X)   //Low
+            .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
+
+            .whenInactive(shooter::disable, shooter)
+
+            .whenInactive(indexer::disableBothIndexer, indexer)
+          .add("shootHigh", B)    //High
+            .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
+
+            .whenInactive(shooter::disable, shooter)
+            .whenInactive(indexer::disableBothIndexer, indexer)
+
+          .add("sendIt", Y)   //(No PID COntrol, Percent Output instead)
+            .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
           .finish()
+
 
 
         //controller 1  
         .addCommandsToControllerPort(1)
           .add("shootLow", X)   //Low
             .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
+
             .whenInactive(shooter::disable, shooter)
+
             .whenInactive(indexer::disableBothIndexer, indexer)
           .add("shootHigh", B)    //High
             .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
+
             .whenInactive(shooter::disable, shooter)
             .whenInactive(indexer::disableBothIndexer, indexer)
+
           .add("sendIt", Y)   //(No PID COntrol, Percent Output instead)
             .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
+            
             .whenInactive(shooter::disable, shooter)
             .whenInactive(indexer::disableBothIndexer, indexer)
 
@@ -147,6 +172,16 @@ public class RobotContainer {
             .whenActive(climber::retract)
 
             .whenInactive(climber::disable)
+
+          .add("indexerUp", DPAD_RIGHT)   //Indexer Up
+            .whenActive(indexer::intakeFrontIndexer, indexer)
+
+            .whenInactive(indexer::disableBothIndexer, indexer)
+
+          .add("indexerDown", XboxDPAD.DPAD_DOWN)   //Indexer Down
+            .whenActive(indexer::outtakeBackIndexer, indexer)
+
+            .whenActive(indexer::disableBothIndexer, indexer)
           .finish();
       }
 
@@ -171,7 +206,10 @@ public class RobotContainer {
   }
 
   public Command getShootAndThatsItCommand() {
-    return new ShootingSequence(shooter, indexer, shooter::shootAuto);
+    return new ShootingSequence(shooter, indexer, shooter::shootLowAuto);
+  }
 
+  public Command getForwardAndShootLowCommand() {
+    return new ForwardAndShootLow(drivetrain, shooter, indexer);
   }
 }
