@@ -119,15 +119,15 @@ public class RobotContainer {
         //controller 1  
         .addCommandsToControllerPort(1)
           .add("shootLow", A)
-            .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow))
+            .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
             .whenInactive(shooter::disable, shooter)
             .whenInactive(indexer::disableBothIndexer, indexer)
           .add("shootHigh", B)
-            .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow))
+            .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
             .whenInactive(shooter::disable, shooter)
             .whenInactive(indexer::disableBothIndexer, indexer)
           .add("sendIt", X)
-            .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow))
+            .whenActive(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
             .whenInactive(shooter::disable, shooter)
             .whenInactive(indexer::disableBothIndexer, indexer)
 
