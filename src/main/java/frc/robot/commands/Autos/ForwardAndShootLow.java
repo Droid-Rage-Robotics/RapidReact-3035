@@ -10,8 +10,9 @@ import frc.robot.subsystems.Drive;
 
 public class ForwardAndShootLow extends SequentialCommandGroup {
 
-    public ForwardAndShootLow(Drive drivetrain, Shooter shooter, Indexer indexer){
+    public ForwardAndShootLow(Drive drivetrain, Shooter shooter, Indexer indexer, Intake intake){
         addCommands(
+            new InstantCommand(intake::lift, intake),
             new DriveByTime(5, 0.2, drivetrain),
             new ShootingSequence(shooter, indexer, shooter::shootHigh),
             new DriveByTime(5, -0.2, drivetrain)
