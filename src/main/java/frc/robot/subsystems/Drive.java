@@ -4,6 +4,7 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -80,6 +81,9 @@ public class Drive extends SubsystemBase {
             drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
             drive.setSafetyEnabled(false);
 
+            leftFrontMotor.setIdleMode(IdleMode.kBrake);
+            rightFrontMotor.setIdleMode(IdleMode.kBrake);
+
         // Encoders
             leftEncoder.reset();
             rightEncoder.reset();
@@ -153,15 +157,15 @@ public class Drive extends SubsystemBase {
         drive.arcadeDrive(fwd, rot);
     }
 
-    public void kSlowDrive() {
+    public void slowDrive() {
         drive.setMaxOutput(kslowModeSpeed);
     }
 
-    public void kNormalDrive() {
+    public void normalDrive() {
             drive.setMaxOutput(knormalModeSpeed);
     }
 
-    public void kTurboDrive() {
+    public void turboDrive() {
         drive.setMaxOutput(kturboModeSpeed);
     }
 

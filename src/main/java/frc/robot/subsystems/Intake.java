@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
@@ -21,32 +22,32 @@ public class Intake extends SubsystemBase {
         
         // //We use CTRE  Pneumatics Control Module
         // //2 double solenoids for 2 pistons
-        private DoubleSolenoid m_LeftLiftDoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.kLeftSolenoidPorts[0], IntakeConstants.kLeftSolenoidPorts[1]);
-        private DoubleSolenoid m_RightLiftDoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.kRightSolenoidPorts[0], IntakeConstants.kRightSolenoidPorts[1]);
+        private DoubleSolenoid m_LiftSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.kLeftSolenoidPorts[0], IntakeConstants.kLeftSolenoidPorts[1]);
+        //private DoubleSolenoid m_RightLiftDoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.kRightSolenoidPorts[0], IntakeConstants.kRightSolenoidPorts[1]);
         private boolean solenoidIsPowered = false;
      
     public Intake() {
-        m_LeftLiftDoubleSolenoid.set(Value.kForward);
-        m_RightLiftDoubleSolenoid.set(Value.kForward); 
+        //         m_LiftSolenoid.set(Value.kForward);
+        // m_RightLiftDoubleSolenoid.set(Value.kForward); 
     }
 
 
     //Intake
-        public void intakeBalls() {
+        public void intake() {
             setIntakePower(IntakeConstants.IntakePower);
             // lLiftDoubleSolenoid.set(Value.kForward);
             // rLiftDoubleSolenoid.set(Value.kForward);
         }
 
     //Outtake
-        public void outtakeBalls() {
+        public void outtake() {
             setIntakePower(-IntakeConstants.IntakePower);
             // lLiftDoubleSolenoid.set(Value.kForward);
             // rLiftDoubleSolenoid.set(Value.kForward);
         }
 
     //Disable
-        public void disableIntake() {
+        public void stopIntake() {
             setIntakePower(0);
         }
 
@@ -60,34 +61,34 @@ public class Intake extends SubsystemBase {
         }
 
         public void lift() {
-            setSolenoidsForward();
-            setSolenoidsOn();
-        }
-
-        public void lower() {
             setSolenoidsReversed();
             setSolenoidsOn();
         }
 
+        public void drop() {
+            setSolenoidsForward();
+            setSolenoidsOn();
+        }
+
         public void toggleSolenoids() {
-            m_LeftLiftDoubleSolenoid.toggle();
-            m_RightLiftDoubleSolenoid.toggle();
+            m_LiftSolenoid.toggle();
+            // m_RightLiftDoubleSolenoid.toggle();
             solenoidIsPowered = !solenoidIsPowered;
         }
 
         public void setSolenoidsForward() {
-            m_LeftLiftDoubleSolenoid.set(Value.kForward);
-            m_RightLiftDoubleSolenoid.set(Value.kForward);
+            m_LiftSolenoid.set(Value.kForward);
+            // m_RightLiftDoubleSolenoid.set(Value.kForward);
         }
 
         public void setSolenoidsReversed() {
-            m_LeftLiftDoubleSolenoid.set(Value.kReverse);
-            m_RightLiftDoubleSolenoid.set(Value.kReverse);
+            m_LiftSolenoid.set(Value.kReverse);
+            // m_RightLiftDoubleSolenoid.set(Value.kReverse);
         }
 
         public void setCompressorOff() {        // this one is probably wrong
-            m_LeftLiftDoubleSolenoid.set(Value.kOff);
-            m_RightLiftDoubleSolenoid.set(Value.kOff);
+            m_LiftSolenoid.set(Value.kOff);
+            // m_RightLiftDoubleSolenoid.set(Value.kOff);
         }
 
         public void setSolenoidsOn() {

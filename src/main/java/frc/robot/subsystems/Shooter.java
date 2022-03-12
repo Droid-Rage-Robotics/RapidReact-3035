@@ -8,6 +8,8 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -21,6 +23,10 @@ public class Shooter extends SubsystemBase {
 
   private double kP, kI, kD, kF;
   private int iZone;
+  private int rpmAdder;
+
+  private NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
+
 
 
   public Shooter() {
@@ -59,12 +65,11 @@ public class Shooter extends SubsystemBase {
         // TalonFXSetup.velocityStatusFrames(motorSecondary);
         TalonFXSetup.velocityStatusFrames(motorPrimary);
         Preferences.getDouble("Shooter Setpoint", 1000);
-        this.setDefaultCommand(new RunCommand(() -> disable() , this));
+        this.setDefaultCommand(new RunCommand(() -> stop() , this));
   }
 
-      public void periodic() {
-        // This method will be called once per scheduler run
-      }
+
+
     //Set Speed
         public void setManualOutput(double speed){
           motorPrimary.set(ControlMode.PercentOutput, speed);
@@ -100,31 +105,44 @@ public class Shooter extends SubsystemBase {
           return getWheelRPM() == motorPrimary.getClosedLoopTarget();
         }
 
+        public boolean isGreaterThanRPM() {
+          return getWheelRPM() > motorPrimary.getClosedLoopTarget();
+        }
+          //Max is 6380 RPM
         public void sendIt(){
-          setManualOutput(1.0);
+          setRPM(8000 + rpmAdder);
+          // setManualOutput(1.0);
         }
         
         public void shootLow() {
-          // setRPM(200);
-          setManualOutput(0.3);
+          setRPM(3300 + rpmAdder);
+          // setManualOutput(0.3);
         }
 
         public void shootHigh() {
-          // setRPM(300);
-          setManualOutput(0.6);
+          setRPM(7000 + rpmAdder);
+          // setManualOutput(0.6);
         }
 
-        public void shootLowAuto() {
-          // setRPM(200);
-          setManualOutput(0.3);
+        // public void shootLowAuto() {
+        //   setRPM(2000 + rpmAdder);
+        //   // setManualOutput(0.3);
+        // }
+
+        // public void shootHighAuto() {
+        //   setRPM(4500 + rpmAdder);
+        //   // setManualOutput(0.5);
+        // }
+
+        public void addRPM() {
+          rpmAdder += 100;
         }
 
-        public void shootHighAuto() {
-          // setRPM(200);
-          setManualOutput(0.5);
+        public void subtractRPM() {
+          rpmAdder -= 100;
         }
 
-        public void disable(){
+        public void stop(){
           motorPrimary.set(ControlMode.PercentOutput, 0);
         }
 
@@ -133,6 +151,14 @@ public class Shooter extends SubsystemBase {
         SmartDashboard.putNumber("WheelRPM: ", getWheelRPM());
         SmartDashboard.putNumber("Shooter OutputPercentage: ", motorPrimary.getMotorOutputPercent());
         SmartDashboard.putNumber("Shooter LeftCurrent: ", motorPrimary.getSupplyCurrent());
+        SmartDashboard.putNumber("Shooter RPMAdder: ", rpmAdder);
+        // live_dashboard.getEntry("Shooter Velocity2: ").setDouble(motorPrimary.getSelectedSensorVelocity());
+        }
+
+
+        @Override
+        public void periodic() {
+          dashboard();
         }
 
  

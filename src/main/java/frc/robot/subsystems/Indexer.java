@@ -41,7 +41,7 @@ public class Indexer extends SubsystemBase {
       public void intakeBothIndexer() {
         setIndexPowers(IndexerConstants.outtakeSpeed);
       }
-      public void disableBothIndexer() {
+      public void stopBothIndexer() {
         setIndexPowers(IndexerConstants.stopSpeed);
       }
 

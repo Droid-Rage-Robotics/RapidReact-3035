@@ -6,6 +6,6 @@ public final class IntakeConstants {
     public static double IntakePower = 1; // was 1.0
 
     public static int[] // A  B
-    kLeftSolenoidPorts  = {1, 2},
-    kRightSolenoidPorts = {3, 4}; 
+    kLeftSolenoidPorts  = {4, 5};
+    // kRightSolenoidPorts = {3, 4}; 
 }

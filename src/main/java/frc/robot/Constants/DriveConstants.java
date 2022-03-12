@@ -70,7 +70,7 @@ public final class DriveConstants {
     public static int kSmartLimit = 60;
 
     public static double 
-    kslowModeSpeed = 0.6,
+    kslowModeSpeed = 0.3,
     knormalModeSpeed = 0.8,
     kturboModeSpeed = 1;
 

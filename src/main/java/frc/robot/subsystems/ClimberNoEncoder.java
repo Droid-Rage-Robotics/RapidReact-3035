@@ -21,9 +21,9 @@ public class ClimberNoEncoder extends SubsystemBase {
             lClimberMotor.setSmartCurrentLimit(30);
         // Right Motor follows Left Motor
             
-        lClimberMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        // lClimberMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-        rClimberMotor.follow(lClimberMotor, true);
+        rClimberMotor.follow(lClimberMotor, false);
     }
 
     //SetPower
