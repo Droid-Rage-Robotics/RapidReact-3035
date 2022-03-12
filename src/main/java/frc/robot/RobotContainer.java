@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Controls.XboxDPAD;
 import frc.robot.commands.Autos.ForwardAndShootLow;
 // import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 // import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -29,6 +28,7 @@ import frc.robot.commands.Autos.ForwardAndShootLow;
 // import frc.robot.Controls.XboxDPAD;
 // import frc.robot.Controls.XboxTrigger;
 import frc.robot.commands.Autos.NormalAuto;
+import frc.robot.commands.Autos.ShootOneBall;
 import frc.robot.commands.Autos.StraightLineTest;
 import frc.robot.commands.Shooter.ShootingSequence;
 import frc.robot.subsystems.ClimberNoEncoder;
@@ -222,5 +222,9 @@ public class RobotContainer {
 
   public Command getForwardAndShootLowCommand() {
     return new ForwardAndShootLow(drivetrain, shooter, indexer);
+  }
+
+  public Command getShootOneBallCommand() {
+    return new ShootOneBall(drivetrain, shooter, indexer, intake);
   }
 }
