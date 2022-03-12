@@ -221,7 +221,7 @@ public class RobotContainer {
   }
 
   public Command getForwardAndShootLowCommand() {
-    return new ForwardAndShootLow(drivetrain, shooter, indexer);
+    return new ForwardAndShootLow(drivetrain, shooter, indexer, intake);
   }
 
   public Command getShootOneBallCommand() {
