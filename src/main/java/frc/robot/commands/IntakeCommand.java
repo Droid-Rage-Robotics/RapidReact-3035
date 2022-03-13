@@ -10,8 +10,7 @@ public class IntakeCommand extends SequentialCommandGroup {
     public IntakeCommand(Intake intake, Indexer indexer) {
         addCommands(
             new InstantCommand(intake::lift, intake),
-            new InstantCommand(intake::intake, intake),
-            new InstantCommand(indexer::intakeFrontIndexer, indexer)
+            new InstantCommand(intake::intake, intake)
         );
     }
 }

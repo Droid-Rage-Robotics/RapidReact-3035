@@ -15,7 +15,7 @@ public class TestTrajectories extends SequentialCommandGroup {
 
     public TestTrajectories(Drive drivetrain, Shooter shooter, Indexer indexer, Intake intake){
     addCommands(
-        new InstantCommand(intake::drop, intake),
+        new InstantCommand(intake::lift, intake),
         new IntakeCommand(intake, indexer),
         new DriveByTime(5, 0.3, drivetrain),
         new TurnByTime(3, 0.4, drivetrain),

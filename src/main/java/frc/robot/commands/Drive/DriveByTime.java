@@ -27,4 +27,7 @@ public class DriveByTime extends SequentialCommandGroup {
     );
     addRequirements(drive);
   }
+  // public DriveByTime(double seconds, Drive drive) {
+  //   DriveByTime(seconds, drive);
+  // }
 }

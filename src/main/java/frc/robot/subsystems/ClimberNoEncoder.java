@@ -32,11 +32,11 @@ public class ClimberNoEncoder extends SubsystemBase {
         }
     //RetractPower
         public void retract(){
-                setPower(-0.3);
+                setPower(-1);
         }
     //ExtendPower
         public void extend(){
-                setPower(0.5);
+                setPower(1 );
         }
     //DisableClimber
         public void disable() {

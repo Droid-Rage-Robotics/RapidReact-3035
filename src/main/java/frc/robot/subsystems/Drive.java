@@ -76,12 +76,17 @@ public class Drive extends SubsystemBase {
             rightFrontMotor = new CANSparkMax(kRightFrontID, CANSparkMaxLowLevel.MotorType.kBrushless);
             rightRearMotor = new CANSparkMax (kRightRearID, CANSparkMaxLowLevel.MotorType.kBrushless);
 
+            // leftRearMotor.follow(leftFrontMotor);
+            // rightRearMotor.follow(rightFrontMotor);
+
             rightFrontMotor.setInverted(true);
             drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
             drive.setSafetyEnabled(false);
 
-            leftFrontMotor.setIdleMode(IdleMode.kBrake);
-            rightFrontMotor.setIdleMode(IdleMode.kBrake);
+            leftFrontMotor.setIdleMode(IdleMode.kCoast);
+            rightFrontMotor.setIdleMode(IdleMode.kCoast);
+            leftRearMotor.setIdleMode(IdleMode.kCoast);
+            rightRearMotor.setIdleMode(IdleMode.kCoast);
 
         // Encoders
             leftEncoder.reset();
@@ -103,6 +108,8 @@ public class Drive extends SubsystemBase {
         // PID Controller
             leftFrontMotor.getPIDController();
             rightFrontMotor.getPIDController();
+            leftRearMotor.getPIDController();
+            rightRearMotor.getPIDController();
 
             resetAll();
     }
@@ -167,9 +174,6 @@ public class Drive extends SubsystemBase {
     public void turboDrive() {
         drive.setMaxOutput(kturboModeSpeed);
     }
-
-    
-
 
     public void curvatureDrive(double fwd, double rot) {
         drive.curvatureDrive(fwd, rot, true);
@@ -311,26 +315,26 @@ public class Drive extends SubsystemBase {
             -leftEncoder.getDistance(),
             rightEncoder.getDistance());
 
-        live_dashboard.getEntry("robotX").setDouble(Units.metersToFeet(getPose().getTranslation().getX()));
-        live_dashboard.getEntry("robotY").setDouble(Units.metersToFeet(getPose().getTranslation().getY()));
+        // live_dashboard.getEntry("robotX").setDouble(Units.metersToFeet(getPose().getTranslation().getX()));
+        // live_dashboard.getEntry("robotY").setDouble(Units.metersToFeet(getPose().getTranslation().getY()));
         live_dashboard.getEntry("robotHeading").setDouble(getPose().getRotation().getRadians());
 
-        SmartDashboard.putNumber("robotX", Units.metersToFeet(getPose().getTranslation().getX()));
-        SmartDashboard.putNumber("robotY", Units.metersToFeet(getPose().getTranslation().getY()));
+        // SmartDashboard.putNumber("robotX", Units.metersToFeet(getPose().getTranslation().getX()));
+        // SmartDashboard.putNumber("robotY", Units.metersToFeet(getPose().getTranslation().getY()));
         SmartDashboard.putNumber("robotHeading", getPose().getRotation().getDegrees());
 
-        SmartDashboard.putNumber("Internal RobotX", Units.metersToFeet(internalOdometry.getPoseMeters().getTranslation().getX()));
-        SmartDashboard.putNumber("Internal RobotY", Units.metersToFeet(internalOdometry.getPoseMeters().getTranslation().getY()));
+        // SmartDashboard.putNumber("Internal RobotX", Units.metersToFeet(internalOdometry.getPoseMeters().getTranslation().getX()));
+        // SmartDashboard.putNumber("Internal RobotY", Units.metersToFeet(internalOdometry.getPoseMeters().getTranslation().getY()));
 
-        SmartDashboard.putNumber("Left Encoder = ", leftEncoder.getDistance());
-        SmartDashboard.putNumber("Right Encoder = ", rightEncoder.getDistance());
+        // SmartDashboard.putNumber("Left Encoder = ", leftEncoder.getDistance());
+        // SmartDashboard.putNumber("Right Encoder = ", rightEncoder.getDistance());
 
-        // TODO: there is a good change i messed up the math
-        // SmartDashboard.putNumber("NEO left Encoder", (leftNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * kWheelRadius);
-        // SmartDashboard.putNumber("NEO right encoder", (rightNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * kWheelRadius);
+        // // TODO: there is a good change i messed up the math
+        // // SmartDashboard.putNumber("NEO left Encoder", (leftNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * kWheelRadius);
+        // // SmartDashboard.putNumber("NEO right encoder", (rightNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * kWheelRadius);
 
-        SmartDashboard.putNumber("NEO left Encoder", leftEncoder.getDistance());
-        SmartDashboard.putNumber("NEO right encoder", rightEncoder.getDistance());
+        // SmartDashboard.putNumber("NEO left Encoder", leftEncoder.getDistance());
+        // SmartDashboard.putNumber("NEO right encoder", rightEncoder.getDistance());
     }
 
 }

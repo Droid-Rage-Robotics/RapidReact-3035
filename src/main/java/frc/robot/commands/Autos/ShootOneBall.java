@@ -17,14 +17,14 @@ import frc.robot.subsystems.*;
 
 public class ShootOneBall extends SequentialCommandGroup {
 
-    public ShootOneBall(Drive drivetrain, Shooter shooter, Indexer indexer, Intake intake){
+    public ShootOneBall(Drive drive, Shooter shooter, Indexer indexer, Intake intake){
     addCommands(
-        new DriveByTime(5, -0.2, drivetrain),
-        new ShootingSequence(shooter, indexer, shooter::shootHigh),
-        new WaitCommand(0.5),
-        new TurnByTime(3, 0.3, drivetrain),
-        new DriveByTime(4, 0.4, drivetrain),
-        new InstantCommand(intake::intake, intake)
+        new DriveByTime(4, -0.3, drive), // moves drivtrain back for 4 seoconds
+        new ShootForSeconds(shooter, 2), // shoots for 4 seconds
+        new InstantCommand(indexer::outtakeBothIndexer), // starts indexer
+        new WaitCommand(3),
+        new InstantCommand(indexer::stopBothIndexer),
+        new DriveByTime(4, -0.3, drive)  // moves back
     );
         
 

@@ -65,7 +65,7 @@ public class Shooter extends SubsystemBase {
         // TalonFXSetup.velocityStatusFrames(motorSecondary);
         TalonFXSetup.velocityStatusFrames(motorPrimary);
         Preferences.getDouble("Shooter Setpoint", 1000);
-        this.setDefaultCommand(new RunCommand(() -> stop() , this));
+        this.setDefaultCommand(new RunCommand(() -> disable() , this));
   }
 
 
@@ -110,7 +110,7 @@ public class Shooter extends SubsystemBase {
         }
           //Max is 6380 RPM
         public void sendIt(){
-          setRPM(8000 + rpmAdder);
+          setRPM(5600 + rpmAdder);
           // setManualOutput(1.0);
         }
         
@@ -120,7 +120,7 @@ public class Shooter extends SubsystemBase {
         }
 
         public void shootHigh() {
-          setRPM(7000 + rpmAdder);
+          setRPM(6000 + rpmAdder);
           // setManualOutput(0.6);
         }
 
@@ -142,7 +142,7 @@ public class Shooter extends SubsystemBase {
           rpmAdder -= 100;
         }
 
-        public void stop(){
+        public void disable(){
           motorPrimary.set(ControlMode.PercentOutput, 0);
         }
 

@@ -36,10 +36,10 @@ public class Indexer extends SubsystemBase {
 
       //controls the both motors
       public void outtakeBothIndexer() {
-        setIndexPowers(-IndexerConstants.intakeSpeed);
+        setIndexPowers(IndexerConstants.outtakeSpeed);
       }
       public void intakeBothIndexer() {
-        setIndexPowers(IndexerConstants.outtakeSpeed);
+        setIndexPowers(IndexerConstants.intakeSpeed);
       }
       public void stopBothIndexer() {
         setIndexPowers(IndexerConstants.stopSpeed);
@@ -50,7 +50,7 @@ public class Indexer extends SubsystemBase {
         setFrontIndexPower(IndexerConstants.intakeSpeed);
       }
       public void outtakeFrontIndexer() {
-        setFrontIndexPower(-IndexerConstants.outtakeSpeed);
+        setFrontIndexPower(IndexerConstants.outtakeSpeed);
       }
       public void disableFrontIndexer() {
         setFrontIndexPower(IndexerConstants.stopSpeed);
@@ -61,7 +61,7 @@ public class Indexer extends SubsystemBase {
         setFrontIndexPower(IndexerConstants.intakeSpeed);
       }
       public void outtakeBackIndexer() {
-        setBackIndexPower(-IndexerConstants.outtakeSpeed);
+        setBackIndexPower(IndexerConstants.outtakeSpeed);
       }
       public void disableBackIndexer() {
         setBackIndexPower(IndexerConstants.stopSpeed);

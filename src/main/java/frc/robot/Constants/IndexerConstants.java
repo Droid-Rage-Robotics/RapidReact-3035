@@ -6,7 +6,7 @@ public final class IndexerConstants {
             backIndexerPort = 10; 
 
         public static final double 
-            intakeSpeed = 0.5,
-            outtakeSpeed = -0.5,
+            intakeSpeed = -0.4,
+            outtakeSpeed = 0.5,
             stopSpeed = 0;
 }
