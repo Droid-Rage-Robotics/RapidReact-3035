@@ -38,15 +38,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Controllers.Controllers;
-
-import frc.robot.commands.ShootingSequenceforIndexer;
 import frc.robot.commands.Autos.ForwardAndShootLow;
 import frc.robot.commands.Autos.IntakeAndShoot;
 import frc.robot.commands.Autos.NormalAuto;
 import frc.robot.commands.Autos.ShootOneBall;
 import frc.robot.commands.Autos.StraightLineTest;
 import frc.robot.commands.Shooter.ShootingSequence;
-
+import frc.robot.commands.Shooter.ShootingSequenceforIndexer;
 import frc.robot.subsystems.ClimberNoEncoder;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer;
@@ -82,10 +80,10 @@ public class RobotContainer {
       public RobotContainer() {
         // Configure the button bindings
         configureButtonBindings();
-        initDefaultCommands();
+        // initTeleopCommands();
       }
 
-      public void initDefaultCommands() {
+      public void initTeleopCommands() {
         drivetrain.initDefaultCommands(
             () -> driverController.getLeftY(), 
             () -> driverController.getRightX()
@@ -101,7 +99,7 @@ public class RobotContainer {
    */
 
   //Add Commands to Buttons
-      private void configureButtonBindings() {
+      public void configureButtonBindings() {
         controllers
 
         //controller 0
