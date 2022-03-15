@@ -8,8 +8,8 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
+// import edu.wpi.first.networktables.NetworkTable;
+// import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -25,7 +25,7 @@ public class Shooter extends SubsystemBase {
   private int iZone;
   private int rpmAdder;
 
-  private NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
+  // private NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
 
 
 

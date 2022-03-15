@@ -4,46 +4,54 @@
 
 package frc.robot;
 
-import static frc.robot.Controllers.Controls.XboxButton.*;
-import static frc.robot.Controllers.Controls.XboxDPAD.*;
-import static frc.robot.Controllers.Controls.XboxTrigger.*;
-
-// import javax.naming.ldap.Control;
+import static frc.robot.Controllers.Controls.XboxButton.B;
+import static frc.robot.Controllers.Controls.XboxButton.LB;
+import static frc.robot.Controllers.Controls.XboxButton.RB;
+import static frc.robot.Controllers.Controls.XboxButton.X;
+import static frc.robot.Controllers.Controls.XboxButton.Y;
+import static frc.robot.Controllers.Controls.XboxDPAD.DPAD_DOWN;
+import static frc.robot.Controllers.Controls.XboxDPAD.DPAD_LEFT;
+import static frc.robot.Controllers.Controls.XboxDPAD.DPAD_RIGHT;
+import static frc.robot.Controllers.Controls.XboxDPAD.DPAD_UP;
+import static frc.robot.Controllers.Controls.XboxTrigger.LT;
+import static frc.robot.Controllers.Controls.XboxTrigger.RT;
 
 import edu.wpi.first.cameraserver.CameraServer;
-
+// import javax.naming.ldap.Control;
 // import frc.robot.commands.Intake.IntakeCommand;
 // import frc.robot.commands.Intake.IntakeCommand.IntakeType;
 // import frc.robot.commands.Climber.ClimberCommand;
 // import frc.robot.commands.Climber.ClimberCommand.ClimberMotionType;
 // import frc.robot.subsystems.*;
 
-import edu.wpi.first.wpilibj.GenericHID;
 // import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
-
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Controllers.Controllers;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.ShootingSequenceforIndexer;
-import frc.robot.commands.Autos.ForwardAndShootLow;
-import frc.robot.commands.Autos.IntakeAndShoot;
 // import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 // import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 // import frc.robot.Constants.ControllerConstants;
 // import frc.robot.Controls.XboxButton;
 // import frc.robot.Controls.XboxDPAD;
 // import frc.robot.Controls.XboxTrigger;
+
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Controllers.Controllers;
+
+import frc.robot.commands.ShootingSequenceforIndexer;
+import frc.robot.commands.Autos.ForwardAndShootLow;
+import frc.robot.commands.Autos.IntakeAndShoot;
 import frc.robot.commands.Autos.NormalAuto;
 import frc.robot.commands.Autos.ShootOneBall;
 import frc.robot.commands.Autos.StraightLineTest;
 import frc.robot.commands.Shooter.ShootingSequence;
+
 import frc.robot.subsystems.ClimberNoEncoder;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 
 /**
