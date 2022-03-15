@@ -1,4 +1,4 @@
-package frc.robot.Constants;
+package frc.robot.Constants.SubsystemConstants;
 
 public final class ClimberConstants {
     // public static double kGearRatio = 1.0;

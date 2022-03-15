@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.SubsystemConstants.ShooterConstants;
 import frc.robot.utils.TalonFXSetup;
 
 public class Shooter extends SubsystemBase {

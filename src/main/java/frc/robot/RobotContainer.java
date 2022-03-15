@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import static frc.robot.Controllers.Controls.XboxButton.*;
+import static frc.robot.Controllers.Controls.XboxDPAD.*;
+import static frc.robot.Controllers.Controls.XboxTrigger.*;
+
 // import javax.naming.ldap.Control;
 
 import edu.wpi.first.cameraserver.CameraServer;
@@ -20,6 +24,7 @@ import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Controllers.Controllers;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootingSequenceforIndexer;
 import frc.robot.commands.Autos.ForwardAndShootLow;
@@ -39,11 +44,6 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
-
-// import frc.robot.subsystems;
-import static frc.robot.Controls.XboxButton.*;
-import static frc.robot.Controls.XboxDPAD.*;
-import static frc.robot.Controls.XboxTrigger.*;
 
 
 /**

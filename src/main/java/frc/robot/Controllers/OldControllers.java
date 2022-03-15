@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.Controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.Controls.XboxButton;
-import frc.robot.Controls.XboxDPAD;
-import frc.robot.Controls.XboxTrigger;
+import frc.robot.Controllers.Controls.XboxButton;
+import frc.robot.Controllers.Controls.XboxDPAD;
+import frc.robot.Controllers.Controls.XboxTrigger;
 
 public class OldControllers {
     private XboxController[] xboxControllers;

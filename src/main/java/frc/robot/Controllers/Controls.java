@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.Controllers;
 
 public class Controls {
     public enum XboxButton {

@@ -1,8 +1,9 @@
-package frc.robot;
+package frc.robot.Controllers;
 
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.SuperSpecialTrigger;
 
 public class Controllers {
     private final ArrayList<XboxController> xboxControllers = new ArrayList<XboxController>();

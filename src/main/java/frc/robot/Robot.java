@@ -34,12 +34,12 @@ public class Robot extends TimedRobot {
     robotContainer = new RobotContainer();
     autoChooser = new SendableChooser<>();
 
-    autoChooser.setDefaultOption("Shoot and thats it auto", robotContainer.getIntakeAndShootCommand());
+    autoChooser.setDefaultOption("Good shoot", robotContainer.getShootOneBallCommand());
+    autoChooser.addOption("Shoot and thats it auto", robotContainer.getIntakeAndShootCommand());
     autoChooser.addOption("Normal Auton", robotContainer.getNormalauto());
     autoChooser.addOption("Do Nothing", robotContainer.getNothingAuto());
     autoChooser.addOption("Straight Line Test", robotContainer.getStraightLineAuto());
-    autoChooser.addOption("Good shoot", robotContainer.getShootOneBallCommand());
-    autoChooser.addOption("the ohe that turns and shots and it shouldl get 2", robotContainer.getIntakeAndShootCommand());
+    autoChooser.addOption("Intake Ball and Shoot", robotContainer.getIntakeAndShootCommand());
 
     SmartDashboard.putData("Auto Picker", autoChooser);
   }

@@ -8,7 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.IndexerConstants;
+import frc.robot.Constants.SubsystemConstants.IndexerConstants;
 
 public class Indexer extends SubsystemBase {
     private CANSparkMax

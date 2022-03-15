@@ -1,4 +1,4 @@
-package frc.robot.Constants;
+package frc.robot.Constants.SubsystemConstants;
 
 public final class IntakeConstants {
     public static int IntakeMotorPort = 9;

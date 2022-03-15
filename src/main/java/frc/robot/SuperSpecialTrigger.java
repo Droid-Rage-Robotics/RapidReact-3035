@@ -12,9 +12,11 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.Controls.XboxButton;
-import frc.robot.Controls.XboxDPAD;
-import frc.robot.Controls.XboxTrigger;
+import frc.robot.Controllers.Controllers;
+import frc.robot.Controllers.Controls;
+import frc.robot.Controllers.Controls.XboxButton;
+import frc.robot.Controllers.Controls.XboxDPAD;
+import frc.robot.Controllers.Controls.XboxTrigger;
 
 import java.util.function.BooleanSupplier;
 
