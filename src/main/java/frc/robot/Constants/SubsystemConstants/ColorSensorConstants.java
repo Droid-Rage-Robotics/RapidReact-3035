@@ -1,5 +1,8 @@
 package frc.robot.Constants.SubsystemConstants;
 
+import edu.wpi.first.wpilibj.I2C.Port;
+
 public final class ColorSensorConstants {
-    public static int colorSensorPort = 3;
+    public static Port colorSensorPort = i2cPort;
+    
 }
