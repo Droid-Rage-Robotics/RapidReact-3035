@@ -1,5 +1,12 @@
 package frc.robot.Controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static frc.robot.Controllers.Controls.XboxButton.*;
+import static frc.robot.Controllers.Controls.XboxTrigger.*;
+import static frc.robot.Controllers.Controls.XboxDPAD.*;
+
 public class Controls {
     public enum XboxButton {
         A, B, X, Y,
@@ -8,49 +15,61 @@ public class Controls {
         LS, RS
     }
 
+    private static HashMap<XboxButton, Integer> buttonToButtonNumberMap = new HashMap<XboxButton, Integer>(Map.of(
+        A, 1,
+        B, 2, 
+        X, 3, 
+        Y, 4,
+        LB, 5, 
+        RB, 6,
+        BACK, 7,
+        START, 8,
+        LS, 9,
+        RS, 10
+    ));
+
+
+
+
     public enum XboxTrigger {
         RT, LT
     }
+
+    private static HashMap<XboxTrigger, Integer> triggerToTriggerNumberMap = new HashMap<XboxTrigger, Integer>(Map.of(
+        LT, 2,
+        RT, 3
+    ));
+
+
+
+
 
     public enum XboxDPAD {
         DPAD_UP,  DPAD_RIGHT,  
         DPAD_DOWN,  DPAD_LEFT,
         DPAD_UNPRESSED
     }
+
+    private static HashMap<XboxDPAD, Integer> dpadToHatDegreesMap = new HashMap<XboxDPAD, Integer>(Map.of(
+        DPAD_UP, 0,
+        DPAD_RIGHT, 90,
+        DPAD_DOWN, 180,
+        DPAD_LEFT, 270,
+        DPAD_UNPRESSED, -1
+    ));
     
+    
+
+
     public static int buttonToButtonNumber(XboxButton xboxButton) {
-        switch (xboxButton) {
-            case A:      return 1;
-            case B:      return 2;
-            case X:      return 3;
-            case Y:      return 4;
-            case LB:     return 5;
-            case RB:     return 6;
-            case BACK:   return 7;
-            case START:  return 8;
-            case LS:     return 9;
-            case RS:     return 10;
-            default:     return 0;
-        }
+        return buttonToButtonNumberMap.get(xboxButton);
     }
 
     public static int triggerToTriggerNumber(XboxTrigger xboxTrigger) {
-        switch (xboxTrigger) {
-            case LT: return 2;
-            case RT: return 3;
-            default: return 2;
-        }
+        return triggerToTriggerNumberMap.get(xboxTrigger);
     }
 
     public static int dpadToHatDegrees(XboxDPAD xboxDPAD) {
-        switch (xboxDPAD) {
-            case DPAD_UP: return 0;
-            case DPAD_RIGHT: return 90;
-            case DPAD_DOWN: return 180;
-            case DPAD_LEFT: return 270;
-            case DPAD_UNPRESSED: return -1;
-            default: return -1;
-            
-        }
+        return dpadToHatDegreesMap.get(xboxDPAD);
     }
 }
