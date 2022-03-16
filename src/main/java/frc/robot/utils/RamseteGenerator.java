@@ -13,7 +13,7 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.constraint.CentripetalAccelerationConstraint;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.math.util.Units;
-import frc.robot.Constants.SubsystemConstants.DriveConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.Drive;
 
 public class RamseteGenerator {

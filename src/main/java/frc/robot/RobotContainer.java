@@ -195,12 +195,12 @@ public class RobotContainer {
           .add("climberExtend", DPAD_UP)    //Climber Up
             .whenActive(climber::extend)
 
-            .whenInactive(climber::disable)
+            .whenInactive(climber::stop)
 
           .add("climberRetract", DPAD_DOWN)   //Climber Down
             .whenActive(climber::retract)
 
-            .whenInactive(climber::disable)
+            .whenInactive(climber::stop)
 
           .add("indexerUp", RB)   //Indexer Up
             .whenActive(indexer::intakeFrontIndexer, indexer)
