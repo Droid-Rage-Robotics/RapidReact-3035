@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.SubsystemConstants.ShooterConstants;
+// import frc.robot.Constants.SubsystemConstants.ShooterConstants;
 import frc.robot.utils.TalonFXSetup;
 
 public class Shooter extends SubsystemBase {
@@ -30,6 +30,16 @@ public class Shooter extends SubsystemBase {
 
 
   public Shooter() {
+    final int kShooterPort = 11
+    //kSecondShooterPort = 1
+      ;
+
+    final double velocity = 204.8; // I believe 20480 is 1 revolution per minute
+    final boolean secondaryInverted = false;
+    final boolean primaryInverted = false;
+
+    // public static final int pigeonID = 0;
+    // public static final int driveMotor0 = 1;
 
     //PID values from Droid Rage Preferences
         kP = Preferences.getDouble("Shooter kP", 0.0465);
@@ -38,7 +48,7 @@ public class Shooter extends SubsystemBase {
         kF = Preferences.getDouble("Shooter kF", 0.048);
         iZone = (int) Preferences.getDouble("Shooter I-Zone", 150);
 
-        motorPrimary = new WPI_TalonFX(ShooterConstants.kShooterPort);
+        motorPrimary = new WPI_TalonFX(kShooterPort);
         motorPrimary.setInverted(false);
         SupplyCurrentLimitConfiguration supplyCurrentLimit = new SupplyCurrentLimitConfiguration(true, 40, 45, 0.5);
         motorPrimary.configSupplyCurrentLimit(supplyCurrentLimit);
@@ -55,7 +65,7 @@ public class Shooter extends SubsystemBase {
         motorPrimary.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
     // //Config for motorPrimary
-    //     motorSecondary = new WPI_TalonFX(ShooterConstants.kSecondShooterPort);
+    //     motorSecondary = new WPI_TalonFX(kSecondShooterPort);
     //     motorSecondary.setInverted(false);  //MAKE SURE WE CHECK THE MOTORS SPINNING BEFOR TEST
     //     motorSecondary.configSupplyCurrentLimit(supplyCurrentLimit);
     //     motorSecondary.follow(motorPrimary);

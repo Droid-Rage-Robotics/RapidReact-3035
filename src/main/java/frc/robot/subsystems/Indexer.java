@@ -8,17 +8,27 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.SubsystemConstants.IndexerConstants;
 
 public class Indexer extends SubsystemBase {
+
+    public static final int
+        frontIndexerPort = 8,
+        backIndexerPort = 10; 
+
+    public static final double 
+        intakeSpeed = -0.4,
+        outtakeSpeed = 0.5,
+        stopSpeed = 0;
+
+    
     private CANSparkMax
         frontIndexer,
         backIndexer;
   
     /** Creates a new ExampleSubsystem. */
       public Indexer() {
-        frontIndexer = new CANSparkMax(IndexerConstants.frontIndexerPort, MotorType.kBrushed);
-        backIndexer = new CANSparkMax(IndexerConstants.backIndexerPort, MotorType.kBrushed);
+        frontIndexer = new CANSparkMax(frontIndexerPort, MotorType.kBrushed);
+        backIndexer = new CANSparkMax(backIndexerPort, MotorType.kBrushed);
 
         //Invert Back Motor
           backIndexer.setInverted(true);
@@ -36,35 +46,35 @@ public class Indexer extends SubsystemBase {
 
       //controls the both motors
       public void outtakeBothIndexer() {
-        setIndexPowers(IndexerConstants.outtakeSpeed);
+        setIndexPowers(outtakeSpeed);
       }
       public void intakeBothIndexer() {
-        setIndexPowers(IndexerConstants.intakeSpeed);
+        setIndexPowers(intakeSpeed);
       }
       public void stopBothIndexer() {
-        setIndexPowers(IndexerConstants.stopSpeed);
+        setIndexPowers(stopSpeed);
       }
 
       //controls the front motors independently
       public void intakeFrontIndexer(){
-        setFrontIndexPower(IndexerConstants.intakeSpeed);
+        setFrontIndexPower(intakeSpeed);
       }
       public void outtakeFrontIndexer() {
-        setFrontIndexPower(IndexerConstants.outtakeSpeed);
+        setFrontIndexPower(outtakeSpeed);
       }
       public void disableFrontIndexer() {
-        setFrontIndexPower(IndexerConstants.stopSpeed);
+        setFrontIndexPower(stopSpeed);
       }
 
       //controls the back motors independently
       public void intakeBacktIndexer(){
-        setFrontIndexPower(IndexerConstants.intakeSpeed);
+        setFrontIndexPower(intakeSpeed);
       }
       public void outtakeBackIndexer() {
-        setBackIndexPower(IndexerConstants.outtakeSpeed);
+        setBackIndexPower(outtakeSpeed);
       }
       public void disableBackIndexer() {
-        setBackIndexPower(IndexerConstants.stopSpeed);
+        setBackIndexPower(stopSpeed);
       }
 
 

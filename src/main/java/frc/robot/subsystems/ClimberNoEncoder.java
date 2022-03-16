@@ -4,42 +4,36 @@ package frc.robot.subsystems;
 import com.revrobotics.*;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.SubsystemConstants.ClimberConstants;
+import frc.robot.DRPreferences;
+import frc.robot.DRPreferences.DoubleKey;
 
 
 public class ClimberNoEncoder extends SubsystemBase {
     private CANSparkMax 
-        lClimberMotor,
-        rClimberMotor;
+        lClimberMotor = new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless),
+        rClimberMotor = new CANSparkMax(7, CANSparkMaxLowLevel.MotorType.kBrushless);
 
     public ClimberNoEncoder(){
-        // MotorPorts
-            lClimberMotor = new CANSparkMax(ClimberConstants.kLeftMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-            rClimberMotor = new CANSparkMax(ClimberConstants.kRightMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-        
-        // Left Current Limit            // Y is their no Limit for Right Motor
-            lClimberMotor.setSmartCurrentLimit(30);
-        // Right Motor follows Left Motor
-            
-        // lClimberMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        lClimberMotor.setSmartCurrentLimit(30);
+        rClimberMotor.setSmartCurrentLimit(30);
 
         rClimberMotor.follow(lClimberMotor, false);
     }
 
-    //SetPower
-        public void setPower(double power){
-            lClimberMotor.set(power);
-        }
-    //RetractPower
-        public void retract(){
-                setPower(-1);
-        }
-    //ExtendPower
-        public void extend(){
-                setPower(1 );
-        }
-    //DisableClimber
-        public void disable() {
-            lClimberMotor.set(0);
-        }
+    // we have this so that we can take motors out of follow mode and only have to add one more line
+    public void setPower(double power){
+        lClimberMotor.set(power);
+    }
+
+    public void retract(){
+            setPower(DRPreferences.get(DoubleKey.CLIMBER_RETRACT_POWER));
+    }
+    
+    public void extend(){
+            setPower(DRPreferences.get(DoubleKey.CLIMBER_EXTEND_POWER));
+    }
+
+    public void stop() {
+        lClimberMotor.set(0);
+    }
 }

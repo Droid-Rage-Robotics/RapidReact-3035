@@ -1,4 +1,4 @@
-package frc.robot.Constants.SubsystemConstants;
+package frc.robot.Constants;
 
 import com.revrobotics.CANSparkMax.IdleMode;
 

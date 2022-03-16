@@ -23,10 +23,10 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.SubsystemConstants.DriveConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.Drive.DriverControl;
 
-import static frc.robot.Constants.SubsystemConstants.DriveConstants.*;
+import static frc.robot.Constants.DriveConstants.*;
 
 import java.util.function.DoubleSupplier;
 
