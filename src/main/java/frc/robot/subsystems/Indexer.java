@@ -8,74 +8,67 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.DRPreferences;
+
+import static frc.robot.DRPreferences.DoubleKey.*;
 
 public class Indexer extends SubsystemBase {
 
     public static final int
         frontIndexerPort = 8,
         backIndexerPort = 10; 
-
-    public static final double 
-        intakeSpeed = -0.4,
-        outtakeSpeed = 0.5,
-        stopSpeed = 0;
-
     
     private CANSparkMax
         frontIndexer,
         backIndexer;
   
-    /** Creates a new ExampleSubsystem. */
+    /** Creates a new Indexer Subsystem. */
       public Indexer() {
-        frontIndexer = new CANSparkMax(frontIndexerPort, MotorType.kBrushed);
-        backIndexer = new CANSparkMax(backIndexerPort, MotorType.kBrushed);
+        frontIndexer = new CANSparkMax(8, MotorType.kBrushed);
+        backIndexer = new CANSparkMax(10, MotorType.kBrushed);
 
-        //Invert Back Motor
-          backIndexer.setInverted(true);
-      }
-    
-      @Override
-      public void periodic() {
-        // This method will be called once per scheduler run
+        backIndexer.setInverted(true);    //Invert Back Motor
       }
 
-      @Override
-      public void simulationPeriodic() {
-        // This method will be called once per scheduler run during simulation
-      }
-
-      //controls the both motors
-      public void outtakeBothIndexer() {
-        setIndexPowers(outtakeSpeed);
-      }
-      public void intakeBothIndexer() {
-        setIndexPowers(intakeSpeed);
-      }
-      public void stopBothIndexer() {
-        setIndexPowers(stopSpeed);
-      }
 
       //controls the front motors independently
       public void intakeFrontIndexer(){
-        setFrontIndexPower(intakeSpeed);
+        setFrontIndexPower(DRPreferences.get(INDEXER_INTAKE_SPEED));
       }
       public void outtakeFrontIndexer() {
-        setFrontIndexPower(outtakeSpeed);
+        setFrontIndexPower(DRPreferences.get(INDEXER_OUTTAKE_SPEED));
       }
-      public void disableFrontIndexer() {
-        setFrontIndexPower(stopSpeed);
+      public void stopFrontIndexer() {
+        setFrontIndexPower(0);
       }
 
       //controls the back motors independently
       public void intakeBacktIndexer(){
-        setFrontIndexPower(intakeSpeed);
+        setFrontIndexPower(DRPreferences.get(INDEXER_INTAKE_SPEED));
       }
       public void outtakeBackIndexer() {
-        setBackIndexPower(outtakeSpeed);
+        setBackIndexPower(DRPreferences.get(INDEXER_OUTTAKE_SPEED));
       }
-      public void disableBackIndexer() {
-        setBackIndexPower(stopSpeed);
+      public void stopBackIndexer() {
+        setBackIndexPower(0);
       }
+
+      //Controls the front and back motors
+      public void intakeBothIndexer(){
+        setFrontIndexPower(DRPreferences.get(INDEXER_INTAKE_SPEED));
+        setFrontIndexPower(DRPreferences.get(INDEXER_INTAKE_SPEED));
+      }
+      public void outtakeBothIndexer() {
+        setFrontIndexPower(DRPreferences.get(INDEXER_OUTTAKE_SPEED));
+        setBackIndexPower(DRPreferences.get(INDEXER_OUTTAKE_SPEED));
+      }
+      public void stopBothIndexer() {
+        setFrontIndexPower(0);
+        setBackIndexPower(0);
+      }
+
+
+
 
 
       //Set Intake Power - (Used in other functions)
@@ -87,15 +80,4 @@ public class Indexer extends SubsystemBase {
       public void setBackIndexPower(double power) {
         backIndexer.set(power);
       }
-
-      public void setIndexPowers(double power) {
-        setFrontIndexPower(power);
-        setBackIndexPower(power);
-      }
-    
-  /*@Override
-  public void initialize() {
-    m_indexerSubsystem.stopIndexer();
-    // This method will be called once per scheduler run
-  }*/
 }

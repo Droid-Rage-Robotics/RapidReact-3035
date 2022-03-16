@@ -35,13 +35,14 @@ import edu.wpi.first.cameraserver.CameraServer;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Controllers.Controllers;
 import frc.robot.commands.Autos.ForwardAndShootLow;
 import frc.robot.commands.Autos.IntakeAndShoot;
 import frc.robot.commands.Autos.NormalAuto;
-import frc.robot.commands.Autos.ShootOneBall;
+import frc.robot.commands.Autos.GoodShoot;
 import frc.robot.commands.Autos.StraightLineTest;
 import frc.robot.commands.Shooter.ShootingSequence;
 import frc.robot.commands.Shooter.ShootingSequenceforIndexer;
@@ -81,6 +82,7 @@ public class RobotContainer {
         // Configure the button bindings
         configureButtonBindings();
         // initTeleopCommands();
+
       }
 
       public void initTeleopCommands() {
@@ -223,36 +225,12 @@ public class RobotContainer {
           //   .whenInactive(indexer::stopBothIndexer, indexer)
           .finish();
       }
-
-  
-      
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getNormalauto() {
-    return new NormalAuto(drivetrain);
-
-  }
-
-  public Command getNothingAuto(){
-    return new InstantCommand(() -> drivetrain.tankDriveVolts(0,0));
-  }
-
-  public Command getStraightLineAuto(){
-    return new StraightLineTest(drivetrain);
-  }
-
-  public Command getIntakeAndShootCommand() {
-    return new IntakeAndShoot(drivetrain, shooter, indexer, intake);
-  }
-
-  public Command getForwardAndShootLowCommand() {
-    return new ForwardAndShootLow(drivetrain, shooter, indexer, intake);
-  }
-
-  public Command getShootOneBallCommand() {
-    return new ShootOneBall(drivetrain, shooter, indexer, intake);
+  public void getAutoCommands(SendableChooser<Command> autoChooser) {
+    autoChooser.setDefaultOption("Good Shoot", new GoodShoot(drivetrain, shooter, indexer, intake));
+    autoChooser.addOption("Intake and Shoot", new IntakeAndShoot(drivetrain, shooter, indexer, intake));
+    autoChooser.addOption("Normal Auton", new NormalAuto(drivetrain));
+    autoChooser.addOption("Nothing Auto", new InstantCommand(() -> drivetrain.tankDriveVolts(0,0)));
+    autoChooser.addOption("Straight Line Test", new StraightLineTest(drivetrain));
+    autoChooser.addOption("Forward ANd Shoot Low", new ForwardAndShootLow(drivetrain, shooter, indexer, intake));
   }
 }

@@ -33,13 +33,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
     autoChooser = new SendableChooser<>();
-
-    autoChooser.setDefaultOption("Good shoot", robotContainer.getShootOneBallCommand());
-    autoChooser.addOption("Shoot and thats it auto", robotContainer.getIntakeAndShootCommand());
-    autoChooser.addOption("Normal Auton", robotContainer.getNormalauto());
-    autoChooser.addOption("Do Nothing", robotContainer.getNothingAuto());
-    autoChooser.addOption("Straight Line Test", robotContainer.getStraightLineAuto());
-    autoChooser.addOption("Intake Ball and Shoot", robotContainer.getIntakeAndShootCommand());
+    
+    robotContainer.getAutoCommands(autoChooser);
 
     SmartDashboard.putData("Auto Picker", autoChooser);
   }

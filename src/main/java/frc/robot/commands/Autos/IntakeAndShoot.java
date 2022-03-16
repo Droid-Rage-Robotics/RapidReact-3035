@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.Drive.DriveByTime;
 import frc.robot.commands.Drive.TurnByTime;
+import frc.robot.commands.Shooter.ShootForSeconds;
 import frc.robot.commands.Shooter.ShootingSequence;
 import frc.robot.subsystems.*;
 // import frc.robot.utils.*;
