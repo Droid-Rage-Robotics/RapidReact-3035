@@ -6,6 +6,7 @@ import static frc.robot.DRPreferences.DoubleKey.*;
 // import static frc.robot.DRPreferences.StringKey.*;
 // import static frc.robot.DRPreferences.BooleanKey.*;
 
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,26 +32,31 @@ public class DRPreferences {
         INTAKE_OUTTAKE_SPEED
     }
 
-    private static HashMap<DoubleKey, Double> backupDoubleMap = new HashMap<DoubleKey, Double>(Map.of(
-        SHOOTER_P, 10.0,
-        SHOOTER_I, 10.0,
-        SHOOTER_D, 10.0,
+    private static HashMap<DoubleKey, Double> backupDoubleMap = new HashMap<DoubleKey, Double>(Map.ofEntries(
+        entry(SHOOTER_P, 10),
+        entry(SHOOTER_I, 10),
+        entry(SHOOTER_D, 10),
 
-        BALL_SENSOR_DISTANCE_THRESHOLD, 10.0,
-        RED_BALL_COLOR, 10.0,
-        BLUE_BALL_COLOR, 10.0,
+        entry(BALL_SENSOR_DISTANCE_THRESHOLD, 10),
+        entry(RED_BALL_COLOR, 10),
+        entry(BLUE_BALL_COLOR, 10),
 
-        CLIMBER_EXTEND_POWER, 1.0,
-        CLIMBER_RETRACT_POWER, 0.5,
+        entry(CLIMBER_EXTEND_POWER, 1),
+        entry(CLIMBER_RETRACT_POWER, 0.8),
 
-        INDEXER_INTAKE_SPEED, -0.4,         
-        INDEXER_OUTTAKE_SPEED, 0.5,
-        
-        INTAKE_INTAKE_SPEED,  1.0,
-        INTAKE_OUTTAKE_SPEED, -1.0
+        entry(INDEXER_INTAKE_SPEED, 1),
+        entry(INDEXER_OUTTAKE_SPEED, -1),
+
+        entry(INTAKE_INTAKE_SPEED,  1),
+        entry(INTAKE_OUTTAKE_SPEED, -1)
+
     ));
-    
 
+    public static Map.Entry<DoubleKey, Double> entry(DoubleKey key, double number) {
+        return new AbstractMap.SimpleEntry<DoubleKey, Double>(key, number);
+    }
+    
+ 
     public static void addDoubleKeys() {
         for (DoubleKey key: DoubleKey.values()) {
             if (!Preferences.containsKey(key.toString())) 
@@ -64,6 +70,9 @@ public class DRPreferences {
         }
     }
 
+
+
+        
     public static void setDouble(DoubleKey key, double value) {
         Preferences.setDouble(key.toString(), value);
     }
