@@ -33,26 +33,24 @@ import java.util.function.DoubleSupplier;
 public class Drive extends SubsystemBase {
     // Motors
         private CANSparkMax 
-            leftFrontMotor,
-            leftRearMotor,
-            rightRearMotor,
-            rightFrontMotor;
+            leftFrontMotor = new CANSparkMax (3, CANSparkMaxLowLevel.MotorType.kBrushless),
+            leftRearMotor = new CANSparkMax (2, CANSparkMaxLowLevel.MotorType.kBrushless),
+            rightFrontMotor = new CANSparkMax (5, CANSparkMaxLowLevel.MotorType.kBrushless),
+            rightRearMotor = new CANSparkMax (4, CANSparkMaxLowLevel.MotorType.kBrushless);
         
-    // NeoEncoders
-        // private RelativeEncoder leftNeoEncoder,
-        // rightNeoEncoder;
 
 
     // Encoders
-        private final Encoder leftEncoder = new Encoder(        //Left Encoder
-            kLeftEncoderPorts[0],
-            kLeftEncoderPorts[1],
+        private final Encoder leftEncoder = new Encoder (        //Left Encoder
+            9,
+            8,
             kLeftEncoderReversed,
             CounterBase.EncodingType.k4X
         );
+
         private final Encoder rightEncoder = new Encoder(        //Right Encoder
-                kRightEncoderPorts[0],
-                kRightEncoderPorts[1],
+                7,
+                6,
                 kRightEncoderReversed,
                 CounterBase.EncodingType.k4X
         );
@@ -70,11 +68,6 @@ public class Drive extends SubsystemBase {
         private NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
 
     public Drive() {
-        // Motor Ports 
-            leftFrontMotor = new CANSparkMax (kLeftFrontID, CANSparkMaxLowLevel.MotorType.kBrushless);
-            leftRearMotor = new CANSparkMax  (kLeftRearID, CANSparkMaxLowLevel.MotorType.kBrushless);
-            rightFrontMotor = new CANSparkMax(kRightFrontID, CANSparkMaxLowLevel.MotorType.kBrushless);
-            rightRearMotor = new CANSparkMax (kRightRearID, CANSparkMaxLowLevel.MotorType.kBrushless);
 
             // leftRearMotor.follow(leftFrontMotor);
             // rightRearMotor.follow(rightFrontMotor);

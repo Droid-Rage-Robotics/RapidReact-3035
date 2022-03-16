@@ -6,11 +6,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 
 public final class DriveConstants {
 
-    public static int // drivetrain
-        kLeftFrontID = 3,
-        kLeftRearID = 2,
-        kRightFrontID = 5,
-        kRightRearID = 4;
 
     public static int[]   // A  B
         kLeftEncoderPorts  = {9, 8}, // Through Bore encoders (they take up 2 ports for relative mode, and if in absolute, they take up only 1)

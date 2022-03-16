@@ -23,17 +23,19 @@ public class ClimberNoEncoder extends SubsystemBase {
     // we have this so that we can take motors out of follow mode and only have to add one more line
     public void setPower(double power){
         lClimberMotor.set(power);
+        rClimberMotor.set(power);
     }
 
     public void retract(){
-            setPower(DRPreferences.get(DoubleKey.CLIMBER_RETRACT_POWER));
+        setPower(DRPreferences.get(DoubleKey.CLIMBER_RETRACT_POWER));
     }
     
     public void extend(){
-            setPower(DRPreferences.get(DoubleKey.CLIMBER_EXTEND_POWER));
+        setPower(DRPreferences.get(DoubleKey.CLIMBER_EXTEND_POWER));
     }
 
     public void stop() {
         lClimberMotor.set(0);
+        rClimberMotor.set(0);
     }
 }

@@ -52,7 +52,7 @@ public class DRPreferences {
 
     ));
 
-    public static Map.Entry<DoubleKey, Double> entry(DoubleKey key, double number) {
+    private static Map.Entry<DoubleKey, Double> entry(DoubleKey key, double number) {
         return new AbstractMap.SimpleEntry<DoubleKey, Double>(key, number);
     }
     
@@ -91,6 +91,17 @@ public class DRPreferences {
 
 
 
+
+
+
+    
+
+
+
+
+
+
+
     public enum StringKey {
 
     }
@@ -98,6 +109,10 @@ public class DRPreferences {
     private static HashMap<StringKey, String> backupStringMap = new HashMap<StringKey, String>(Map.of(
 
     ));
+
+    private static Map.Entry<StringKey, Double> entry(StringKey key, double number) {
+        return new AbstractMap.SimpleEntry<StringKey, Double>(key, number);
+    }
 
     public static void addStringKeys() {
         for (StringKey key: StringKey.values()) {
@@ -120,6 +135,17 @@ public class DRPreferences {
         return Preferences.getString(key.toString(), backupStringMap.get(key));
     }
 
+    
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -134,6 +160,10 @@ public class DRPreferences {
     private static HashMap<BooleanKey, Boolean> backupBooleanMap = new HashMap<BooleanKey, Boolean>(Map.of(
 
     ));
+
+    private static Map.Entry<BooleanKey, Double> entry(BooleanKey key, double number) {
+        return new AbstractMap.SimpleEntry<BooleanKey, Double>(key, number);
+    }
 
     public static void addBooleanKeys() {
         for (BooleanKey key: BooleanKey.values()) {
@@ -155,7 +185,4 @@ public class DRPreferences {
     public static boolean get(BooleanKey key) {
         return Preferences.getBoolean(key.toString(), backupBooleanMap.get(key));
     }
-
-
-    
 }
