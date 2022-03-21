@@ -15,8 +15,8 @@ import static frc.robot.DRPreferences.DoubleKey.*;
 public class Indexer extends SubsystemBase {
 
     public static final int
-        frontIndexerPort = 8,
-        backIndexerPort = 10; 
+        frontIndexerPort = 10,
+        backIndexerPort = 8; 
     
     private CANSparkMax
         frontIndexer,
@@ -24,8 +24,8 @@ public class Indexer extends SubsystemBase {
   
     /** Creates a new Indexer Subsystem. */
       public Indexer() {
-        frontIndexer = new CANSparkMax(8, MotorType.kBrushed);
-        backIndexer = new CANSparkMax(10, MotorType.kBrushed);
+        frontIndexer = new CANSparkMax(frontIndexerPort, MotorType.kBrushed);
+        backIndexer = new CANSparkMax(backIndexerPort, MotorType.kBrushed);
 
         backIndexer.setInverted(true);    //Invert Back Motor
       }

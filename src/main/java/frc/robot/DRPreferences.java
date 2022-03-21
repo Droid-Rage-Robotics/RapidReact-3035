@@ -42,7 +42,7 @@ public class DRPreferences {
         entry(BLUE_BALL_COLOR, 10),
 
         entry(CLIMBER_EXTEND_POWER, 1),
-        entry(CLIMBER_RETRACT_POWER, 0.8),
+        entry(CLIMBER_RETRACT_POWER, -0.8),
 
         entry(INDEXER_INTAKE_SPEED, 1),
         entry(INDEXER_OUTTAKE_SPEED, -1),

@@ -16,6 +16,7 @@ import frc.robot.utils.TalonFXSetup;
 
 public class Shooter extends SubsystemBase {
   public final TalonFX motorPrimary;
+                        //motorSecondary;
 
   private double kP, kI, kD, kF;
   private int iZone;
@@ -27,7 +28,7 @@ public class Shooter extends SubsystemBase {
 
   public Shooter() {
     final int kShooterPort = 11;
-    //kSecondShooterPort = 1;
+              //kSecondShooterPort = 12;
       
 
     final double velocity = 204.8; // I believe 20480 is 1 revolution per minute
@@ -61,8 +62,8 @@ public class Shooter extends SubsystemBase {
         motorPrimary.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
     // //Config for motorPrimary
-    //     motorSecondary = new WPI_TalonFX(kSecondShooterPort);
-    //     motorSecondary.setInverted(false);  //MAKE SURE WE CHECK THE MOTORS SPINNING BEFOR TEST
+        // motorSecondary = new WPI_TalonFX(kSecondShooterPort);
+        // motorSecondary.setInverted(false);  //MAKE SURE WE CHECK THE MOTORS SPINNING BEFOR TEST
     //     motorSecondary.configSupplyCurrentLimit(supplyCurrentLimit);
     //     motorSecondary.follow(motorPrimary);
     //     motorSecondary.setNeutralMode(NeutralMode.Coast);

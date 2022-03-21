@@ -69,10 +69,10 @@ public class Drive extends SubsystemBase {
 
     public Drive() {
 
-            // leftRearMotor.follow(leftFrontMotor);
-            // rightRearMotor.follow(rightFrontMotor);
+            leftRearMotor.follow(leftFrontMotor);
+            rightRearMotor.follow(rightFrontMotor);
 
-            rightFrontMotor.setInverted(true);
+        rightFrontMotor.setInverted(true);
             drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
             drive.setSafetyEnabled(false);
 

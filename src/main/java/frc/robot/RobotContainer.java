@@ -81,8 +81,7 @@ public class RobotContainer {
       public RobotContainer() {
         // Configure the button bindings
         configureButtonBindings();
-        // initTeleopCommands();
-
+        initTeleopCommands();
       }
 
       public void initTeleopCommands() {
