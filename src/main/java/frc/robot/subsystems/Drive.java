@@ -72,7 +72,8 @@ public class Drive extends SubsystemBase {
             leftRearMotor.follow(leftFrontMotor);
             rightRearMotor.follow(rightFrontMotor);
 
-        rightFrontMotor.setInverted(true);
+            rightFrontMotor.setInverted(true);
+            leftFrontMotor.setInverted(true);
             drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
             drive.setSafetyEnabled(false);
 
@@ -329,5 +330,4 @@ public class Drive extends SubsystemBase {
         // SmartDashboard.putNumber("NEO left Encoder", leftEncoder.getDistance());
         // SmartDashboard.putNumber("NEO right encoder", rightEncoder.getDistance());
     }
-
 }

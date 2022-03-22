@@ -1,25 +1,34 @@
 
 package frc.robot.subsystems;
 
+import static frc.robot.DRPreferences.DoubleKey.BACK_SHOOTER_AUTO_HIGH;
+import static frc.robot.DRPreferences.DoubleKey.BACK_SHOOTER_AUTO_LOW;
+import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_AUTO_HIGH;
+import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_AUTO_LOW;
+import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_CLOSE_HIGH;
+import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_D;
+import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_F;
+import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_FAR_HIGH;
+import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_I;
+import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_I_ZONE;
+import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_LOW;
+import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_P;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utils.TalonFXSetup;
+import frc.robot.DRPreferences;
 
 public class Shooter extends SubsystemBase {
-  public final TalonFX motorPrimary;
-                        //motorSecondary;
 
-  private double kP, kI, kD, kF;
-  private int iZone;
+  private final TalonFX m_front = new TalonFX(11);
+  private final TalonFX m_back = new TalonFX(13);
+                      
   private int rpmAdder;
 
   // private NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
@@ -27,52 +36,61 @@ public class Shooter extends SubsystemBase {
 
 
   public Shooter() {
-    final int kShooterPort = 11;
-              //kSecondShooterPort = 12;
-      
 
-    final double velocity = 204.8; // I believe 20480 is 1 revolution per minute
-    final boolean secondaryInverted = false;
-    final boolean primaryInverted = false;
+    
+        // motorFront = new WPI_TalonFX(11);
 
-    // public static final int pigeonID = 0;
-    // public static final int driveMotor0 = 1;
-
-    //PID values from Droid Rage Preferences
-        kP = Preferences.getDouble("Shooter kP", 0.0465);
-        kI = Preferences.getDouble("Shooter kI", 0);
-        kD = Preferences.getDouble("Shooter kD", 0.0);
-        kF = Preferences.getDouble("Shooter kF", 0.048);
-        iZone = (int) Preferences.getDouble("Shooter I-Zone", 150);
-
-        motorPrimary = new WPI_TalonFX(kShooterPort);
-        motorPrimary.setInverted(false);
-        SupplyCurrentLimitConfiguration supplyCurrentLimit = new SupplyCurrentLimitConfiguration(true, 40, 45, 0.5);
-        motorPrimary.configSupplyCurrentLimit(supplyCurrentLimit);
-        motorPrimary.setNeutralMode(NeutralMode.Coast);
-
-    //Config for motorPrimary
-        motorPrimary.config_kP(10, kP);
-        motorPrimary.config_kI(0, kI);   
-        motorPrimary.config_kD(0, kD);  
-        motorPrimary.config_kF(10, kF);  
-        motorPrimary.config_IntegralZone(0, iZone);
-        //motorLeft.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10);
-
-        motorPrimary.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
     // //Config for motorPrimary
-        // motorSecondary = new WPI_TalonFX(kSecondShooterPort);
-        // motorSecondary.setInverted(false);  //MAKE SURE WE CHECK THE MOTORS SPINNING BEFOR TEST
+        // motorBack = new WPI_TalonFX(13);
+        // motorBack.setInverted(false);
+        // motorBack.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.5));
+        // motorBack.setNeutralMode(NeutralMode.Coast);
+
+        // motorBack.config_kP(10, DRPreferences.get(BACK_SHOOTER_P));
+        // motorBack.config_kI(0, DRPreferences.get(BACK_SHOOTER_I));   
+        // motorBack.config_kD(0, DRPreferences.get(BACK_SHOOTER_D));  
+        // motorBack.config_kF(10, DRPreferences.get(BACK_SHOOTER_F));  
+        // motorBack.config_IntegralZone(0, (int) DRPreferences.get(BACK_SHOOTER_I_ZONE));
     //     motorSecondary.configSupplyCurrentLimit(supplyCurrentLimit);
     //     motorSecondary.follow(motorPrimary);
     //     motorSecondary.setNeutralMode(NeutralMode.Coast);
 
     
         // TalonFXSetup.velocityStatusFrames(motorSecondary);
-        TalonFXSetup.velocityStatusFrames(motorPrimary);
-        Preferences.getDouble("Shooter Setpoint", 1000);
-        this.setDefaultCommand(new RunCommand(() -> disable() , this));
+        // TalonFXSetup.velocityStatusFrames(motorFront);
+        // TalonFXSetup.velocityStatusFrames(motorBack);
+        // Preferences.getDouble("Shooter Setpoint", 1000);
+        // this.setDefaultCommand(new RunCommand(() -> stop() , this));
+        // motorBack.follow(motorFront);
+        // motorBack.setInverted(InvertType.OpposeMaster);
+
+
+
+
+
+
+    //     motorFront.setInverted(true);
+    //     motorFront.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.5));
+    //     motorFront.setNeutralMode(NeutralMode.Coast);
+
+    // //Config for motorPrimary
+    m_front.setInverted(true);
+    m_back.setInverted(false);
+    m_front.config_kP(10, DRPreferences.get(FRONT_SHOOTER_P));
+    m_front.config_kI(0, DRPreferences.get(FRONT_SHOOTER_I));   
+    m_front.config_kD(0, DRPreferences.get(FRONT_SHOOTER_D));  
+    m_front.config_kF(10, DRPreferences.get(FRONT_SHOOTER_F));  
+    m_front.config_IntegralZone(0, (int) DRPreferences.get(FRONT_SHOOTER_I_ZONE));
+    //motorLeft.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10);
+
+    // motorFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+
+    m_front.setNeutralMode(NeutralMode.Coast);
+    m_back.setNeutralMode(NeutralMode.Coast);
+
+    m_back.follow(m_front);   //Foll0w Front
+    m_back.setInverted(InvertType.OpposeMaster);  //Inverted from Front
   }
 
   @Override
@@ -83,12 +101,22 @@ public class Shooter extends SubsystemBase {
 
 
 //Set Speed
-  public void setManualOutput(double speed){
-    motorPrimary.set(ControlMode.PercentOutput, speed);
+  public void setManualOutput(double frontSpeed, double backSpeed){
+    m_front.set(ControlMode.PercentOutput, frontSpeed);
+    // motorBack.set(ControlMode.PercentOutput, backSpeed);
+  }
+
+  public void setFrontOutput(double frontSpeed){
+    setManualOutput(frontSpeed, 0);
   }
 //Set Velocity
-  public void setVelocity( double velocity){
-    motorPrimary.set(ControlMode.Velocity, velocity);
+  public void setVelocity(double frontVelocity, double backVelocity){
+    m_front.set(ControlMode.Velocity, frontVelocity);
+    // zmotorBack.set(ControlMode.Velocity, backVelocity);
+  }
+
+  public void setVelocity(double frontVelocity){
+    setVelocity(frontVelocity, 0);
   }
 
   public void DashboardVelocity(){
@@ -99,7 +127,7 @@ public class Shooter extends SubsystemBase {
     // RPM to U/100ms is rotations*4096 / 60000ms
     double wheelRpm = Preferences.getDouble("Shooter Setpoint", 1000);
     double motorVelocity = (wheelRpm / 600 * 2048) / 1.75;
-    motorPrimary.set(ControlMode.Velocity, motorVelocity);
+    m_front.set(ControlMode.Velocity, motorVelocity);
   }
 
   public void setRPM(double wheelRPM){
@@ -109,36 +137,61 @@ public class Shooter extends SubsystemBase {
     setVelocity(motorVelocity);
   }
 
+  public void setRPM(double frontWheelRPM, double backWheelRPM){
+    // Sensor Velocity in ticks per 100ms / Sensor Ticks per Rev * 600 (ms to min) * 1.5 gear ratio to shooter
+    // Motor Velocity in RPM / 600 (ms to min) * Sensor ticks per rev / Gear Ratio 42to24
+    double frontMotorVelocity = (frontWheelRPM / 600 * 2048) / 1.75;
+    double backMotorVelocity = (backWheelRPM / 600 * 2048) / 1.75;
+    setVelocity(frontMotorVelocity, backMotorVelocity);
+  }
+
   public double getWheelRPM() {
-    return (motorPrimary.getSelectedSensorVelocity() * 1.75) / 2048 * 600;
+    return (m_front.getSelectedSensorVelocity() * 1.75) / 2048 * 600;
   }
 
   public boolean isAtRPM() {
-    return getWheelRPM() == motorPrimary.getClosedLoopTarget();
+    return getWheelRPM() == m_front.getClosedLoopTarget();
   }
 
   public boolean isGreaterThanRPM() {
-    return getWheelRPM() > motorPrimary.getClosedLoopTarget();
+    return getWheelRPM() > m_front.getClosedLoopTarget();
   }
 
-    public void sendIt(){
-    setRPM(5600 + rpmAdder);
+  public void shootFarHigh() {
+    setRPM(
+      DRPreferences.get(FRONT_SHOOTER_FAR_HIGH) + rpmAdder
+      // ,DRPreferences.get(BACK_SHOOTER_FAR_HIGH) + rpmAdder
+    );
+  }
+
+    public void shootCloseHigh(){
+    setRPM(
+      DRPreferences.get(FRONT_SHOOTER_CLOSE_HIGH) + rpmAdder
+      // DRPreferences.get(BACK_SHOOTER_CLOSE_HIGH) + rpmAdder
+    );
   }
   
   public void shootLow() {
-    setRPM(3300 + rpmAdder);
+    setRPM(
+      DRPreferences.get(FRONT_SHOOTER_LOW) + rpmAdder
+      // DRPreferences.get(BACK_SHOOTER_LOW) + rpmAdder
+    );
   }
 
-  public void shootHigh() {
-    setRPM(6000 + rpmAdder);
-  }
+  
 
   public void shootLowAuto() {
-    setRPM(2000 + rpmAdder);
+    setRPM(
+      DRPreferences.get(FRONT_SHOOTER_AUTO_LOW) + rpmAdder,
+      DRPreferences.get(BACK_SHOOTER_AUTO_LOW) + rpmAdder
+    );
   }
 
   public void shootHighAuto() {
-    setRPM(4500 + rpmAdder);
+    setRPM(
+      DRPreferences.get(FRONT_SHOOTER_AUTO_HIGH) + rpmAdder,
+      DRPreferences.get(BACK_SHOOTER_AUTO_HIGH) + rpmAdder
+    );
   }
 
   public void addRPM() {
@@ -149,15 +202,15 @@ public class Shooter extends SubsystemBase {
     rpmAdder -= 100;
   }
 
-  public void disable(){
-    motorPrimary.set(ControlMode.PercentOutput, 0);
+  public void stop(){
+    setRPM(0, 0);
   }
 
   public void dashboard() {
-  SmartDashboard.putNumber("Shooter Velocity: ", motorPrimary.getSelectedSensorVelocity());
+  SmartDashboard.putNumber("Shooter Velocity: ", m_front.getSelectedSensorVelocity());
   SmartDashboard.putNumber("WheelRPM: ", getWheelRPM());
-  SmartDashboard.putNumber("Shooter OutputPercentage: ", motorPrimary.getMotorOutputPercent());
-  SmartDashboard.putNumber("Shooter LeftCurrent: ", motorPrimary.getSupplyCurrent());
+  SmartDashboard.putNumber("Shooter OutputPercentage: ", m_front.getMotorOutputPercent());
+  SmartDashboard.putNumber("Shooter LeftCurrent: ", m_front.getSupplyCurrent());
   SmartDashboard.putNumber("Shooter RPMAdder: ", rpmAdder);
   // live_dashboard.getEntry("Shooter Velocity2: ").setDouble(motorPrimary.getSelectedSensorVelocity());
   }

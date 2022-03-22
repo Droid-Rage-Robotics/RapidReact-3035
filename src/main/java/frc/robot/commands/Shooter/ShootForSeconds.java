@@ -22,7 +22,7 @@ public class ShootForSeconds extends CommandBase {
     public void initialize() {
         timer.start();
         while (timer.get() <= seconds) {
-            shooter.shootHigh();
+            shooter.shootFarHigh();
         }
         // shooter.disable();
         finished = true;

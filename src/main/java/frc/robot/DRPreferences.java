@@ -14,9 +14,29 @@ public class DRPreferences {
     public static String key;
 
     public enum DoubleKey {
-        SHOOTER_P,
-        SHOOTER_I,
-        SHOOTER_D,
+        FRONT_SHOOTER_P,
+        FRONT_SHOOTER_I,
+        FRONT_SHOOTER_D,
+        FRONT_SHOOTER_F,
+        FRONT_SHOOTER_I_ZONE,
+
+        FRONT_SHOOTER_FAR_HIGH,
+        FRONT_SHOOTER_CLOSE_HIGH,
+        FRONT_SHOOTER_LOW,
+        FRONT_SHOOTER_AUTO_HIGH,
+        FRONT_SHOOTER_AUTO_LOW,
+
+        BACK_SHOOTER_P,
+        BACK_SHOOTER_I,
+        BACK_SHOOTER_D,
+        BACK_SHOOTER_F,
+        BACK_SHOOTER_I_ZONE,
+
+        BACK_SHOOTER_FAR_HIGH,
+        BACK_SHOOTER_CLOSE_HIGH,
+        BACK_SHOOTER_LOW,
+        BACK_SHOOTER_AUTO_HIGH,
+        BACK_SHOOTER_AUTO_LOW,
 
         BALL_SENSOR_DISTANCE_THRESHOLD,
         RED_BALL_COLOR,
@@ -26,6 +46,7 @@ public class DRPreferences {
         CLIMBER_RETRACT_POWER,
 
         INDEXER_INTAKE_SPEED,
+        INDEXER_FRONT_INTAKE_SPEED,
         INDEXER_OUTTAKE_SPEED,
         
         INTAKE_INTAKE_SPEED,
@@ -33,9 +54,18 @@ public class DRPreferences {
     }
 
     private static HashMap<DoubleKey, Double> backupDoubleMap = new HashMap<DoubleKey, Double>(Map.ofEntries(
-        entry(SHOOTER_P, 10),
-        entry(SHOOTER_I, 10),
-        entry(SHOOTER_D, 10),
+        entry(FRONT_SHOOTER_P, 0.0465),
+        entry(FRONT_SHOOTER_I, 0),
+        entry(FRONT_SHOOTER_D, 0),
+        entry(FRONT_SHOOTER_F, 0.048),
+        entry(FRONT_SHOOTER_I_ZONE, 150),
+
+        entry(FRONT_SHOOTER_FAR_HIGH, 6000),
+        entry(FRONT_SHOOTER_CLOSE_HIGH, 5600),
+        entry(FRONT_SHOOTER_LOW, 2500),
+
+        entry(FRONT_SHOOTER_AUTO_HIGH, 4500),
+        entry(FRONT_SHOOTER_AUTO_LOW, 2000),
 
         entry(BALL_SENSOR_DISTANCE_THRESHOLD, 10),
         entry(RED_BALL_COLOR, 10),
@@ -44,11 +74,31 @@ public class DRPreferences {
         entry(CLIMBER_EXTEND_POWER, 1),
         entry(CLIMBER_RETRACT_POWER, -0.8),
 
-        entry(INDEXER_INTAKE_SPEED, 1),
-        entry(INDEXER_OUTTAKE_SPEED, -1),
+        entry(INDEXER_INTAKE_SPEED, 0.3),
+        entry(INDEXER_FRONT_INTAKE_SPEED, 0.5),
+        entry(INDEXER_OUTTAKE_SPEED, -0.25),
 
         entry(INTAKE_INTAKE_SPEED,  1),
-        entry(INTAKE_OUTTAKE_SPEED, -1)
+        entry(INTAKE_OUTTAKE_SPEED, -1),
+        
+        
+        
+        
+        
+        
+        //Not needed
+        entry(BACK_SHOOTER_P, 0.0465),
+        entry(BACK_SHOOTER_I, 0),
+        entry(BACK_SHOOTER_D, 0),
+        entry(BACK_SHOOTER_F, 0.048),
+        entry(BACK_SHOOTER_I_ZONE, 150),
+
+        entry(BACK_SHOOTER_FAR_HIGH, 6500),
+        entry(BACK_SHOOTER_CLOSE_HIGH, 5600),
+        entry(BACK_SHOOTER_LOW, 1000),
+
+        entry(BACK_SHOOTER_AUTO_HIGH, 4500),
+        entry(BACK_SHOOTER_AUTO_LOW, 2000)
 
     ));
 

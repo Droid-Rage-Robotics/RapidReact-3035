@@ -45,7 +45,6 @@ import frc.robot.commands.Autos.NormalAuto;
 import frc.robot.commands.Autos.GoodShoot;
 import frc.robot.commands.Autos.StraightLineTest;
 import frc.robot.commands.Shooter.ShootingSequence;
-import frc.robot.commands.Shooter.ShootingSequenceforIndexer;
 import frc.robot.subsystems.ClimberNoEncoder;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer;
@@ -103,7 +102,10 @@ public class RobotContainer {
       public void configureButtonBindings() {
         controllers
 
-        //controller 0
+        /** 
+         *        CONTROLLER 0
+         */
+
         .addCommandsToControllerPort(0)
           .add("intake", RT)    //Intake and Indexer
             .whenActive(intake::lift, intake)
@@ -140,19 +142,20 @@ public class RobotContainer {
             .add("shootLow", X)   //Low
             .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
 
-            .whenInactive(shooter::disable, shooter)
+            .whenInactive(shooter::stop, shooter)
 
             .whenInactive(indexer::stopBothIndexer, indexer)
-          .add("shootHigh", B)    //High
-            .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootHigh), true)
-
-            .whenInactive(shooter::disable, shooter)
-            .whenInactive(indexer::stopBothIndexer, indexer)
-
-          .add("sendIt", Y)   //(No PID COntrol, Percent Output instead)
-            .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::sendIt), true)
+          .add("far", B)    //High
+            .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootFarHigh), true)
             
-            .whenInactive(shooter::disable, shooter)
+
+            .whenInactive(shooter::stop, shooter)
+            .whenInactive(indexer::stopBothIndexer, indexer)
+
+          .add("close", Y)   //(No PID COntrol, Percent Output instead)
+            .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootCloseHigh), true)
+            
+            .whenInactive(shooter::stop, shooter)
             .whenInactive(indexer::stopBothIndexer, indexer)
 
 
@@ -164,33 +167,39 @@ public class RobotContainer {
 
 
 
-        //controller 1  
+        /** 
+         *        CONTROLLER 1 
+         */
+
         .addCommandsToControllerPort(1)
           .add("addRPM", DPAD_RIGHT)
             .whenActive(shooter::addRPM, shooter)
+
           .add("subtractRPM", DPAD_LEFT)
             .whenInactive(shooter::subtractRPM, shooter)
+
           .add("shootLow", X)   //Low
             .whileActiveContinuous(shooter::shootLow)
             .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
             // .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
 
-            .whenInactive(shooter::disable, shooter)
+            .whenInactive(shooter::stop, shooter)
 
             .whenInactive(indexer::stopBothIndexer, indexer)
+
           .add("shootHigh", B)    //High
-          .whileActiveContinuous(shooter::shootHigh)
-          .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootHigh), true)
+          .whileActiveContinuous(shooter::shootCloseHigh)
+          .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootFarHigh), true)
             // .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootHigh), true)
 
-            .whenInactive(shooter::disable, shooter)
+            .whenInactive(shooter::stop, shooter)
             .whenInactive(indexer::stopBothIndexer, indexer)
 
           .add("sendIt", Y)   //(No PID COntrol, Percent Output instead)
-            .whileActiveContinuous(shooter::sendIt)
-            .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::sendIt), true)
+            .whileActiveContinuous(shooter::shootFarHigh)
+            .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootCloseHigh), true)
             
-            .whenInactive(shooter::disable, shooter)
+            .whenInactive(shooter::stop, shooter)
             .whenInactive(indexer::stopBothIndexer, indexer)
 
           .add("climberExtend", DPAD_UP)    //Climber Up
@@ -208,13 +217,21 @@ public class RobotContainer {
 
             .whenInactive(indexer::stopBothIndexer, indexer)
 
-          .add("indexerDown", LB)   //Indexer Down
+          .add("indexerUpBoth", LB)   //Indexer Up Both
+            .whenActive(indexer::intakeBothIndexer, indexer)
+
+            .whenInactive(indexer::stopBothIndexer, indexer)
+
+
+          .add("indexerDown", RT)   //Indexer Down
             .whenActive(indexer::outtakeBothIndexer, indexer)
 
             .whenInactive(indexer::stopBothIndexer, indexer)
 
-          .add("shootIndexer", RT)
-            .whenActive(new ShootingSequenceforIndexer(indexer))
+          // .add("shootIndexer", RT)
+          //   .whenActive(new ShootingSequenceforIndexer(indexer))
+
+
 
           // .whenInactive(indexer::stopBothIndexer, indexer)
 

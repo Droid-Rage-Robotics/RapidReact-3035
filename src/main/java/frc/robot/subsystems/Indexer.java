@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,15 +26,17 @@ public class Indexer extends SubsystemBase {
     /** Creates a new Indexer Subsystem. */
       public Indexer() {
         frontIndexer = new CANSparkMax(frontIndexerPort, MotorType.kBrushed);
+        frontIndexer.setIdleMode(IdleMode.kCoast);
+        
         backIndexer = new CANSparkMax(backIndexerPort, MotorType.kBrushed);
-
-        backIndexer.setInverted(true);    //Invert Back Motor
+        backIndexer.setIdleMode(IdleMode.kBrake);
+        backIndexer.setInverted(true);    //Invert Back Motor  
       }
 
 
       //controls the front motors independently
       public void intakeFrontIndexer(){
-        setFrontIndexPower(DRPreferences.get(INDEXER_INTAKE_SPEED));
+        setFrontIndexPower(DRPreferences.get(INDEXER_FRONT_INTAKE_SPEED));
       }
       public void outtakeFrontIndexer() {
         setFrontIndexPower(DRPreferences.get(INDEXER_OUTTAKE_SPEED));
@@ -55,8 +58,8 @@ public class Indexer extends SubsystemBase {
 
       //Controls the front and back motors
       public void intakeBothIndexer(){
-        setFrontIndexPower(DRPreferences.get(INDEXER_INTAKE_SPEED));
-        setFrontIndexPower(DRPreferences.get(INDEXER_INTAKE_SPEED));
+        setFrontIndexPower(DRPreferences.get(INDEXER_FRONT_INTAKE_SPEED));
+        setBackIndexPower(DRPreferences.get(INDEXER_INTAKE_SPEED));
       }
       public void outtakeBothIndexer() {
         setFrontIndexPower(DRPreferences.get(INDEXER_OUTTAKE_SPEED));

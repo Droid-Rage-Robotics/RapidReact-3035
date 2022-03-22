@@ -25,12 +25,10 @@ public class IntakeAndShoot extends SequentialCommandGroup {
             new InstantCommand(intake::intake),
             new DriveByTime(3, 0.4, drive), // moves drivtrain back for 4 seoconds
             new IntakeCommand(intake, indexer),
-            new TurnByTime(4.9, -0.35, drive),
             new InstantCommand(intake::stopIntake),
-            new ShootForSeconds(shooter, 2), // shoots for 4 seconds
-            new InstantCommand(indexer::outtakeBothIndexer), // starts indexer
-            new InstantCommand(indexer::stopBothIndexer),
-            new DriveByTime(4, -0.4, drive)  // moves back
+            new DriveByTime(5, -0.5, drive),
+            new ShootForSeconds(shooter, 4), // shoots for 4 seconds
+            new InstantCommand(indexer::outtakeBothIndexer) // starts indexer
         );
     }
 }

@@ -14,7 +14,7 @@ public class ForwardAndShootLow extends SequentialCommandGroup {
         addCommands(
             new InstantCommand(intake::lift, intake),
             new DriveByTime(5, 0.2, drivetrain),
-            new ShootingSequence(shooter, indexer, shooter::shootHigh),
+            new ShootingSequence(shooter, indexer, shooter::shootFarHigh),
             new DriveByTime(5, -0.2, drivetrain)
         );
         

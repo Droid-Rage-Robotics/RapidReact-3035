@@ -19,7 +19,7 @@ public class TestTrajectories extends SequentialCommandGroup {
         new IntakeCommand(intake, indexer),
         new DriveByTime(5, 0.3, drivetrain),
         new TurnByTime(3, 0.4, drivetrain),
-        new ShootingSequence(shooter, indexer, shooter::shootHigh)        
+        new ShootingSequence(shooter, indexer, shooter::shootFarHigh)        
     );
     }
 }
