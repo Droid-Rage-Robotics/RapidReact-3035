@@ -6,14 +6,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 // import edu.wpi.first.math.util.Units;
 // import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.Drive.DriveByTime;
-import frc.robot.commands.Drive.TurnByTime;
 import frc.robot.commands.Shooter.ShootForSeconds;
-import frc.robot.commands.Shooter.ShootingSequence;
-import frc.robot.subsystems.*;
 // import frc.robot.utils.*;
+import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 // import java.util.List;
 

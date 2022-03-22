@@ -160,9 +160,9 @@ public class DRPreferences {
 
     ));
 
-    private static Map.Entry<StringKey, Double> entry(StringKey key, double number) {
-        return new AbstractMap.SimpleEntry<StringKey, Double>(key, number);
-    }
+    // private static Map.Entry<StringKey, Double> entry(StringKey key, double number) {
+    //     return new AbstractMap.SimpleEntry<StringKey, Double>(key, number);
+    // }
 
     public static void addStringKeys() {
         for (StringKey key: StringKey.values()) {
@@ -211,9 +211,9 @@ public class DRPreferences {
 
     ));
 
-    private static Map.Entry<BooleanKey, Double> entry(BooleanKey key, double number) {
-        return new AbstractMap.SimpleEntry<BooleanKey, Double>(key, number);
-    }
+    // private static Map.Entry<BooleanKey, Double> entry(BooleanKey key, double number) {
+    //     return new AbstractMap.SimpleEntry<BooleanKey, Double>(key, number);
+    // }
 
     public static void addBooleanKeys() {
         for (BooleanKey key: BooleanKey.values()) {
