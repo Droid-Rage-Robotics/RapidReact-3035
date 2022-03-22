@@ -122,7 +122,6 @@ public class DRPreferences {
 
 
 
-        
     public static void setDouble(DoubleKey key, double value) {
         Preferences.setDouble(key.toString(), value);
     }

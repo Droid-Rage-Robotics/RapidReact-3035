@@ -16,14 +16,12 @@ public class ClimberNoEncoder extends SubsystemBase {
     public ClimberNoEncoder(){
         lClimberMotor.setSmartCurrentLimit(30);
         rClimberMotor.setSmartCurrentLimit(30);
-
-        rClimberMotor.follow(lClimberMotor, true);
     }
 
     // we have this so that we can take motors out of follow mode and only have to add one more line
     public void setPower(double power){
         lClimberMotor.set(power);
-       // rClimberMotor.set(power);
+        rClimberMotor.set(power);
     }
 
     public void retract(){
@@ -36,6 +34,6 @@ public class ClimberNoEncoder extends SubsystemBase {
 
     public void stop() {
         lClimberMotor.set(0);
-        //rClimberMotor.set(0);
+        rClimberMotor.set(0);
     }
 }

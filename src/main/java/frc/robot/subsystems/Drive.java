@@ -58,6 +58,7 @@ public class Drive extends SubsystemBase {
     // Gyro
         private AHRS navx = new AHRS(SPI.Port.kMXP);
 
+
         private DifferentialDrive drive;
 
         private DifferentialDriveOdometry externalOdometry;
@@ -68,6 +69,10 @@ public class Drive extends SubsystemBase {
         private NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
 
     public Drive() {
+        leftFrontMotor.setSmartCurrentLimit(40);
+        leftRearMotor.setSmartCurrentLimit(40);
+        rightFrontMotor.setSmartCurrentLimit(40);
+        rightRearMotor.setSmartCurrentLimit(40);
 
             leftRearMotor.follow(leftFrontMotor);
             rightRearMotor.follow(rightFrontMotor);
@@ -316,7 +321,7 @@ public class Drive extends SubsystemBase {
         // SmartDashboard.putNumber("robotX", Units.metersToFeet(getPose().getTranslation().getX()));
         // SmartDashboard.putNumber("robotY", Units.metersToFeet(getPose().getTranslation().getY()));
         SmartDashboard.putNumber("robotHeading", getPose().getRotation().getDegrees());
-
+        SmartDashboard.putNumber("robot pitch", navx.getRoll());
         // SmartDashboard.putNumber("Internal RobotX", Units.metersToFeet(internalOdometry.getPoseMeters().getTranslation().getX()));
         // SmartDashboard.putNumber("Internal RobotY", Units.metersToFeet(internalOdometry.getPoseMeters().getTranslation().getY()));
 
@@ -329,5 +334,62 @@ public class Drive extends SubsystemBase {
 
         // SmartDashboard.putNumber("NEO left Encoder", leftEncoder.getDistance());
         // SmartDashboard.putNumber("NEO right encoder", rightEncoder.getDistance());
+    }
+
+    public void antiTipArcadeDrive(double xAxisRate, double zAxisRate) {
+        drive.setSafetyEnabled(true);
+
+
+
+        // double xAxisRate            = stick.getX();
+        // double yAxisRate            = stick.getY();
+        double rollAngleDegrees    = navx.getRoll();
+        // double rollAngleDegrees     = navx.getRoll();
+        final double kOffBalanceAngleThresholdDegrees = 5;
+        final double kOonBalanceAngleThresholdDegrees  = 2;
+        boolean fixBalance = false;
+        
+        if ( !fixBalance && 
+                (Math.abs(rollAngleDegrees) >= 
+                Math.abs(kOffBalanceAngleThresholdDegrees))) {
+            fixBalance = true;
+        }
+        else if ( fixBalance && 
+                    (Math.abs(rollAngleDegrees) <= 
+                    Math.abs(kOonBalanceAngleThresholdDegrees))) {
+            fixBalance = false;
+        }
+        // if ( !autoBalanceYMode && 
+        //      (Math.abs(pitchAngleDegrees) >= 
+        //       Math.abs(kOffBalanceAngleThresholdDegrees))) {
+        //     autoBalanceYMode = true;
+        // }
+        // else if ( autoBalanceYMode && 
+        //           (Math.abs(pitchAngleDegrees) <= 
+        //            Math.abs(kOonBalanceAngleThresholdDegrees))) {
+        //     autoBalanceYMode = false;
+        // }
+        
+        // Control drive system automatically, 
+        // driving in reverse direction of pitch/roll angle,
+        // with a magnitude based upon the angle
+        
+        if ( fixBalance ) {
+            double pitchAngleRadians = rollAngleDegrees * (Math.PI / 180.0);
+            xAxisRate = Math.sin(pitchAngleRadians) * -1;
+        }
+        // if ( autoBalanceYMode ) {
+        //     double rollAngleRadians = rollAngleDegrees * (Math.PI / 180.0);
+        //     yAxisRate = Math.sin(rollAngleRadians) * -1;
+        // }
+        
+        // try {
+            // myRobot.driveCartesian(xAxisRate, yAxisRate, stick.getTwist(),0);
+        drive.arcadeDrive(xAxisRate, zAxisRate);
+        // } catch( RuntimeException ex ) {
+        //     String err_string = "Drive system error:  " + ex.getMessage();
+        //     DriverStation.reportError(err_string, true);
+        // }
+        // Timer.delay(0.005);		// wait for a motor update time
     }
 }

@@ -85,8 +85,10 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
-    robotContainer.initTeleopCommands();
     }
+    CommandScheduler.getInstance().cancelAll();
+    robotContainer.configureButtonBindings();
+    robotContainer.initTeleopCommands();
   }
 
   /** This function is called periodically during operator control. */
