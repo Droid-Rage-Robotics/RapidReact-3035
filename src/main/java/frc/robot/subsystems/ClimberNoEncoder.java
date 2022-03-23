@@ -12,10 +12,13 @@ public class ClimberNoEncoder extends SubsystemBase {
     private CANSparkMax 
         lClimberMotor = new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless),
         rClimberMotor = new CANSparkMax(7, CANSparkMaxLowLevel.MotorType.kBrushless);
-
+    
+    
     public ClimberNoEncoder(){
         lClimberMotor.setSmartCurrentLimit(30);
         rClimberMotor.setSmartCurrentLimit(30);
+        
+        rClimberMotor.setInverted(true);
     }
 
     // we have this so that we can take motors out of follow mode and only have to add one more line

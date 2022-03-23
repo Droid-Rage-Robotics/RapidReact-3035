@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 // import edu.wpi.first.math.util.Units;
 // import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.Drive.DriveByTime;
 import frc.robot.commands.Shooter.ShootForSeconds;
@@ -27,7 +28,10 @@ public class IntakeAndShoot extends SequentialCommandGroup {
             new IntakeCommand(intake, indexer),
             new InstantCommand(intake::stopIntake),
             new DriveByTime(5, -0.5, drive),
-            new ShootForSeconds(shooter, 4), // shoots for 4 seconds
+            
+            new InstantCommand(shooter::shootHighAuto),
+            new WaitCommand(2),
+            
             new InstantCommand(indexer::outtakeBothIndexer) // starts indexer
         );
     }

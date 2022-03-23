@@ -54,14 +54,14 @@ public class DRPreferences {
     }
 
     private static HashMap<DoubleKey, Double> backupDoubleMap = new HashMap<DoubleKey, Double>(Map.ofEntries(
-        entry(FRONT_SHOOTER_P, 0.0465),
+        entry(FRONT_SHOOTER_P, 0.04),
         entry(FRONT_SHOOTER_I, 0),
         entry(FRONT_SHOOTER_D, 0),
-        entry(FRONT_SHOOTER_F, 0.048),
+        entry(FRONT_SHOOTER_F, 0.1),
         entry(FRONT_SHOOTER_I_ZONE, 150),
 
-        entry(FRONT_SHOOTER_FAR_HIGH, 6000),
-        entry(FRONT_SHOOTER_CLOSE_HIGH, 5600),
+        entry(FRONT_SHOOTER_FAR_HIGH, 3700),
+        entry(FRONT_SHOOTER_CLOSE_HIGH, 3700),
         entry(FRONT_SHOOTER_LOW, 2500),
 
         entry(FRONT_SHOOTER_AUTO_HIGH, 4500),

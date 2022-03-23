@@ -392,4 +392,58 @@ public class Drive extends SubsystemBase {
         // }
         // Timer.delay(0.005);		// wait for a motor update time
     }
+
+    // public void encoderDrive(double speed,
+    //                          double leftInches, double rightInches,
+    //                          double timeoutS) {
+    //     int newLeftTarget;
+    //     int newRightTarget;
+    //     double COUNTS_PER_INCH = 434.5992;
+        
+
+    //     // Determine new target position, and pass to motor controller
+    //     // leftFrontMotor.getEncoder().getPositionConversionFactor()
+    //     newLeftTarget = leftEncoder.get() + (int)(leftInches * COUNTS_PER_INCH);
+    //     newRightTarget = rightEncoder.get() + (int)(rightInches * COUNTS_PER_INCH);
+    //     leftFrontMotor.
+    //     robot.leftDrive.setTargetPosition(newLeftTarget);
+    //     robot.rightDrive.setTargetPosition(newRightTarget);
+
+    //     // Turn On RUN_TO_POSITION
+    //     robot.leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    //     robot.rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+    //     // reset the timeout time and start motion.
+    //     runtime.reset();
+    //     robot.leftDrive.setPower(Math.abs(speed));
+    //     robot.rightDrive.setPower(Math.abs(speed));
+
+    //     // keep looping while we are still active, and there is time left, and both motors are running.
+    //     // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+    //     // its target position, the motion will stop.  This is "safer" in the event that the robot will
+    //     // always end the motion as soon as possible.
+    //     // However, if you require that BOTH motors have finished their moves before the robot continues
+    //     // onto the next step, use (isBusy() || isBusy()) in the loop test.
+    //     while (opModeIsActive() &&
+    //             (runtime.seconds() < timeoutS) &&
+    //             (robot.leftDrive.isBusy() && robot.rightDrive.isBusy())) {
+
+    //         // Display it for the driver.
+    //         telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
+    //         telemetry.addData("Path2",  "Running at %7d :%7d",
+    //                                     robot.leftDrive.getCurrentPosition(),
+    //                                     robot.rightDrive.getCurrentPosition());
+    //         telemetry.update();
+    //     }
+
+    //     // Stop all motion;
+    //     robot.leftDrive.setPower(0);
+    //     robot.rightDrive.setPower(0);
+
+    //     // Turn off RUN_TO_POSITION
+    //     robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    //     robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+    //     //  sleep(250);   // optional pause after each move
+    // }
 }
