@@ -46,6 +46,7 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import io.github.oblarg.oblog.Logger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -74,11 +75,12 @@ public class RobotContainer {
     /*
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
-    // public RobotContainer() {
-    //     // Configure the button bindings
-    //     configureButtonBindings();
-    //     initTeleopCommands();
-    // }
+    public RobotContainer() {
+        // Configure the button bindings
+        // configureButtonBindings();
+        // initTeleopCommands();
+        
+    }
 
     public void initTeleopCommands() {
         drivetrain.initDefaultCommands(

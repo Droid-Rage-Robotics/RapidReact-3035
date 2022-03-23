@@ -3,6 +3,11 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2022.4.1"
 }
 
+// Added for Oblog
+repositories {
+  maven { url 'https://jitpack.io' }
+}
+
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
@@ -66,6 +71,9 @@ dependencies {
     simulationRelease wpi.sim.enableRelease()
 
     testImplementation 'junit:junit:4.13.1'
+
+    // Added Oblog (Be sure to check for updates)
+    implementation "com.github.Oblarg:Oblog:4.0.9"
 }
 
 // Simulation configuration (e.g. environment variables).
