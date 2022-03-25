@@ -29,7 +29,7 @@ public class IntakeAndShoot extends SequentialCommandGroup {
             new InstantCommand(intake::stopIntake),
             new DriveByTime(5, -0.5, drive),
             
-            new InstantCommand(shooter::shootHighAuto),
+            new InstantCommand(shooter::shootHighFarAuto),
             new WaitCommand(2),
             
             new InstantCommand(indexer::outtakeBothIndexer) // starts indexer

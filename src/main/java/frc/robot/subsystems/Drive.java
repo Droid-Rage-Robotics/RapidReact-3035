@@ -4,8 +4,12 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.MotorFeedbackSensor;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
@@ -39,7 +43,6 @@ public class Drive extends SubsystemBase {
             rightRearMotor = new CANSparkMax (4, CANSparkMaxLowLevel.MotorType.kBrushless);
         
 
-
     // Encoders
         private final Encoder leftEncoder = new Encoder (        //Left Encoder
             9,
@@ -49,11 +52,11 @@ public class Drive extends SubsystemBase {
         );
 
         private final Encoder rightEncoder = new Encoder(        //Right Encoder
-                7,
-                6,
-                kRightEncoderReversed,
-                CounterBase.EncodingType.k4X
-        );
+            7,
+            6,
+            kRightEncoderReversed,
+            CounterBase.EncodingType.k4X
+    );
 
     // Gyro
         private AHRS navx = new AHRS(SPI.Port.kMXP);
@@ -74,31 +77,25 @@ public class Drive extends SubsystemBase {
         rightFrontMotor.setSmartCurrentLimit(40);
         rightRearMotor.setSmartCurrentLimit(40);
 
-            leftRearMotor.follow(leftFrontMotor);
-            rightRearMotor.follow(rightFrontMotor);
+        leftRearMotor.follow(leftFrontMotor);
+        rightRearMotor.follow(rightFrontMotor);
 
-            rightFrontMotor.setInverted(true);
-            leftFrontMotor.setInverted(true);
-            drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
-            drive.setSafetyEnabled(false);
+        rightFrontMotor.setInverted(false);
+        leftFrontMotor.setInverted(true);
+        drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
+        drive.setSafetyEnabled(false);
 
-            leftFrontMotor.setIdleMode(IdleMode.kCoast);
-            rightFrontMotor.setIdleMode(IdleMode.kCoast);
-            leftRearMotor.setIdleMode(IdleMode.kCoast);
-            rightRearMotor.setIdleMode(IdleMode.kCoast);
+        leftFrontMotor.setIdleMode(IdleMode.kCoast);
+        rightFrontMotor.setIdleMode(IdleMode.kCoast);
+        leftRearMotor.setIdleMode(IdleMode.kCoast);
+        rightRearMotor.setIdleMode(IdleMode.kCoast);
 
         // Encoders
             leftEncoder.reset();
             rightEncoder.reset();
 
-            leftEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kThroughBoreEncoderResolution);
-            rightEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kThroughBoreEncoderResolution);
-
-            // leftNeoEncoder = leftFrontMotor.getEncoder();
-            // rightNeoEncoder = rightFrontMotor.getEncoder();
-
-            // leftNeoEncoder.setPosition(0);
-            // rightNeoEncoder.setPosition(0);
+            leftEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadiusInches / kThroughBoreEncoderResolution);
+            rightEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadiusInches / kThroughBoreEncoderResolution);
 
 
             externalOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
@@ -111,6 +108,7 @@ public class Drive extends SubsystemBase {
             rightRearMotor.getPIDController();
 
             resetAll();
+
     }
     public void tankDrive(double leftPower, double rightPower) {
         leftFrontMotor.set(leftPower);
@@ -301,39 +299,20 @@ public class Drive extends SubsystemBase {
         double leftDist = leftEncoder.getDistance();
         double rightDist = rightEncoder.getDistance();
 
-        // Update the odometry in the periodic block
         externalOdometry.update(Rotation2d.fromDegrees(getHeading()),
                 leftDist,
                 rightDist);
 
-                // TODO:  there is a very good chance I messed up the math here
-        // internalOdometry.update(Rotation2d.fromDegrees(getHeading()),
-        //         (-leftNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * kWheelRadius,
-        //         (rightNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * kWheelRadius);
         internalOdometry.update(Rotation2d.fromDegrees(getHeading()),
             -leftEncoder.getDistance(),
             rightEncoder.getDistance());
 
-        // live_dashboard.getEntry("robotX").setDouble(Units.metersToFeet(getPose().getTranslation().getX()));
-        // live_dashboard.getEntry("robotY").setDouble(Units.metersToFeet(getPose().getTranslation().getY()));
         live_dashboard.getEntry("robotHeading").setDouble(getPose().getRotation().getRadians());
-
-        // SmartDashboard.putNumber("robotX", Units.metersToFeet(getPose().getTranslation().getX()));
-        // SmartDashboard.putNumber("robotY", Units.metersToFeet(getPose().getTranslation().getY()));
         SmartDashboard.putNumber("robotHeading", getPose().getRotation().getDegrees());
         SmartDashboard.putNumber("robot pitch", navx.getRoll());
-        // SmartDashboard.putNumber("Internal RobotX", Units.metersToFeet(internalOdometry.getPoseMeters().getTranslation().getX()));
-        // SmartDashboard.putNumber("Internal RobotY", Units.metersToFeet(internalOdometry.getPoseMeters().getTranslation().getY()));
 
-        // SmartDashboard.putNumber("Left Encoder = ", leftEncoder.getDistance());
-        // SmartDashboard.putNumber("Right Encoder = ", rightEncoder.getDistance());
-
-        // // TODO: there is a good change i messed up the math
-        // // SmartDashboard.putNumber("NEO left Encoder", (leftNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * kWheelRadius);
-        // // SmartDashboard.putNumber("NEO right encoder", (rightNeoEncoder.getPosition() / 8.73) * 2 * Math.PI * kWheelRadius);
-
-        // SmartDashboard.putNumber("NEO left Encoder", leftEncoder.getDistance());
-        // SmartDashboard.putNumber("NEO right encoder", rightEncoder.getDistance());
+        SmartDashboard.putNumber("Left Encoder = ", leftEncoder.getDistance());
+        SmartDashboard.putNumber("Right Encoder = ", rightEncoder.getDistance());
     }
 
     public void antiTipArcadeDrive(double xAxisRate, double zAxisRate) {
@@ -359,16 +338,6 @@ public class Drive extends SubsystemBase {
                     Math.abs(kOonBalanceAngleThresholdDegrees))) {
             fixBalance = false;
         }
-        // if ( !autoBalanceYMode && 
-        //      (Math.abs(pitchAngleDegrees) >= 
-        //       Math.abs(kOffBalanceAngleThresholdDegrees))) {
-        //     autoBalanceYMode = true;
-        // }
-        // else if ( autoBalanceYMode && 
-        //           (Math.abs(pitchAngleDegrees) <= 
-        //            Math.abs(kOonBalanceAngleThresholdDegrees))) {
-        //     autoBalanceYMode = false;
-        // }
         
         // Control drive system automatically, 
         // driving in reverse direction of pitch/roll angle,
@@ -378,72 +347,25 @@ public class Drive extends SubsystemBase {
             double pitchAngleRadians = rollAngleDegrees * (Math.PI / 180.0);
             xAxisRate = Math.sin(pitchAngleRadians) * -1;
         }
-        // if ( autoBalanceYMode ) {
-        //     double rollAngleRadians = rollAngleDegrees * (Math.PI / 180.0);
-        //     yAxisRate = Math.sin(rollAngleRadians) * -1;
-        // }
-        
-        // try {
-            // myRobot.driveCartesian(xAxisRate, yAxisRate, stick.getTwist(),0);
         drive.arcadeDrive(xAxisRate, zAxisRate);
-        // } catch( RuntimeException ex ) {
-        //     String err_string = "Drive system error:  " + ex.getMessage();
-        //     DriverStation.reportError(err_string, true);
-        // }
-        // Timer.delay(0.005);		// wait for a motor update time
     }
 
-    // public void encoderDrive(double speed,
-    //                          double leftInches, double rightInches,
-    //                          double timeoutS) {
-    //     int newLeftTarget;
-    //     int newRightTarget;
-    //     double COUNTS_PER_INCH = 434.5992;
-        
+    public void encoderDrive(double leftInches, double rightInches, double leftSpeed, double rightSpeed) {
+        double leftTarget = leftEncoder.getDistance() + leftInches;
+        double rightTarget = rightEncoder.getDistance() + rightInches;
 
-    //     // Determine new target position, and pass to motor controller
-    //     // leftFrontMotor.getEncoder().getPositionConversionFactor()
-    //     newLeftTarget = leftEncoder.get() + (int)(leftInches * COUNTS_PER_INCH);
-    //     newRightTarget = rightEncoder.get() + (int)(rightInches * COUNTS_PER_INCH);
-    //     leftFrontMotor.
-    //     robot.leftDrive.setTargetPosition(newLeftTarget);
-    //     robot.rightDrive.setTargetPosition(newRightTarget);
+        while (leftEncoder.getDistance() < leftTarget || rightEncoder.getDistance() < rightTarget) {
+            if (leftEncoder.getDistance() < leftTarget) {
+                leftFrontMotor.set(leftSpeed);
+            }
+            if (rightEncoder.getDistance() < rightTarget) {
+                rightFrontMotor.set(rightSpeed);
+            } 
+        }
+        tankDrive(0, 0);
+    }
 
-    //     // Turn On RUN_TO_POSITION
-    //     robot.leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    //     robot.rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-    //     // reset the timeout time and start motion.
-    //     runtime.reset();
-    //     robot.leftDrive.setPower(Math.abs(speed));
-    //     robot.rightDrive.setPower(Math.abs(speed));
-
-    //     // keep looping while we are still active, and there is time left, and both motors are running.
-    //     // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
-    //     // its target position, the motion will stop.  This is "safer" in the event that the robot will
-    //     // always end the motion as soon as possible.
-    //     // However, if you require that BOTH motors have finished their moves before the robot continues
-    //     // onto the next step, use (isBusy() || isBusy()) in the loop test.
-    //     while (opModeIsActive() &&
-    //             (runtime.seconds() < timeoutS) &&
-    //             (robot.leftDrive.isBusy() && robot.rightDrive.isBusy())) {
-
-    //         // Display it for the driver.
-    //         telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
-    //         telemetry.addData("Path2",  "Running at %7d :%7d",
-    //                                     robot.leftDrive.getCurrentPosition(),
-    //                                     robot.rightDrive.getCurrentPosition());
-    //         telemetry.update();
-    //     }
-
-    //     // Stop all motion;
-    //     robot.leftDrive.setPower(0);
-    //     robot.rightDrive.setPower(0);
-
-    //     // Turn off RUN_TO_POSITION
-    //     robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    //     robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-    //     //  sleep(250);   // optional pause after each move
-    // }
+    public void encoderDrive(double leftInches, double rightInches) {
+        encoderDrive(leftInches, rightInches, 0.25, 0.25);
+    }
 }

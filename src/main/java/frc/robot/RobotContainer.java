@@ -38,6 +38,7 @@ import frc.robot.commands.Autos.IntakeAndShoot;
 import frc.robot.commands.Autos.NormalAuto;
 import frc.robot.commands.Autos.GoodShoot;
 import frc.robot.commands.Autos.HighShots2;
+import frc.robot.commands.Autos.HighShots2WithEncoders;
 import frc.robot.commands.Autos.StraightLineTest;
 import frc.robot.commands.Shooter.ShootingSequence;
 
@@ -59,7 +60,7 @@ import io.github.oblarg.oblog.Logger;
  */
 public class RobotContainer {
     // Defined Robot Subsystems
-    private final Drive drivetrain = new Drive();
+    private final Drive drive = new Drive();
     private final Shooter shooter = new Shooter();
     private final Indexer indexer = new Indexer();
     private final Intake intake = new Intake();
@@ -83,7 +84,7 @@ public class RobotContainer {
     }
 
     public void initTeleopCommands() {
-        drivetrain.initDefaultCommands(
+        drive.initDefaultCommands(
                 () -> driverController.getLeftY(),
                 () -> driverController.getRightX());
         CameraServer.startAutomaticCapture();
@@ -112,7 +113,7 @@ public class RobotContainer {
                     .whenActive(intake::intake, intake)
                 // .whenActive(indexer::intakeFrontIndexer, indexer)
 
-                .whenInactive(intake::stopIntake, intake)
+                .whenInactive(intake::stopIntake)
                 // .whenInactive(indexer::disableFrontIndexer, indexer)
 
                 .add("outtake", LT) // Outtake
@@ -130,12 +131,12 @@ public class RobotContainer {
                     .whenActive(intake::lift, intake)
 
                 .add("slowMode", RB) // Slow Mode
-                    .whenActive(drivetrain::slowDrive, drivetrain)
-                    .whenInactive(drivetrain::normalDrive, drivetrain)
+                    .whenActive(drive::slowDrive, drive)
+                    .whenInactive(drive::normalDrive, drive)
 
                 .add("turboMode", LB) // Turbo Mode
-                    .whenActive(drivetrain::turboDrive, drivetrain)
-                    .whenInactive(drivetrain::normalDrive, drivetrain)
+                    .whenActive(drive::turboDrive, drive)
+                    .whenInactive(drive::normalDrive, drive)
 
                     .add("shootLow", A) // Low
                     .whenActive(shooter::shootLow, shooter)
@@ -229,12 +230,13 @@ public class RobotContainer {
     }
 
     public void getAutoCommands(SendableChooser<Command> autoChooser) {
-        autoChooser.setDefaultOption("Good Shoot", new GoodShoot(drivetrain, shooter, indexer, intake));
-        autoChooser.addOption("Intake and Shoot", new IntakeAndShoot(drivetrain, shooter, indexer, intake));
-        autoChooser.addOption("Normal Auton", new NormalAuto(drivetrain));
-        autoChooser.addOption("Nothing Auto", new InstantCommand(() -> drivetrain.tankDriveVolts(0, 0)));
-        autoChooser.addOption("Straight Line Test", new StraightLineTest(drivetrain));
-        autoChooser.addOption("Forward ANd Shoot Low", new ForwardAndShootLow(drivetrain, shooter, indexer, intake));
-        autoChooser.addOption("2 shots", new HighShots2(drivetrain, shooter, indexer, intake));
+        autoChooser.setDefaultOption("Good Shoot", new GoodShoot(drive, shooter, indexer, intake));
+        autoChooser.addOption("Intake and Shoot", new IntakeAndShoot(drive, shooter, indexer, intake));
+        autoChooser.addOption("Normal Auton", new NormalAuto(drive));
+        autoChooser.addOption("Nothing Auto", new InstantCommand(() -> drive.tankDriveVolts(0, 0)));
+        autoChooser.addOption("Straight Line Test", new StraightLineTest(drive));
+        autoChooser.addOption("Forward ANd Shoot Low", new ForwardAndShootLow(drive, shooter, indexer, intake));
+        autoChooser.addOption("2 shots", new HighShots2(drive, shooter, indexer, intake));
+        autoChooser.addOption("2 shots with encoder", new HighShots2WithEncoders(drive, shooter, indexer, intake));
     }
 }

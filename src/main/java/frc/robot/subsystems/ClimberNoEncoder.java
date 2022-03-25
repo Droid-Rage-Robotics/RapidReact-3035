@@ -74,6 +74,8 @@ public class ClimberNoEncoder extends SubsystemBase {
     
     public void extend(){
         setPower(DRPreferences.get(DoubleKey.CLIMBER_EXTEND_POWER));
+        // return;
+        // setPower(6);
     }
 
     

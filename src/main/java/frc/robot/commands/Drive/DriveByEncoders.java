@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class DriveByTime extends SequentialCommandGroup {
+public class DriveByEncoders extends SequentialCommandGroup {
 
   /**
    * Creates a new DriveDistance.
@@ -19,23 +19,22 @@ public class DriveByTime extends SequentialCommandGroup {
    * @param speed The speed at which the robot will drive
    * @param drive The drive subsystem on which this command will run
    */
-  public DriveByTime(double seconds, double speed, Drive drive) {
+  public DriveByEncoders(double leftInches, double rightInches, Drive drive) {
     addCommands(
-      new InstantCommand(() -> drive.arcadeDrive(speed, 0)),
-      new WaitCommand(seconds),
-      new InstantCommand(() -> drive.arcadeDrive(0, 0))
+      new InstantCommand(() -> drive.encoderDrive(leftInches, rightInches))
     );
     addRequirements(drive);
   }
-  public DriveByTime(double leftPower, double rightPower, double seconds, Drive drive) {
+
+  public DriveByEncoders(
+    double leftInches, double rightInches, 
+    double leftSpeed, double rightSpeed, 
+    Drive drive) {
     addCommands(
-      new InstantCommand(() -> drive.tankDrive(leftPower, rightPower)),
-      new WaitCommand(seconds),
-      new InstantCommand(() -> drive.tankDrive(0, 0))
+      new InstantCommand(() -> drive.encoderDrive(leftInches, rightInches, leftSpeed, rightSpeed))
     );
     addRequirements(drive);
   }
-  
   // public DriveByTime(double seconds, Drive drive) {
   //   DriveByTime(seconds, drive);
   // }

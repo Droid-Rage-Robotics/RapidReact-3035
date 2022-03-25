@@ -32,7 +32,8 @@ public final class DriveConstants {
     kMaxAngularSpeed = 2 * Math.PI, // one rotation per second
     kTrackWidth = 0.55, // meters
     kWheelRadius = 0.0762, // meters
-    kThroughBoreEncoderResolution = 8192, // PPR
+    kWheelRadiusInches = 3,
+    kThroughBoreEncoderResolution = 2048, // PPR
     positionChangePerRotation = 8.73, // Motor rotation per shaft rotation
     kMaxVelocity = 3, // feet per second
     kMaxAcceleration = 1; // Max Accel fet per second squared

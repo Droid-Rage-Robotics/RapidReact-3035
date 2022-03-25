@@ -286,8 +286,8 @@ public class SuperSpecialTrigger implements BooleanSupplier {
   public SuperSpecialTrigger whileActiveContinuous(final Command command, boolean interruptible) {
     requireNonNullParam(command, "command", "whileActiveContinuous");
 
-    CommandScheduler.getInstance()
-        .addButton(
+    CommandScheduler.getInstance().
+        addButton(
             new Runnable() {
               private boolean m_pressedLast = get();
 

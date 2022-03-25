@@ -1,18 +1,7 @@
 
 package frc.robot.subsystems;
 
-import static frc.robot.DRPreferences.DoubleKey.BACK_SHOOTER_AUTO_HIGH;
-import static frc.robot.DRPreferences.DoubleKey.BACK_SHOOTER_AUTO_LOW;
-import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_AUTO_HIGH;
-import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_AUTO_LOW;
-import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_CLOSE_HIGH;
-import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_D;
-import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_F;
-import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_FAR_HIGH;
-import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_I;
-import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_I_ZONE;
-import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_LOW;
-import static frc.robot.DRPreferences.DoubleKey.FRONT_SHOOTER_P;
+import static frc.robot.DRPreferences.DoubleKey.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
@@ -187,10 +176,17 @@ public class Shooter extends SubsystemBase {
     );
   }
 
-  public void shootHighAuto() {
+  public void shootHighFarAuto() {
     setRPM(
-      DRPreferences.get(FRONT_SHOOTER_AUTO_HIGH) + rpmAdder,
+      DRPreferences.get(FRONT_SHOOTER_AUTO_FAR_HIGH) + rpmAdder,
       DRPreferences.get(BACK_SHOOTER_AUTO_HIGH) + rpmAdder
+    );
+  }
+
+  public void shootHighCloseAuto() {
+    setRPM(
+      DRPreferences.get(FRONT_SHOOTER_AUTO_CLOSE_HIGH) + rpmAdder,
+      DRPreferences.get(BACK_SHOOTER_AUTO_CLOSE_HIGH) + rpmAdder
     );
   }
 

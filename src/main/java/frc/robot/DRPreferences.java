@@ -23,7 +23,8 @@ public class DRPreferences {
         FRONT_SHOOTER_FAR_HIGH,
         FRONT_SHOOTER_CLOSE_HIGH,
         FRONT_SHOOTER_LOW,
-        FRONT_SHOOTER_AUTO_HIGH,
+        FRONT_SHOOTER_AUTO_FAR_HIGH,
+        FRONT_SHOOTER_AUTO_CLOSE_HIGH,
         FRONT_SHOOTER_AUTO_LOW,
 
         BACK_SHOOTER_P,
@@ -36,6 +37,7 @@ public class DRPreferences {
         BACK_SHOOTER_CLOSE_HIGH,
         BACK_SHOOTER_LOW,
         BACK_SHOOTER_AUTO_HIGH,
+        BACK_SHOOTER_AUTO_CLOSE_HIGH,
         BACK_SHOOTER_AUTO_LOW,
 
         BALL_SENSOR_DISTANCE_THRESHOLD,
@@ -60,11 +62,13 @@ public class DRPreferences {
         entry(FRONT_SHOOTER_F, 0.1),
         entry(FRONT_SHOOTER_I_ZONE, 150),
 
-        entry(FRONT_SHOOTER_FAR_HIGH, 3700),
+        entry(FRONT_SHOOTER_FAR_HIGH, 4500),
         entry(FRONT_SHOOTER_CLOSE_HIGH, 3700),
-        entry(FRONT_SHOOTER_LOW, 2500),
+        entry(FRONT_SHOOTER_LOW, 1800),
 
-        entry(FRONT_SHOOTER_AUTO_HIGH, 4500),
+        entry(FRONT_SHOOTER_AUTO_FAR_HIGH, 4900),
+        entry(FRONT_SHOOTER_AUTO_CLOSE_HIGH, 3600),
+
         entry(FRONT_SHOOTER_AUTO_LOW, 2000),
 
         entry(BALL_SENSOR_DISTANCE_THRESHOLD, 10),
@@ -98,6 +102,8 @@ public class DRPreferences {
         entry(BACK_SHOOTER_LOW, 1000),
 
         entry(BACK_SHOOTER_AUTO_HIGH, 4500),
+        entry(BACK_SHOOTER_AUTO_CLOSE_HIGH, 3700),
+
         entry(BACK_SHOOTER_AUTO_LOW, 2000)
 
     ));
