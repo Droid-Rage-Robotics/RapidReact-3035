@@ -71,6 +71,7 @@ public class Drive extends SubsystemBase {
 
         private NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
 
+
     public Drive() {
         leftFrontMotor.setSmartCurrentLimit(40);
         leftRearMotor.setSmartCurrentLimit(40);
@@ -80,7 +81,7 @@ public class Drive extends SubsystemBase {
         leftRearMotor.follow(leftFrontMotor);
         rightRearMotor.follow(rightFrontMotor);
 
-        rightFrontMotor.setInverted(false);
+        rightFrontMotor.setInverted(true);
         leftFrontMotor.setInverted(true);
         drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
         drive.setSafetyEnabled(false);
@@ -170,6 +171,14 @@ public class Drive extends SubsystemBase {
 
     public void turboDrive() {
         drive.setMaxOutput(kturboModeSpeed);
+    }
+
+    public void setRightSideInverted() {
+        rightFrontMotor.setInverted(true);
+    }
+
+    public void setRightSideForward() {
+        rightFrontMotor.setInverted(false);
     }
 
     public void curvatureDrive(double fwd, double rot) {

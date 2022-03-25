@@ -66,7 +66,7 @@ public class DRPreferences {
         entry(FRONT_SHOOTER_CLOSE_HIGH, 3700),
         entry(FRONT_SHOOTER_LOW, 1800),
 
-        entry(FRONT_SHOOTER_AUTO_FAR_HIGH, 4900),
+        entry(FRONT_SHOOTER_AUTO_FAR_HIGH, 4750),
         entry(FRONT_SHOOTER_AUTO_CLOSE_HIGH, 3600),
 
         entry(FRONT_SHOOTER_AUTO_LOW, 2000),

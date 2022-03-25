@@ -40,6 +40,7 @@ import frc.robot.commands.Autos.GoodShoot;
 import frc.robot.commands.Autos.HighShots2;
 import frc.robot.commands.Autos.HighShots2WithEncoders;
 import frc.robot.commands.Autos.StraightLineTest;
+import frc.robot.commands.Shooter.IndexSequence;
 import frc.robot.commands.Shooter.ShootingSequence;
 
 import frc.robot.subsystems.ClimberNoEncoder;
@@ -72,6 +73,8 @@ public class RobotContainer {
     private Controllers controllers = new Controllers(
             driverController,
             operatorController);
+
+    
 
     /*
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -138,19 +141,26 @@ public class RobotContainer {
                     .whenActive(drive::turboDrive, drive)
                     .whenInactive(drive::normalDrive, drive)
 
-                    .add("shootLow", A) // Low
-                    .whenActive(shooter::shootLow, shooter)
-                    // .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
+                //     .add("shootLow", A) // Low
+                //     .whenActive(shooter::shootLow, shooter)
+                //     // .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootLow), true)
                     
 
-                .add("CLOSE HIGH", B) // High
-                    .whenActive(shooter::shootCloseHigh, shooter)
-                    // .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootFarHigh), true)
+                // .add("CLOSE HIGH", B) // High
+                //     .whenActive(shooter::shootCloseHigh, shooter)
+                //     // .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootFarHigh), true)
                     
 
-                .add("FAR HIGH", Y) // (No PID COntrol, Percent Output instead)
-                    .whenActive(shooter::shootFarHigh, shooter)
-                    // .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootCloseHigh), true)
+                // .add("FAR HIGH", Y) // (No PID COntrol, Percent Output instead)
+                //     .whenActive(shooter::shootFarHigh, shooter)
+                //     // .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootCloseHigh), true)
+                .add("invert", A)
+                    .whenActive(drive::setRightSideInverted)
+                    // .whenActive(drive::setRightSideInverted, drive)
+
+                .add("forward", B)
+                    .whenActive(drive::setRightSideForward)
+                    // .whenActive(drive::setRightSideForward, drive)
 
                 .add("addRPM", DPAD_RIGHT)
                     .whenActive(shooter::addRPM, shooter)
@@ -187,6 +197,9 @@ public class RobotContainer {
                 .add("FAR HIGH", Y) // (No PID COntrol, Percent Output instead)
                     .whenActive(shooter::shootFarHigh, shooter)
                     // .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootCloseHigh), true)
+                .add("Index sequence", LB)
+                    .whenActive(new IndexSequence(indexer), true)
+                    .whenInactive(indexer::stopBothIndexer, indexer)
                     
                 .add("stop", LT)
                     .whenActive(shooter::stop, shooter)
@@ -207,7 +220,7 @@ public class RobotContainer {
 
                     .whenInactive(indexer::stopBothIndexer, indexer)
 
-                .add("indexerUpBoth", LB) // Indexer Up Both
+                .add("indexerUpBoth", X) // Indexer Up Both
                     .whenActive(indexer::intakeBothIndexer, indexer)
 
                     .whenInactive(indexer::stopBothIndexer, indexer)
