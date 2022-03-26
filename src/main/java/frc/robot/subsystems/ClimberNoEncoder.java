@@ -29,7 +29,7 @@ public class ClimberNoEncoder extends SubsystemBase {
     public NetworkTableEntry leftClimberSlider;
     public NetworkTableEntry rightClimberSlider;
     
-    public ClimberNoEncoder(){
+    public ClimberNoEncoder() {
         lClimberMotor.setSmartCurrentLimit(30);
         rClimberMotor.setSmartCurrentLimit(30);
         

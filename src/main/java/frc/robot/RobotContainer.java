@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 import frc.robot.Controllers.Controllers;
@@ -175,7 +176,7 @@ public class RobotContainer {
 
             /**
               * CONTROLLER 1
-            */
+            ***/
 
             .addCommandsToControllerPort(1)
                 .add("addRPM", DPAD_RIGHT)
@@ -194,7 +195,7 @@ public class RobotContainer {
                     // .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootFarHigh), true)
                     
 
-                .add("FAR HIGH", Y) // (No PID COntrol, Percent Output instead)
+                .add("FAR HIGH", Y) // (No PID Control, Percent Output instead)
                     .whenActive(shooter::shootFarHigh, shooter)
                     // .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootCloseHigh), true)
                 .add("Index sequence", LB)

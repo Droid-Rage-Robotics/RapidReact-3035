@@ -67,8 +67,8 @@ public final class DriveConstants {
 
     public static double 
     kslowModeSpeed = 0.3,
-    knormalModeSpeed = 0.65     ,
-    kturboModeSpeed = 1;
+    knormalModeSpeed = 1     ,   
+    kturboModeSpeed = 0.65;
 
     public static DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(DriveConstants.kTrackWidth);
 }

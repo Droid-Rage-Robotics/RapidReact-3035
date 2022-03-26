@@ -16,7 +16,7 @@ public class Intake extends SubsystemBase {
 
         //Intake Motor
         private CANSparkMax intakeMotor = new CANSparkMax(9, CANSparkMaxLowLevel.MotorType.kBrushless);
-        private DoubleSolenoid m_LiftSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
+        private DoubleSolenoid m_LiftSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 2);
 
         private boolean solenoidIsPowered = false;
 

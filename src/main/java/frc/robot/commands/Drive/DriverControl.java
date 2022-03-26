@@ -7,26 +7,26 @@ import java.util.function.DoubleSupplier;
 
 public class DriverControl extends CommandBase {
     private final Drive drivetrain;
-    private final DoubleSupplier getRawX;
-    private final DoubleSupplier getRawPivot;
+    private final DoubleSupplier forward;
+    private final DoubleSupplier rotate;
 
-    public DriverControl(Drive subsystem, DoubleSupplier getRawX, DoubleSupplier getRawPivot) {
+    public DriverControl(Drive subsystem, DoubleSupplier forward, DoubleSupplier rotate) {
         drivetrain = subsystem;
         addRequirements(subsystem);
-        this.getRawX = getRawX;
-        this.getRawPivot = getRawPivot;
+        this.forward = forward;
+        this.rotate = rotate;
     }
 
     @Override
     public void execute() {
 
-        double rawX = getRawX.getAsDouble();
-        double rawPivot = getRawPivot.getAsDouble();
+        double rawX = forward.getAsDouble();
+        double rawPivot = rotate.getAsDouble();
 
-        if (Math.abs(getRawX.getAsDouble()) < 0.07)
+        if (Math.abs(forward.getAsDouble()) < 0.07)
             rawX = 0;
 
-        if (Math.abs(getRawPivot.getAsDouble()) < 0.1)
+        if (Math.abs(rotate.getAsDouble()) < 0.1)
             rawPivot = 0;
 
         if(!drivetrain.isControlsFlipped())

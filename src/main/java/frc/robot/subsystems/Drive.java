@@ -2,6 +2,7 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.MotorFeedbackSensor;
@@ -24,6 +25,7 @@ import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -71,19 +73,26 @@ public class Drive extends SubsystemBase {
 
         private NetworkTable live_dashboard = NetworkTableInstance.getDefault().getTable("Live_Dashboard");
 
+        private MotorControllerGroup leftMotors = new MotorControllerGroup(leftFrontMotor, leftRearMotor);
+
+        private MotorControllerGroup rightMotors = new MotorControllerGroup(rightFrontMotor, rightRearMotor);
+
 
     public Drive() {
-        leftFrontMotor.setSmartCurrentLimit(40);
-        leftRearMotor.setSmartCurrentLimit(40);
-        rightFrontMotor.setSmartCurrentLimit(40);
-        rightRearMotor.setSmartCurrentLimit(40);
+        leftFrontMotor.setSmartCurrentLimit(39);
+        leftRearMotor.setSmartCurrentLimit(39);
+        rightFrontMotor.setSmartCurrentLimit(39);
+        rightRearMotor.setSmartCurrentLimit(39);
 
-        leftRearMotor.follow(leftFrontMotor);
-        rightRearMotor.follow(rightFrontMotor);
+        // leftRearMotor.follow(leftFrontMotor);
+        // rightRearMotor.follow(rightFrontMotor);
 
-        rightFrontMotor.setInverted(true);
+        rightFrontMotor.setInverted(false);
+        rightRearMotor.setInverted(false);
         leftFrontMotor.setInverted(true);
-        drive = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
+        leftRearMotor.setInverted(true);
+
+        drive = new DifferentialDrive(leftMotors, rightMotors);
         drive.setSafetyEnabled(false);
 
         leftFrontMotor.setIdleMode(IdleMode.kCoast);
@@ -175,10 +184,12 @@ public class Drive extends SubsystemBase {
 
     public void setRightSideInverted() {
         rightFrontMotor.setInverted(true);
+        rightRearMotor.setInverted(true);
     }
 
     public void setRightSideForward() {
         rightFrontMotor.setInverted(false);
+        rightRearMotor.setInverted(false);
     }
 
     public void curvatureDrive(double fwd, double rot) {
