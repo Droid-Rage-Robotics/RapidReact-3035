@@ -1,7 +1,9 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.DoubleSupplier;
+import static frc.robot.Constants.DriveConstants.kGyroReversed;
+import static frc.robot.Constants.DriveConstants.kThroughBoreEncoderResolution;
+import static frc.robot.Constants.DriveConstants.kWheelRadiusInches;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
@@ -9,23 +11,15 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.SparkMaxPIDController;
 
-import static frc.robot.Constants.DriveConstants.*;
-
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import frc.robot.Constants.DriveConstants;
 
 public class Drive2 extends SubsystemBase {
     // TODO: calibrate NAVX at start
@@ -288,6 +282,6 @@ public class Drive2 extends SubsystemBase {
         newRightTarget = rightEncoder.get() + moveCounts;
 
         newDrive = leftFrontMotor.getPIDController();
-        newDrive.
+       // newDrive.
     }
 }
