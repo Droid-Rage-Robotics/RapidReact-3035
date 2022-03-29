@@ -3,20 +3,15 @@ package frc.robot.subsystems;
 
 import java.util.Map;
 
-import com.revrobotics.*;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.DRPreferences;
 import frc.robot.DRPreferences.DoubleKey;
-import frc.robot.commands.Drive.DefaultDrive;
-import frc.robot.commands.Shooter.ShootForSeconds;
-import io.github.oblarg.oblog.annotations.Config;
 
 
 public class ClimberNoEncoder extends SubsystemBase {

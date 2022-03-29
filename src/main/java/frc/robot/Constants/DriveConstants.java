@@ -6,20 +6,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 
 public final class DriveConstants {
 
-
-    public static int[]   // A  B
-        kLeftEncoderPorts  = {9, 8}, // Through Bore encoders (they take up 2 ports for relative mode, and if in absolute, they take up only 1)
-        kRightEncoderPorts = {7, 6};       // https://docs.revrobotics.com/through-bore-encoder/application-examples#5mm-hex 
-    
-    public static boolean 
-    kLeftFrontReversed = false,
-    kLeftRearReversed = false,
-    kLeftEncoderReversed = false,
-
-    kRightFrontReversed = false,
-    kRightRearReversed = false,
-    kRightEncoderReversed = false;
-
     public static boolean kGyroReversed = true;
 
     public static IdleMode 

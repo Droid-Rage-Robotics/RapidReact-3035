@@ -1,14 +1,20 @@
 
 package frc.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
+import static frc.robot.Constants.DriveConstants.kDriveKinematics;
+import static frc.robot.Constants.DriveConstants.kGyroReversed;
+import static frc.robot.Constants.DriveConstants.kThroughBoreEncoderResolution;
+import static frc.robot.Constants.DriveConstants.kWheelRadiusInches;
+import static frc.robot.Constants.DriveConstants.knormalModeSpeed;
+import static frc.robot.Constants.DriveConstants.kslowModeSpeed;
+import static frc.robot.Constants.DriveConstants.kturboModeSpeed;
 
+import java.util.function.DoubleSupplier;
+
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.MotorFeedbackSensor;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -17,24 +23,18 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 // import edu.wpi.first.math.util.Units;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.Drive.DriverControl;
-
-import static frc.robot.Constants.DriveConstants.*;
-
-import java.util.function.DoubleSupplier;
 
 public class Drive extends SubsystemBase {
     // Motors
@@ -49,14 +49,14 @@ public class Drive extends SubsystemBase {
         private final Encoder leftEncoder = new Encoder (        //Left Encoder
             9,
             8,
-            kLeftEncoderReversed,
+            false,
             CounterBase.EncodingType.k4X
         );
 
         private final Encoder rightEncoder = new Encoder(        //Right Encoder
             7,
             6,
-            kRightEncoderReversed,
+            false,
             CounterBase.EncodingType.k4X
     );
 
@@ -77,20 +77,25 @@ public class Drive extends SubsystemBase {
 
         private MotorControllerGroup rightMotors = new MotorControllerGroup(rightFrontMotor, rightRearMotor);
 
+        AHRS ahrs;
+        Joystick stick;
+        PIDController turnController;
+        double rotateToAngleRate;
+
 
     public Drive() {
-        leftFrontMotor.setSmartCurrentLimit(39);
-        leftRearMotor.setSmartCurrentLimit(39);
-        rightFrontMotor.setSmartCurrentLimit(39);
-        rightRearMotor.setSmartCurrentLimit(39);
+        leftFrontMotor.setSmartCurrentLimit(60);
+        leftRearMotor.setSmartCurrentLimit(60);
+        rightFrontMotor.setSmartCurrentLimit(60);
+        rightRearMotor.setSmartCurrentLimit(60);
 
         // leftRearMotor.follow(leftFrontMotor);
         // rightRearMotor.follow(rightFrontMotor);
 
-        rightFrontMotor.setInverted(false);
-        rightRearMotor.setInverted(false);
-        leftFrontMotor.setInverted(true);
-        leftRearMotor.setInverted(true);
+        rightFrontMotor.setInverted(true);
+        rightRearMotor.setInverted(true);
+        leftFrontMotor.setInverted(false);
+        leftRearMotor.setInverted(false);
 
         drive = new DifferentialDrive(leftMotors, rightMotors);
         drive.setSafetyEnabled(false);
@@ -119,6 +124,17 @@ public class Drive extends SubsystemBase {
 
             resetAll();
 
+            // double kP = 0.03;
+            // double kI = 0.00;
+            // double kD = 0.00;
+            // double kF = 0.00;
+            // double kToleranceDegrees = 2.0f;
+
+            // turnController = new PIDController(kP, kI, kD, kF);
+            // turnController.setInputRange(-180.0f,  180.0f);
+            // turnController.setOutputRange(-1.0, 1.0);
+            // turnController.setAbsoluteTolerance(kToleranceDegrees);
+            // turnController.setContinuous(true);
     }
     public void tankDrive(double leftPower, double rightPower) {
         leftFrontMotor.set(leftPower);
@@ -338,8 +354,6 @@ public class Drive extends SubsystemBase {
     public void antiTipArcadeDrive(double xAxisRate, double zAxisRate) {
         drive.setSafetyEnabled(true);
 
-
-
         // double xAxisRate            = stick.getX();
         // double yAxisRate            = stick.getY();
         double rollAngleDegrees    = navx.getRoll();
@@ -363,7 +377,7 @@ public class Drive extends SubsystemBase {
         // driving in reverse direction of pitch/roll angle,
         // with a magnitude based upon the angle
         
-        if ( fixBalance ) {
+        if (fixBalance) {
             double pitchAngleRadians = rollAngleDegrees * (Math.PI / 180.0);
             xAxisRate = Math.sin(pitchAngleRadians) * -1;
         }
@@ -388,4 +402,72 @@ public class Drive extends SubsystemBase {
     public void encoderDrive(double leftInches, double rightInches) {
         encoderDrive(leftInches, rightInches, 0.25, 0.25);
     }
+
+
+    // /**
+    //  * Runs the motors with onnidirectional drive steering.
+    //  * 
+    //  * Implements Field-centric drive control.
+    //  * 
+    //  * Also implements "rotate to angle", where the angle
+    //  * being rotated to is defined by one of four buttons.
+    //  * 
+    //  * Note that this "rotate to angle" approach can also 
+    //  * be used while driving to implement "straight-line
+    //  * driving".
+    //  */
+    // public void navxTurn() {
+    //     drive.setSafetyEnabled(true);
+    //     while (navxTurn() && isEnabled()) {
+    //         boolean rotateToAngle = false;
+    //         if ( stick.getRawButton(1)) {
+    //             ahrs.reset();
+    //         }
+    //         if ( stick.getRawButton(2)) {
+    //             turnController.setSetpoint(0.0f);
+    //             rotateToAngle = true;
+    //         } else if ( stick.getRawButton(3)) {
+    //             turnController.setSetpoint(90.0f);
+    //             rotateToAngle = true;
+    //         } else if ( stick.getRawButton(4)) {
+    //             turnController.setSetpoint(179.9f);
+    //             rotateToAngle = true;
+    //         } else if ( stick.getRawButton(5)) {
+    //             turnController.setSetpoint(-90.0f);
+    //             rotateToAngle = true;
+    //         }
+    //         double currentRotationRate;
+    //         if ( rotateToAngle ) {
+    //             turnController.enable();
+    //             currentRotationRate = rotateToAngleRate;
+    //         } else {
+    //             turnController.disable();
+    //             currentRotationRate = stick.getTwist();
+    //         }
+    //         try {
+    //             /* Use the joystick X axis for lateral movement,          */
+    //             /* Y axis for forward movement, and the current           */
+    //             /* calculate d rotation rate (or joystick Z axis),         */
+    //             /* depending upon whether "rotate to angle" is active.    */
+    //             drive.driveCartesian(stick.getX(), stick.getY(), 
+    //                                    currentRotationRate, ahrs.getAngle());
+    //         } catch( RuntimeException ex ) {
+    //             DriverStation.reportError("Error communicating with drive system:  " + ex.getMessage(), true);
+    //         }
+    //         Timer.delay(0.005);		// wait for a motor update time
+    //     }
+    // }
+
+    // /**
+    //  * Runs during test mode
+    //  */
+    // public void test() {
+    // }
+
+    // @Override
+    // /* This function is invoked periodically by the PID Controller, */
+    // /* based upon navX MXP yaw angle input and PID Coefficients.    */
+    // public void pidWrite(double output) {
+    //     rotateToAngleRate = output;
+    // }
 }
