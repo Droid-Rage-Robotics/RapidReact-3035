@@ -71,7 +71,7 @@ public class Drive2 extends SubsystemBase {
         leftFrontMotor.setIdleMode(IdleMode.kCoast);
         leftRearMotor.setIdleMode(IdleMode.kCoast);
         
-        drive.setSafetyEnabled(true);
+        drive.setSafetyEnabled(false);
 
         // Encoders
         leftEncoder.reset();
@@ -261,12 +261,14 @@ public class Drive2 extends SubsystemBase {
     final double     P_TURN_COEFF            = 0.1;     // Larger is more responsive, but also less stable
     final double     P_DRIVE_COEFF           = 0.15;     // Larger is more responsive, but also less stable
 
-    PIDController DRIVE_PID = new PIDController(P_DRIVE_COEFF, 0, 0);
-    PIDController TURN_PID = new PIDController(P_TURN_COEFF, 0, 0);
+    PIDController leftDrivePID = new PIDController(P_DRIVE_COEFF, 0, 0);
+    PIDController rightDrivePID = new PIDController(P_DRIVE_COEFF, 0, 0);
+
+    PIDController turnPID = new PIDController(P_TURN_COEFF, 0, 0);
     SparkMaxPIDController newDrive;
 
     
-    public void gyroDrive( double speed, double distance, double angle) {
+    public void gyroDrive(double distance) {
         int     newLeftTarget;
         int     newRightTarget;
         int     moveCounts;
@@ -280,8 +282,18 @@ public class Drive2 extends SubsystemBase {
 
         newLeftTarget = leftEncoder.get() + moveCounts;
         newRightTarget = rightEncoder.get() + moveCounts;
-
-        newDrive = leftFrontMotor.getPIDController();
-       // newDrive.
+        
+        while (leftDrivePID.getPositionError() < 1 || leftDrivePID.getPositionError() > 0) {
+            leftDrivePID.setTolerance(5, 10);
+            rightDrivePID.setTolerance(5, 10);
+            leftDrivePID.setIntegratorRange(-0.3, 0.3);
+            rightDrivePID.setIntegratorRange(-0.3, 0.3); // idk what thisi des
+            leftSpeed = leftDrivePID.calculate(leftEncoder.get(), newLeftTarget);
+            rightSpeed = rightDrivePID.calculate(rightEncoder.get(), newRightTarget);
+            leftMotors.set(leftSpeed);
+            rightMotors.set(rightSpeed);
+        }
+        leftMotors.set(0);
+        rightMotors.set(0);
     }
 }

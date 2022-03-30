@@ -38,6 +38,7 @@ import frc.robot.commands.Autos.ForwardAndShootLow;
 import frc.robot.commands.Autos.IntakeAndShoot;
 import frc.robot.commands.Autos.NormalAuto;
 import frc.robot.commands.Autos.GoodShoot;
+import frc.robot.commands.Autos.GyroDrive2Test;
 import frc.robot.commands.Autos.HighShots2;
 import frc.robot.commands.Autos.HighShots2WithEncoders;
 import frc.robot.commands.Autos.StraightLineTest;
@@ -252,5 +253,6 @@ public class RobotContainer {
         autoChooser.addOption("Forward ANd Shoot Low", new ForwardAndShootLow(drive, shooter, indexer, intake));
         autoChooser.addOption("2 shots", new HighShots2(drive, shooter, indexer, intake));
         autoChooser.addOption("2 shots with encoder", new HighShots2WithEncoders(drive, shooter, indexer, intake));
+        // autoChooser.addOption("2 shots with encoder", new GyroDrive2Test(drive));
     }
 }
