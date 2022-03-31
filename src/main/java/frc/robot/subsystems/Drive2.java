@@ -41,14 +41,14 @@ public class Drive2 extends SubsystemBase {
 
 
     // Encoders
-    private final Encoder leftEncoder = new Encoder (        //Left Encoder
+    public final Encoder leftEncoder = new Encoder (        //Left Encoder
         6,
         7,
         true, // Reversed
         CounterBase.EncodingType.k4X
     );
 
-    private final Encoder rightEncoder = new Encoder(        //Right Encoder
+    public final Encoder rightEncoder = new Encoder(        //Right Encoder
         8,
         9,
         false, //reversed
@@ -276,9 +276,9 @@ public class Drive2 extends SubsystemBase {
 
     public void gyroDrive(double distance, double speed) {
         int     moveCounts;
-        double  max;
-        double  error;
-        double  steer;
+        // double  max;
+        // double  error;
+        // double  steer;
         double  leftSpeed;
         double  rightSpeed;
 
@@ -307,14 +307,16 @@ public class Drive2 extends SubsystemBase {
 
             drive.tankDrive(leftSpeed, rightSpeed);
         }
+        leftDrivePID.close();
+        rightDrivePID.close();
     }
 
 
     public void gyroTurn(double angle, double speed) {
         int     moveCounts;
-        double  max;
-        double  error;
-        double  steer;
+        // double  max;
+        // double  error;
+        // double  steer;
         double  leftSpeed;
         double  rightSpeed;
         
@@ -341,7 +343,8 @@ public class Drive2 extends SubsystemBase {
 
             drive.tankDrive(leftSpeed, rightSpeed);
         }
-        
+        leftDrivePID.close();
+        rightDrivePID.close();
     }
 
     public SequentialCommandGroup driveAuto() {
@@ -357,6 +360,10 @@ public class Drive2 extends SubsystemBase {
             gyroTurn(90, 0.2);
             gyroDrive(20, 0.2);
         });
+    }
+
+    public void setMaxOutput(double speed) {
+        drive.setMaxOutput(speed);
     }
     
 }

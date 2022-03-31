@@ -19,8 +19,7 @@ public class GoodShoot extends SequentialCommandGroup {
         new InstantCommand(indexer::outtakeBothIndexer), // starts indexer
         new WaitCommand(3),
         new InstantCommand(indexer::stopBothIndexer),
-        new DriveByTime(4, -0.3, drive)  // moves back
-
+        new DriveByTime(4, -0.3, drive)  // moves bac
     );
 }
 }
