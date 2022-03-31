@@ -1,18 +1,18 @@
 package frc.robot.commands.Autos;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.Drive.GryoCommands.GyroDriveCommand2;
+import frc.robot.commands.Drive.GryoCommands.GyroTurnCommand2;
 import frc.robot.subsystems.Drive2;
 
 public class GyroDrive2Test extends SequentialCommandGroup {
     public GyroDrive2Test(Drive2 drive){
         addCommands(
-            // new InstantCommand(() -> drive.gyroTurn(90, 0.2)),
-            // new InstantCommand(() -> drive.gyroDrive(20, 0.2)),
-            // // new WaitCommand(1),
-            // new GyroDriveCommand(20, 0.2, drive),
-            // new GyroTurnCommand(90, 0.3, drive)
+            new GyroDriveCommand2(35, 0.2, drive),
+            new GyroTurnCommand2(180, 0.1, drive),
+            new GyroDriveCommand2(35, 0.2, drive),
+            new GyroTurnCommand2(180, 0.1, drive)
+            // new GyroTurnCommand2(90, 0.2, drive)
         );
         addRequirements(drive);
     }

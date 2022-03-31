@@ -9,8 +9,6 @@ import static frc.robot.Constants.DriveConstants.knormalModeSpeed;
 import static frc.robot.Constants.DriveConstants.kslowModeSpeed;
 import static frc.robot.Constants.DriveConstants.kturboModeSpeed;
 
-import java.util.function.DoubleSupplier;
-
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -34,7 +32,6 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.commands.Drive.DriverControl;
 
 public class Drive extends SubsystemBase {
     // Motors
@@ -89,9 +86,6 @@ public class Drive extends SubsystemBase {
         rightFrontMotor.setSmartCurrentLimit(60);
         rightRearMotor.setSmartCurrentLimit(60);
 
-        // leftRearMotor.follow(leftFrontMotor);
-        // rightRearMotor.follow(rightFrontMotor);
-
         rightFrontMotor.setInverted(true);
         rightRearMotor.setInverted(true);
         leftFrontMotor.setInverted(false);
@@ -123,18 +117,6 @@ public class Drive extends SubsystemBase {
             rightRearMotor.getPIDController();
 
             resetAll();
-
-            // double kP = 0.03;
-            // double kI = 0.00;
-            // double kD = 0.00;
-            // double kF = 0.00;
-            // double kToleranceDegrees = 2.0f;
-
-            // turnController = new PIDController(kP, kI, kD, kF);
-            // turnController.setInputRange(-180.0f,  180.0f);
-            // turnController.setOutputRange(-1.0, 1.0);
-            // turnController.setAbsoluteTolerance(kToleranceDegrees);
-            // turnController.setContinuous(true);
     }
     public void tankDrive(double leftPower, double rightPower) {
         leftFrontMotor.set(leftPower);
@@ -319,14 +301,6 @@ public class Drive extends SubsystemBase {
 
     public boolean isControlsFlipped() {
         return isControlsFlipped;
-    }
-
-    public void initDefaultCommands(DoubleSupplier forward, DoubleSupplier rotate) {
-        setDefaultCommand(new DriverControl(
-                this,
-                forward,
-                rotate
-        ));
     }
 
 

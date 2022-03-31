@@ -4,14 +4,15 @@ package frc.robot.subsystems;
 import static frc.robot.Constants.DriveConstants.kGyroReversed;
 import static frc.robot.Constants.DriveConstants.kThroughBoreEncoderResolution;
 import static frc.robot.Constants.DriveConstants.kWheelRadiusInches;
+import static frc.robot.Constants.DriveConstants.knormalModeSpeed;
+import static frc.robot.Constants.DriveConstants.kslowModeSpeed;
+import static frc.robot.Constants.DriveConstants.kturboModeSpeed;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.SparkMaxPIDController;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
@@ -19,10 +20,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class Drive2 extends SubsystemBase {
     // TODO: calibrate NAVX at start
@@ -88,6 +86,8 @@ public class Drive2 extends SubsystemBase {
         rightFrontMotor.getPIDController();
         leftRearMotor.getPIDController();
         rightRearMotor.getPIDController();
+
+        
     }
 
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
@@ -115,28 +115,33 @@ public class Drive2 extends SubsystemBase {
      * @param fwd the commanded forward movement
      * @param rot the commanded rotation
      */
-    public void arcadeDrive(double forward, double rotation) {
-        drive.arcadeDrive(forward, rotation);
+    public void arcadeDrive(double fwd, double rot) {
+        drive.arcadeDrive(fwd, rot);
     }
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
         drive.tankDrive(leftSpeed, rightSpeed);
     }
 
+    // public void tankDrive(double leftPower, double rightPower) {
+    //     leftFrontMotor.set(leftPower);
+    //     rightFrontMotor.set(rightPower);
+    // }
+
     public void curvatureDrive(double forward, double rotation) {
         drive.curvatureDrive(forward, rotation, true);
     }
 
     public void slowDrive() {
-        drive.setMaxOutput(0.3);
+        drive.setMaxOutput(kslowModeSpeed);     //0.3
     }
 
     public void normalDrive() {
-        drive.setMaxOutput(1);
+        drive.setMaxOutput(knormalModeSpeed);   //1
     }
 
     public void turboDrive() {
-        drive.setMaxOutput(0.65);
+        drive.setMaxOutput(kturboModeSpeed);    //0.65
     }
 
     public void setRightSideInverted() {
@@ -236,134 +241,28 @@ public class Drive2 extends SubsystemBase {
         drive.tankDrive(kP*error, kP*error);
     }
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-    final double     COUNTS_PER_MOTOR_REV    = 2048 ;    // eg: TETRIX Motor Encoder
-    final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
-    final double     WHEEL_DIAMETER_INCHES   = 6.0 ;     // For figuring circumference
-    final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-                                                      (WHEEL_DIAMETER_INCHES * Math.PI);
-
-    // These constants define the desired driving/control characteristics
-    // The can/should be tweaked to suite the specific robot drive train.
-    final double     DRIVE_SPEED             = 0.7;     // Nominal speed for better accuracy.
-    final double     TURN_SPEED              = 0.5;     // Nominal half speed for better accuracy.
-    
-    final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
-    final double     P_TURN_COEFF            = 0.001;     // Larger is more responsive, but also less stable
-    final double     P_DRIVE_COEFF           = 0.001;     // Larger is more responsive, but also less stable
-
-    final double     D_DRIVE_COEFF           = 0;
-
-   
-
-    SparkMaxPIDController newDrive;
-
-    public void gyroDrive(double distance) {
-        gyroDrive(distance, 0.3);
-    }
-
-    public void gyroDrive(double distance, double speed) {
-        int     moveCounts;
-        // double  max;
-        // double  error;
-        // double  steer;
-        double  leftSpeed;
-        double  rightSpeed;
-
-        PIDController leftDrivePID = new PIDController(P_DRIVE_COEFF, 0, D_DRIVE_COEFF);
-        PIDController rightDrivePID = new PIDController(P_DRIVE_COEFF, 0, D_DRIVE_COEFF);
-
-        drive.setMaxOutput(speed);
-
-        moveCounts = (int)(distance * COUNTS_PER_INCH);
-
-        leftEncoder.reset();
-        rightEncoder.reset();
-
-        leftDrivePID.reset();
-        rightDrivePID.reset();
-
-        leftDrivePID.setTolerance(5, 10);
-        rightDrivePID.setTolerance(5, 10);
-
-        while (!(leftEncoder.get() > moveCounts - 500 && leftEncoder.get() < moveCounts + 500)) {
-            // leftDrivePID.setIntegratorRange(-0.3, 0.3);
-            // rightDrivePID.setIntegratorRange(-0.3, 0.3); // idk what this does
-
-            leftSpeed = leftDrivePID.calculate(leftEncoder.get(), moveCounts);
-            rightSpeed = rightDrivePID.calculate(rightEncoder.get(), moveCounts);
-
-            drive.tankDrive(leftSpeed, rightSpeed);
-        }
-        leftDrivePID.close();
-        rightDrivePID.close();
-    }
-
-
-    public void gyroTurn(double angle, double speed) {
-        int     moveCounts;
-        // double  max;
-        // double  error;
-        // double  steer;
-        double  leftSpeed;
-        double  rightSpeed;
-        
-        PIDController leftDrivePID = new PIDController(P_DRIVE_COEFF, 0, D_DRIVE_COEFF);
-        PIDController rightDrivePID = new PIDController(P_DRIVE_COEFF, 0, D_DRIVE_COEFF);
-
-        drive.setMaxOutput(speed);
-
-        moveCounts = (int)((angle / 90) * (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION));
-
-        leftEncoder.reset();
-        rightEncoder.reset();
-        leftDrivePID.reset();
-        rightDrivePID.reset();
-        leftDrivePID.setTolerance(5, 10);
-        rightDrivePID.setTolerance(5, 10);
-        
-        while (!(leftEncoder.get() > moveCounts - 200 && leftEncoder.get() < moveCounts + 200)) {
-            // leftDrivePID.setIntegratorRange(-0.3, 0.3);
-            // rightDrivePID.setIntegratorRange(-0.3, 0.3); // idk what this does
-
-            leftSpeed = leftDrivePID.calculate(leftEncoder.get(), moveCounts);
-            rightSpeed = rightDrivePID.calculate(rightEncoder.get(), -moveCounts);
-
-            drive.tankDrive(leftSpeed, rightSpeed);
-        }
-        leftDrivePID.close();
-        rightDrivePID.close();
-    }
-
-    public SequentialCommandGroup driveAuto() {
-        return new SequentialCommandGroup(
-            new InstantCommand(() -> gyroTurn(90, 0.2)), 
-            new WaitCommand(1),
-            new InstantCommand(() -> gyroDrive(20, 0.2))
-        );
-    }
-
-    public InstantCommand driveAutoInstant() {
-        return new InstantCommand(() -> {
-            gyroTurn(90, 0.2);
-            gyroDrive(20, 0.2);
-        });
-    }
-
     public void setMaxOutput(double speed) {
         drive.setMaxOutput(speed);
+    }
+
+
+    public void encoderDrive(double leftInches, double rightInches, double leftSpeed, double rightSpeed) {
+        double leftTarget = leftEncoder.getDistance() + leftInches;
+        double rightTarget = rightEncoder.getDistance() + rightInches;
+
+        while (leftEncoder.getDistance() < leftTarget || rightEncoder.getDistance() < rightTarget) {
+            if (leftEncoder.getDistance() < leftTarget) {
+                leftFrontMotor.set(leftSpeed);
+            }
+            if (rightEncoder.getDistance() < rightTarget) {
+                rightFrontMotor.set(rightSpeed);
+            } 
+        }
+        tankDrive(0, 0);
+    }
+
+    public void encoderDrive(double leftInches, double rightInches) {
+        encoderDrive(leftInches, rightInches, 0.25, 0.25);
     }
     
 }

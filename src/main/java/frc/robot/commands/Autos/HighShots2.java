@@ -4,14 +4,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Drive.DriveByTime;
-import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Drive2;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 public class HighShots2 extends SequentialCommandGroup {
 
-    public HighShots2(Drive drive, Shooter shooter, Indexer indexer, Intake intake){
+    public HighShots2(Drive2 drive, Shooter shooter, Indexer indexer, Intake intake){
     addCommands(
         new InstantCommand(shooter::shootHighCloseAuto),
         new WaitCommand(2),

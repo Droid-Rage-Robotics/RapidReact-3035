@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.Drive.DriveByTime;
 // import frc.robot.utils.*;
-import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Drive2;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -19,7 +19,7 @@ import frc.robot.subsystems.Shooter;
 
 public class IntakeAndShoot extends SequentialCommandGroup {
 
-    public IntakeAndShoot(Drive drive, Shooter shooter, Indexer indexer, Intake intake){
+    public IntakeAndShoot(Drive2 drive, Shooter shooter, Indexer indexer, Intake intake){
         addCommands(
             new InstantCommand(intake::lift),
             new InstantCommand(intake::intake),

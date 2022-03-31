@@ -4,9 +4,18 @@
 
 package frc.robot;
 
-import static frc.robot.Controllers.Controls.XboxButton.*;
-import static frc.robot.Controllers.Controls.XboxDPAD.*;
-import static frc.robot.Controllers.Controls.XboxTrigger.*;
+import static frc.robot.Controllers.Controls.XboxButton.A;
+import static frc.robot.Controllers.Controls.XboxButton.B;
+import static frc.robot.Controllers.Controls.XboxButton.LB;
+import static frc.robot.Controllers.Controls.XboxButton.RB;
+import static frc.robot.Controllers.Controls.XboxButton.X;
+import static frc.robot.Controllers.Controls.XboxButton.Y;
+import static frc.robot.Controllers.Controls.XboxDPAD.DPAD_DOWN;
+import static frc.robot.Controllers.Controls.XboxDPAD.DPAD_LEFT;
+import static frc.robot.Controllers.Controls.XboxDPAD.DPAD_RIGHT;
+import static frc.robot.Controllers.Controls.XboxDPAD.DPAD_UP;
+import static frc.robot.Controllers.Controls.XboxTrigger.LT;
+import static frc.robot.Controllers.Controls.XboxTrigger.RT;
 
 import edu.wpi.first.cameraserver.CameraServer;
 // import javax.naming.ldap.Control;
@@ -29,29 +38,19 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-
 import frc.robot.Controllers.Controllers;
-
 import frc.robot.commands.Autos.ForwardAndShootLow;
-import frc.robot.commands.Autos.IntakeAndShoot;
-import frc.robot.commands.Autos.NormalAuto;
 import frc.robot.commands.Autos.GoodShoot;
 import frc.robot.commands.Autos.GyroDrive2Test;
 import frc.robot.commands.Autos.HighShots2;
-import frc.robot.commands.Autos.HighShots2WithEncoders;
-import frc.robot.commands.Autos.StraightLineTest;
+import frc.robot.commands.Autos.IntakeAndShoot;
+import frc.robot.commands.Drive.DriverControl;
 import frc.robot.commands.Shooter.IndexSequence;
-import frc.robot.commands.Shooter.ShootingSequence;
-
 import frc.robot.subsystems.ClimberNoEncoder;
-import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Drive2;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import io.github.oblarg.oblog.Logger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -92,9 +91,11 @@ public class RobotContainer {
 
     //TODO:Uncomment this Line
     public void initTeleopCommands() {
-        // drive.initDefaultCommands(
-        //         () -> driverController.getLeftY(),
-        //         () -> driverController.getRightX());
+        drive.setDefaultCommand(new DriverControl(
+            drive,
+            () -> driverController.getLeftY(),
+            () -> driverController.getRightX()
+        ));
         CameraServer.startAutomaticCapture();
     }
 
@@ -161,11 +162,11 @@ public class RobotContainer {
                 //     // .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootCloseHigh), true)
                 .add("invert", A)
                     .whenActive(drive::setRightSideInverted)
-                    // .whenActive(drive::setRightSideInverted, drive)
+                    .whenActive(drive::setRightSideInverted, drive)
 
                 .add("forward", B)
                     .whenActive(drive::setRightSideForward)
-                    // .whenActive(drive::setRightSideForward, drive)
+                    .whenActive(drive::setRightSideForward, drive)
 
                 .add("addRPM", DPAD_RIGHT)
                     .whenActive(shooter::addRPM, shooter)
@@ -248,14 +249,12 @@ public class RobotContainer {
     }
 
     public void getAutoCommands(SendableChooser<Command> autoChooser) {
-        // autoChooser.setDefaultOption("Good Shoot", new GoodShoot(drive, shooter, indexer, intake));
-        // autoChooser.addOption("Intake and Shoot", new IntakeAndShoot(drive, shooter, indexer, intake));
-        // autoChooser.addOption("Normal Auton", new NormalAuto(drive));
-        // autoChooser.addOption("Nothing Auto", new InstantCommand(() -> drive.tankDriveVolts(0, 0)));
-        // autoChooser.addOption("Straight Line Test", new StraightLineTest(drive));
-        // autoChooser.addOption("Forward ANd Shoot Low", new ForwardAndShootLow(drive, shooter, indexer, intake));
-        // autoChooser.addOption("2 shots", new HighShots2(drive, shooter, indexer, intake));
-        // autoChooser.addOption("2 shots with encoder", new HighShots2WithEncoders(drive, shooter, indexer, intake));
-        autoChooser.addOption("gyrodrive", drive.driveAutoInstant());
+        autoChooser.setDefaultOption("2 shots", new HighShots2(drive, shooter, indexer, intake));
+        autoChooser.addOption("Good Shoot", new GoodShoot(drive, shooter, indexer, intake));
+        autoChooser.addOption("gyrodrive", new GyroDrive2Test(drive));
+        
+        autoChooser.addOption("Intake and Shoot", new IntakeAndShoot(drive, shooter, indexer, intake));
+        autoChooser.addOption("Forward And Shoot Low", new ForwardAndShootLow(drive, shooter, indexer, intake));
+        
     }
 }

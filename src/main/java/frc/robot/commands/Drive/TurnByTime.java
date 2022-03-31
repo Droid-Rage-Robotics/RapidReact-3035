@@ -4,7 +4,7 @@
 
 package frc.robot.commands.Drive;
 
-import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Drive2;
 // import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -19,7 +19,7 @@ public class TurnByTime extends SequentialCommandGroup {
    * @param speed The speed at which the robot will drive
    * @param drive The drive subsystem on which this command will run
    */
-  public TurnByTime(double seconds, double speed, Drive drive) {
+  public TurnByTime(double seconds, double speed, Drive2 drive) {
     addCommands(
       new InstantCommand(() -> drive.arcadeDrive(0, speed)),
       new WaitCommand(seconds),

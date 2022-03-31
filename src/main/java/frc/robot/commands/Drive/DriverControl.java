@@ -1,21 +1,23 @@
 package frc.robot.commands.Drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Drive2;
+// import frc.robot.subsystems.Drive2;
 
 import java.util.function.DoubleSupplier;
 
 public class DriverControl extends CommandBase {
-    private final Drive drivetrain;
+    private final Drive2 drive;
     private final DoubleSupplier forward;
     private final DoubleSupplier rotate;
 
-    public DriverControl(Drive drive, DoubleSupplier forward, DoubleSupplier rotate) {
-        drivetrain = drive;
-        addRequirements(drive);
+    public DriverControl(Drive2 drive, DoubleSupplier forward, DoubleSupplier rotate) {
+        this.drive = drive;
+        
         this.forward = forward;
         this.rotate = rotate;
+
+        addRequirements(drive);
     }
 
     @Override
@@ -30,10 +32,7 @@ public class DriverControl extends CommandBase {
         if (Math.abs(rotate.getAsDouble()) < 0.1)
             rawPivot = 0;
 
-        if(!drivetrain.isControlsFlipped())
-            drivetrain.arcadeDrive(-rawX, rawPivot);
-        else
-            drivetrain.arcadeDrive(rawX, rawPivot);
+        drive.arcadeDrive(-rawX, rawPivot);
 
     }
 }

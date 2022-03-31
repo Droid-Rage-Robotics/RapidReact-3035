@@ -12,12 +12,6 @@ import frc.robot.subsystems.Drive2;
 public class GyroDriveCommand2 extends CommandBase {
     private final Drive2 drive;
 
-    // final double     COUNTS_PER_MOTOR_REV    = 2048 ;    // eg: TETRIX Motor Encoder
-    // final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
-    // final double     WHEEL_DIAMETER_INCHES   = 6.0 ;     // For figuring circumference
-    // final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-    //                                                   (WHEEL_DIAMETER_INCHES * Math.PI);
-
     final int moveCounts;
 
     final PIDController leftDrivePID  = new PIDController(DRPreferences.get(P_DRIVE_COEFF), 0, DRPreferences.get(D_DRIVE_COEFF));
@@ -55,17 +49,21 @@ public class GyroDriveCommand2 extends CommandBase {
 
     @Override
     public void execute(){   
-           drive.tankDrive(leftDrivePID.calculate(drive.leftEncoder.get(), moveCounts), rightDrivePID.calculate(drive.rightEncoder.get(), -moveCounts));
+        drive.tankDrive(leftDrivePID.calculate(drive.leftEncoder.get(), moveCounts), rightDrivePID.calculate(drive.rightEncoder.get(), moveCounts));
+        if (isFinished()) {
+            end(false);
+        }
     }
 
     @Override
     public boolean isFinished() {
-        return drive.leftEncoder.get() > moveCounts - 200 && drive.leftEncoder.get() < moveCounts + 200;
+        return drive.leftEncoder.get() > moveCounts - 300 && drive.leftEncoder.get() < moveCounts + 300;
     }
 
     @Override
     public void end(boolean interrupted){
         leftDrivePID.close();
         rightDrivePID.close();
+        drive.tankDrive(0, 0);
     } 
 }

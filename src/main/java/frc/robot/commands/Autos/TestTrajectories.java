@@ -13,12 +13,12 @@ import frc.robot.subsystems.*;
 
 public class TestTrajectories extends SequentialCommandGroup {
 
-    public TestTrajectories(Drive drivetrain, Shooter shooter, Indexer indexer, Intake intake){
+    public TestTrajectories(Drive2 drive, Shooter shooter, Indexer indexer, Intake intake){
     addCommands(
         new InstantCommand(intake::lift, intake),
         new IntakeCommand(intake, indexer),
-        new DriveByTime(5, 0.3, drivetrain),
-        new TurnByTime(3, 0.4, drivetrain),
+        new DriveByTime(5, 0.3, drive),
+        new TurnByTime(3, 0.4, drive),
         new ShootingSequence(shooter, indexer, shooter::shootFarHigh)        
     );
     }

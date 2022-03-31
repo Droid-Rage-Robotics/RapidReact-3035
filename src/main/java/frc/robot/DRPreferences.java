@@ -95,8 +95,8 @@ public class DRPreferences {
         entry(P_DRIVE_COEFF, 0.001),
         entry(D_DRIVE_COEFF, 0),
 
-        entry(P_TURN_COEFF, 0.001),
-        entry(P_TURN_COEFF, 0),
+        entry(P_TURN_COEFF, 5),
+        entry(D_TURN_COEFF, 0),
         
         
         

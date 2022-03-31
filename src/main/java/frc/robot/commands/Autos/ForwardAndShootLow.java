@@ -5,17 +5,16 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Drive.DriveByTime;
 import frc.robot.commands.Shooter.ShootingSequence;
 import frc.robot.subsystems.*;
-import frc.robot.subsystems.Drive;
 
 
 public class ForwardAndShootLow extends SequentialCommandGroup {
 
-    public ForwardAndShootLow(Drive drivetrain, Shooter shooter, Indexer indexer, Intake intake){
+    public ForwardAndShootLow(Drive2 drive, Shooter shooter, Indexer indexer, Intake intake){
         addCommands(
             new InstantCommand(intake::lift, intake),
-            new DriveByTime(5, 0.2, drivetrain),
+            new DriveByTime(5, 0.2, drive),
             new ShootingSequence(shooter, indexer, shooter::shootFarHigh),
-            new DriveByTime(5, -0.2, drivetrain)
+            new DriveByTime(5, -0.2, drive)
         );
         
     }

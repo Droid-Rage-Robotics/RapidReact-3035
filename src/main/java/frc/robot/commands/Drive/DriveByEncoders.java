@@ -4,7 +4,7 @@
 
 package frc.robot.commands.Drive;
 
-import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Drive2;
 // import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -18,7 +18,7 @@ public class DriveByEncoders extends SequentialCommandGroup {
    * @param speed The speed at which the robot will drive
    * @param drive The drive subsystem on which this command will run
    */
-  public DriveByEncoders(double leftInches, double rightInches, Drive drive) {
+  public DriveByEncoders(double leftInches, double rightInches, Drive2 drive) {
     addCommands(
       new InstantCommand(() -> drive.encoderDrive(leftInches, rightInches))
     );
@@ -28,7 +28,7 @@ public class DriveByEncoders extends SequentialCommandGroup {
   public DriveByEncoders(
     double leftInches, double rightInches, 
     double leftSpeed, double rightSpeed, 
-    Drive drive) {
+    Drive2 drive) {
     addCommands(
       new InstantCommand(() -> drive.encoderDrive(leftInches, rightInches, leftSpeed, rightSpeed))
     );
