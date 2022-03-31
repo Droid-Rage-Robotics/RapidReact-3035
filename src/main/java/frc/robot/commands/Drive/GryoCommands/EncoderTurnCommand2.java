@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.DRPreferences;
 import frc.robot.subsystems.Drive2;
 
-public class GyroTurnCommand2 extends CommandBase {
+public class EncoderTurnCommand2 extends CommandBase {
     private final Drive2 drive;
     
 
@@ -18,7 +18,7 @@ public class GyroTurnCommand2 extends CommandBase {
     private double power;
     
     
-    public GyroTurnCommand2(double angle, double speed, Drive2 drive) {
+    public EncoderTurnCommand2(double angle, double speed, Drive2 drive) {
         this.angle = angle;
         this.speed = speed;
 

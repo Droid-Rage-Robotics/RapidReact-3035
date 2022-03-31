@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.DRPreferences;
 import frc.robot.subsystems.Drive2;
 
-public class GyroDriveCommand2 extends CommandBase {
+public class EncoderDriveCommand2 extends CommandBase {
     private final Drive2 drive;
 
     final int moveCounts;
@@ -20,7 +20,7 @@ public class GyroDriveCommand2 extends CommandBase {
     final double distance, speed;
     
     
-    public GyroDriveCommand2(double distance, double speed, Drive2 drive) {
+    public EncoderDriveCommand2(double distance, double speed, Drive2 drive) {
         this.distance = distance;
         this.speed = speed;
 
