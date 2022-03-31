@@ -47,6 +47,7 @@ import frc.robot.commands.Shooter.ShootingSequence;
 
 import frc.robot.subsystems.ClimberNoEncoder;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Drive2;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -63,7 +64,8 @@ import io.github.oblarg.oblog.Logger;
  */
 public class RobotContainer {
     // Defined Robot Subsystems
-    private final Drive drive = new Drive();
+    // private final Drive drive = new Drive();
+    private final Drive2 drive = new Drive2();
     private final Shooter shooter = new Shooter();
     private final Indexer indexer = new Indexer();
     private final Intake intake = new Intake();
@@ -88,10 +90,11 @@ public class RobotContainer {
         
     }
 
+    //TODO:Uncomment this Line
     public void initTeleopCommands() {
-        drive.initDefaultCommands(
-                () -> driverController.getLeftY(),
-                () -> driverController.getRightX());
+        // drive.initDefaultCommands(
+        //         () -> driverController.getLeftY(),
+        //         () -> driverController.getRightX());
         CameraServer.startAutomaticCapture();
     }
 
@@ -245,14 +248,14 @@ public class RobotContainer {
     }
 
     public void getAutoCommands(SendableChooser<Command> autoChooser) {
-        autoChooser.setDefaultOption("Good Shoot", new GoodShoot(drive, shooter, indexer, intake));
-        autoChooser.addOption("Intake and Shoot", new IntakeAndShoot(drive, shooter, indexer, intake));
-        autoChooser.addOption("Normal Auton", new NormalAuto(drive));
-        autoChooser.addOption("Nothing Auto", new InstantCommand(() -> drive.tankDriveVolts(0, 0)));
-        autoChooser.addOption("Straight Line Test", new StraightLineTest(drive));
-        autoChooser.addOption("Forward ANd Shoot Low", new ForwardAndShootLow(drive, shooter, indexer, intake));
-        autoChooser.addOption("2 shots", new HighShots2(drive, shooter, indexer, intake));
-        autoChooser.addOption("2 shots with encoder", new HighShots2WithEncoders(drive, shooter, indexer, intake));
-        // autoChooser.addOption("2 shots with encoder", new GyroDrive2Test(drive));
+        // autoChooser.setDefaultOption("Good Shoot", new GoodShoot(drive, shooter, indexer, intake));
+        // autoChooser.addOption("Intake and Shoot", new IntakeAndShoot(drive, shooter, indexer, intake));
+        // autoChooser.addOption("Normal Auton", new NormalAuto(drive));
+        // autoChooser.addOption("Nothing Auto", new InstantCommand(() -> drive.tankDriveVolts(0, 0)));
+        // autoChooser.addOption("Straight Line Test", new StraightLineTest(drive));
+        // autoChooser.addOption("Forward ANd Shoot Low", new ForwardAndShootLow(drive, shooter, indexer, intake));
+        // autoChooser.addOption("2 shots", new HighShots2(drive, shooter, indexer, intake));
+        // autoChooser.addOption("2 shots with encoder", new HighShots2WithEncoders(drive, shooter, indexer, intake));
+        autoChooser.addOption("gyrodrive", drive.driveAutoInstant());
     }
 }

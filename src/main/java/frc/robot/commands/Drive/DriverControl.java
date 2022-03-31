@@ -2,6 +2,7 @@ package frc.robot.commands.Drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Drive2;
 
 import java.util.function.DoubleSupplier;
 
@@ -10,9 +11,9 @@ public class DriverControl extends CommandBase {
     private final DoubleSupplier forward;
     private final DoubleSupplier rotate;
 
-    public DriverControl(Drive subsystem, DoubleSupplier forward, DoubleSupplier rotate) {
-        drivetrain = subsystem;
-        addRequirements(subsystem);
+    public DriverControl(Drive drive, DoubleSupplier forward, DoubleSupplier rotate) {
+        drivetrain = drive;
+        addRequirements(drive);
         this.forward = forward;
         this.rotate = rotate;
     }
