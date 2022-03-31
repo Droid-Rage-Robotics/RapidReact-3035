@@ -18,32 +18,17 @@ import static frc.robot.Controllers.Controls.XboxTrigger.LT;
 import static frc.robot.Controllers.Controls.XboxTrigger.RT;
 
 import edu.wpi.first.cameraserver.CameraServer;
-// import javax.naming.ldap.Control;
-// import frc.robot.commands.Intake.IntakeCommand;
-// import frc.robot.commands.Intake.IntakeCommand.IntakeType;
-// import frc.robot.commands.Climber.ClimberCommand;
-// import frc.robot.commands.Climber.ClimberCommand.ClimberMotionType;
-// import frc.robot.subsystems.*;
-
-// import edu.wpi.first.wpilibj.Joystick;
-// import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-// import edu.wpi.first.wpilibj2.command.button.Trigger;
-
-// import frc.robot.Constants.ControllerConstants;
-// import frc.robot.Controls.XboxButton;
-// import frc.robot.Controls.XboxDPAD;
-// import frc.robot.Controls.XboxTrigger;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Autos.ForwardAndShootLow;
+import frc.robot.Autos.GoodShoot;
+import frc.robot.Autos.GyroDrive2Test;
+import frc.robot.Autos.HighShots2;
+import frc.robot.Autos.IntakeAndShoot;
 import frc.robot.Controllers.Controllers;
-import frc.robot.commands.Autos.ForwardAndShootLow;
-import frc.robot.commands.Autos.GoodShoot;
-import frc.robot.commands.Autos.GyroDrive2Test;
-import frc.robot.commands.Autos.HighShots2;
-import frc.robot.commands.Autos.IntakeAndShoot;
 import frc.robot.commands.Drive.DriverControl;
 import frc.robot.commands.Shooter.IndexSequence;
 import frc.robot.subsystems.ClimberNoEncoder;
@@ -89,7 +74,7 @@ public class RobotContainer {
         
     }
 
-    //TODO:Uncomment this Line
+    
     public void initTeleopCommands() {
         drive.setDefaultCommand(new DriverControl(
             drive,
