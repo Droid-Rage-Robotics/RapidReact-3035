@@ -52,7 +52,14 @@ public class DRPreferences {
         INDEXER_OUTTAKE_SPEED,
         
         INTAKE_INTAKE_SPEED,
-        INTAKE_OUTTAKE_SPEED
+        INTAKE_OUTTAKE_SPEED,
+
+        P_DRIVE_COEFF,
+        D_DRIVE_COEFF,
+
+        P_TURN_COEFF,
+        D_TURN_COEFF
+
     }
 
     private static HashMap<DoubleKey, Double> backupDoubleMap = new HashMap<DoubleKey, Double>(Map.ofEntries(
@@ -84,7 +91,12 @@ public class DRPreferences {
 
         entry(INTAKE_INTAKE_SPEED,  1),
         entry(INTAKE_OUTTAKE_SPEED, -1),
-        
+
+        entry(P_DRIVE_COEFF, 0.001),
+        entry(D_DRIVE_COEFF, 0),
+
+        entry(P_TURN_COEFF, 0.001),
+        entry(P_TURN_COEFF, 0),
         
         
         
