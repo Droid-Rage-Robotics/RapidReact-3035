@@ -31,23 +31,17 @@ public class LeftSideAuto extends SequentialCommandGroup {
 
             new InstantCommand(indexer::intakeBothIndexer), // starts indexer
             new WaitCommand(3),
-            new InstantCommand(indexer::stopBothIndexer)
+            new InstantCommand(indexer::stopBothIndexer),
 
-            
+            new GyroTurnCommand2(-50, 0.3, drive),
+            new GyroDriveCommand2(15, 0.3, drive),
 
-            // new GyroTurnCommand2(-125, 0.2, drive),          //Turns to secodn ball
-            // new GyroDriveCommand2( 20, 0.3, drive),
-            
-            // new InstantCommand(shooter::shootHighFarAuto),  //Starts Shooter
-            // new  GyroTurnCommand2(35, 0.2, drive),       //Faces HUb
+            new WaitCommand(1),
 
-            // new InstantCommand(indexer::intakeBothIndexer),
-            // new InstantCommand(indexer::stopBothIndexer),
-
-            // new GyroDriveCommand2(40, 0.4, drive)   //Goes to ball to kick to Player
-            
-
+            new GyroDriveCommand2(-10, 0.3, drive),
+            new InstantCommand(shooter::shootLowAuto),
+            new InstantCommand (indexer::intakeBothIndexer)
         );
-        addRequirements(drive);
+        addRequirements(drive, shooter, indexer, intake);
     }
 }
