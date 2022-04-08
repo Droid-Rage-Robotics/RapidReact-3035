@@ -34,35 +34,34 @@ public class ClimberNoEncoder extends SubsystemBase {
         lClimberMotor.setSmartCurrentLimit(40);
         rClimberMotor.setSmartCurrentLimit(40);
         armTraverse.setSmartCurrentLimit(40);
-        armTraverse.setIdleMode(IdleMode.kBrake);
 
-        rClimberMotor.setInverted(true);
+         rClimberMotor.setInverted(true);armTraverse.setIdleMode(IdleMode.kBrake);
 
-        leftClimberSliderStatus = 
-            Shuffleboard.getTab("Robot")
-                .add("Left Climber Slider Status", 0)
-                .withWidget(BuiltInWidgets.kToggleButton) 
-                .getEntry();
+        // leftClimberSliderStatus = 
+        //     Shuffleboard.getTab("Robot")
+        //         .add("Left Climber Slider Status", 0)
+        //         .withWidget(BuiltInWidgets.kToggleButton) 
+        //         .getEntry();
 
-        rightClimberSliderStatus = 
-            Shuffleboard.getTab("Robot")
-                .add("Right Climber Slider Status", 0)
-                .withWidget(BuiltInWidgets.kToggleButton) 
-                .getEntry();
+        // rightClimberSliderStatus = 
+        //     Shuffleboard.getTab("Robot")
+        //         .add("Right Climber Slider Status", 0)
+        //         .withWidget(BuiltInWidgets.kToggleButton) 
+        //         .getEntry();
 
-        leftClimberSlider = 
-            Shuffleboard.getTab("Robot")
-                .add("Left Climber Slider", 0)
-                .withWidget(BuiltInWidgets.kNumberSlider) // specify the widget here
-                .withProperties(Map.of("min", -1, "max", 1)) // specify widget properties here
-                .getEntry();
+        // leftClimberSlider = 
+        //     Shuffleboard.getTab("Robot")
+        //         .add("Left Climber Slider", 0)
+        //         .withWidget(BuiltInWidgets.kNumberSlider) // specify the widget here
+        //         .withProperties(Map.of("min", -1, "max", 1)) // specify widget properties here
+        //         .getEntry();
 
-        rightClimberSlider = 
-            Shuffleboard.getTab("Robot")
-                .add("Right Climber Slider", 0)
-                .withWidget(BuiltInWidgets.kNumberSlider) // specify the widget here
-                .withProperties(Map.of("min", -1, "max", 1)) // specify widget properties here 
-                .getEntry();
+        // rightClimberSlider = 
+        //     Shuffleboard.getTab("Robot")
+        //         .add("Right Climber Slider", 0)
+        //         .withWidget(BuiltInWidgets.kNumberSlider) // specify the widget here
+        //         .withProperties(Map.of("min", -1, "max", 1)) // specify widget properties here 
+        //         .getEntry();
     }
 
     // we have this so that we can take motors out of follow mode and only have to add one more line
@@ -77,8 +76,6 @@ public class ClimberNoEncoder extends SubsystemBase {
     
     public void extendClimber(){
         setClimberPower(DRPreferences.get(DoubleKey.CLIMBER_EXTEND_POWER));
-        // return;
-        // setPower(6);
     }
 
     public void setTraversePower(double power){

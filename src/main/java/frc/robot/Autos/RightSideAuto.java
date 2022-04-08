@@ -25,8 +25,7 @@ public class RightSideAuto extends SequentialCommandGroup {
             new InstantCommand(intake::lift),
             new InstantCommand(intake::intake),
     
-            new EncoderDriveCommand2(44, 0.2, drive),   //Drive forward for intake
-            // new EncoderTurnCommand2(3, 0.15, drive),    //Turn to intake
+            new EncoderDriveCommand2(44, 0.2, drive),   //Drive forward for intake23
             
             new InstantCommand(shooter::shootHighFarAuto),    //Start shooter
             new WaitCommand(1.5),
@@ -37,11 +36,11 @@ public class RightSideAuto extends SequentialCommandGroup {
 
             
 
-            new EncoderTurnCommand2(-90, 0.15, drive),  //Turn to 3rd
+            new EncoderTurnCommand2(-87, 0.15, drive),  //Turn to 3rd
             new EncoderDriveCommand2(90, 0.3, drive),   //drive to 3rd
 
-            new InstantCommand(shooter::shootHighFarAuto), // rev shooter
-            new EncoderTurnCommand2(55, 0.15, drive),   //Turn to hub
+            new InstantCommand(shooter::shootHighThirdAuto), // rev shooter
+            new EncoderTurnCommand2(58, 0.15, drive),   //Turn to hub
             new EncoderDriveCommand2(1, 0.3, drive),
             new InstantCommand (indexer::intakeBothIndexer),    //Start index for 3rd
             

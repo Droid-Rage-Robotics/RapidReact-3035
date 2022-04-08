@@ -194,6 +194,12 @@ public class Shooter extends SubsystemBase {
     );
   }
 
+  public void shootHighThirdAuto() {
+    setRPM(
+      DRPreferences.get(FRONT_SHOOTER_AUTO_THIRD_HIGH) + rpmAdder
+    );
+  }
+
   public void addRPM() {
     rpmAdder += 100;
   }
