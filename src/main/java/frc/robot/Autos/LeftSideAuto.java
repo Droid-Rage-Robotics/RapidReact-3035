@@ -24,7 +24,7 @@ public class LeftSideAuto extends SequentialCommandGroup {
             new InstantCommand(intake::intake),
     
             new EncoderDriveCommand2(40, 0.2, drive),
-            new EncoderTurnCommand2(3, 0.15, drive),
+            new EncoderTurnCommand2(5, 0.15, drive),
             
             new InstantCommand(shooter::shootHighFarAutoHanger),
             new WaitCommand(1.5),
@@ -39,7 +39,7 @@ public class LeftSideAuto extends SequentialCommandGroup {
             new InstantCommand(shooter::shootLowAuto), // rev shooter
             new WaitCommand(2),
 
-            new EncoderTurnCommand2(-25, 0.3, drive),
+            new EncoderTurnCommand2(-20, 0.3, drive),
             
             new InstantCommand (indexer::intakeBothIndexer),
 

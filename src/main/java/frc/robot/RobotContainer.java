@@ -30,6 +30,7 @@ import frc.robot.Autos.HighShots2;
 import frc.robot.Autos.HighShots2Hanger;
 import frc.robot.Autos.IntakeAndShoot;
 import frc.robot.Autos.LeftSideAuto;
+import frc.robot.Autos.OneBallAuto;
 import frc.robot.Autos.RightSideAuto;
 import frc.robot.Controllers.Controllers;
 import frc.robot.commands.Drive.DriverControl;
@@ -258,8 +259,9 @@ public class RobotContainer {
     }
 
     public void getAutoCommands(SendableChooser<Command> autoChooser) {
-        autoChooser.setDefaultOption("2 Good High Shots", new HighShots2(drive, shooter, indexer, intake));
-        autoChooser.setDefaultOption("2 Good High Shots Hanger", new HighShots2Hanger(drive, shooter, indexer, intake));
+        autoChooser.setDefaultOption("Left Side (Hanger)", new LeftSideAuto(drive, shooter, indexer, intake));
+        autoChooser.setDefaultOption("One Ball Auto", new OneBallAuto(drive, shooter, indexer, intake));
+    
 
         
         autoChooser.addOption("Good Shoot", new GoodShoot(drive, shooter, indexer, intake));
@@ -268,7 +270,8 @@ public class RobotContainer {
         autoChooser.addOption("Intake and Shoot", new IntakeAndShoot(drive, shooter, indexer, intake));
         autoChooser.addOption("Forward And Shoot Low", new ForwardAndShootLow(drive, shooter, indexer, intake));
         autoChooser.addOption("Right Side", new RightSideAuto(drive, shooter, indexer, intake));
-        autoChooser.addOption("Left Side", new LeftSideAuto(drive, shooter, indexer, intake));
+        autoChooser.addOption("2 Good High Shots", new HighShots2(drive, shooter, indexer, intake));
+        autoChooser.setDefaultOption("2 Good High Shots Hanger", new HighShots2Hanger(drive, shooter, indexer, intake));
 
 
         

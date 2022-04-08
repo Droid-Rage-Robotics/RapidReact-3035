@@ -67,10 +67,10 @@ public class Shooter extends SubsystemBase {
     m_front.setInverted(true);
     m_back.setInverted(false);
 
-    m_front.config_kP(10, DRPreferences.get(FRONT_SHOOTER_P));
+    m_front.config_kP(0, DRPreferences.get(FRONT_SHOOTER_P));
     m_front.config_kI(0, DRPreferences.get(FRONT_SHOOTER_I));   
     m_front.config_kD(0, DRPreferences.get(FRONT_SHOOTER_D));  
-    m_front.config_kF(10, DRPreferences.get(FRONT_SHOOTER_F));  
+    m_front.config_kF(0, DRPreferences.get(FRONT_SHOOTER_F));  
     m_front.config_IntegralZone(0, (int) DRPreferences.get(FRONT_SHOOTER_I_ZONE));
     //motorLeft.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10);
 

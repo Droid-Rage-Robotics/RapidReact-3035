@@ -53,20 +53,20 @@ public class DRPreferences {
     }
 
     private static HashMap<DoubleKey, Double> backupDoubleMap = new HashMap<DoubleKey, Double>(Map.ofEntries(
-        entry(FRONT_SHOOTER_P, 5),
+        entry(FRONT_SHOOTER_P, 0.06),
         entry(FRONT_SHOOTER_I, 0),
-        entry(FRONT_SHOOTER_D, 0),
-        entry(FRONT_SHOOTER_F, 0.1),
+        entry(FRONT_SHOOTER_D, 0.2),
+        entry(FRONT_SHOOTER_F, 0.057),
         entry(FRONT_SHOOTER_I_ZONE, 150),
 
         entry(FRONT_SHOOTER_FAR_HIGH, 2900),
         entry(FRONT_SHOOTER_CLOSE_HIGH, 2300),
         entry(FRONT_SHOOTER_LOW, 1000),
 
-        entry(FRONT_SHOOTER_AUTO_LOW, 1650),
-        entry(FRONT_SHOOTER_AUTO_CLOSE_HIGH, 2200),
-        entry(FRONT_SHOOTER_AUTO_FAR_HIGH, 2450),
-        entry(FRONT_SHOOTER_AUTO_FAR_HIGH_HANGER, 2450),        
+        entry(FRONT_SHOOTER_AUTO_LOW, 1400),
+        entry(FRONT_SHOOTER_AUTO_CLOSE_HIGH, 1900),
+        entry(FRONT_SHOOTER_AUTO_FAR_HIGH, 2300),
+        entry(FRONT_SHOOTER_AUTO_FAR_HIGH_HANGER, 2200),        
         entry(FRONT_SHOOTER_AUTO_THIRD_HIGH, 2400),
 
 
@@ -80,7 +80,7 @@ public class DRPreferences {
         entry(CLIMBER_RETRACT_POWER, -0.8),
 
         entry(INDEXER_INTAKE_SPEED, 0.3),
-        entry(INDEXER_FRONT_INTAKE_SPEED, 0.5),
+        entry(INDEXER_FRONT_INTAKE_SPEED, 0.35),
         entry(INDEXER_OUTTAKE_SPEED, -0.25),
 
         entry(INTAKE_INTAKE_SPEED,  1),
