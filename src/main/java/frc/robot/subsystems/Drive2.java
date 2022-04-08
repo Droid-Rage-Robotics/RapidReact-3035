@@ -40,15 +40,15 @@ public class Drive2 extends SubsystemBase {
 
     // Encoders
     public final Encoder leftEncoder = new Encoder (        //Left Encoder
-        6,
-        7,
+        2,
+        3,
         true, // Reversed
         CounterBase.EncodingType.k4X
     );
 
     public final Encoder rightEncoder = new Encoder(        //Right Encoder
-        8,
-        9,
+        0,
+        1,
         false, //reversed
         CounterBase.EncodingType.k4X
     );

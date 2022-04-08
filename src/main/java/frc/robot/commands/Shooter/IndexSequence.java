@@ -11,7 +11,7 @@ public class IndexSequence extends SequentialCommandGroup {
             new InstantCommand(indexer::intakeBothIndexer),
             new WaitCommand(0.1),
             new InstantCommand(indexer::stopBothIndexer),
-            new WaitCommand(0.5),
+            new WaitCommand(0.7),
             new InstantCommand(indexer::intakeBothIndexer)
         ));
         addRequirements(indexer);

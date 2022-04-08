@@ -27,7 +27,10 @@ import frc.robot.Autos.ForwardAndShootLow;
 import frc.robot.Autos.GoodShoot;
 import frc.robot.Autos.GyroDrive2Test;
 import frc.robot.Autos.HighShots2;
+import frc.robot.Autos.HighShots2Hanger;
 import frc.robot.Autos.IntakeAndShoot;
+import frc.robot.Autos.LeftSideAuto;
+import frc.robot.Autos.RightSideAuto;
 import frc.robot.Controllers.Controllers;
 import frc.robot.commands.Drive.DriverControl;
 import frc.robot.commands.Shooter.IndexSequence;
@@ -124,6 +127,16 @@ public class RobotContainer {
                 .add("intakeLift", DPAD_UP) // Intake Up
                     .whenActive(intake::lift, intake)
 
+                .add("armExtend", DPAD_RIGHT) //
+                    .whenActive(climber::extendTraverse)
+
+                    .whenInactive(climber::stopTraverse)
+
+                .add("armRetract", DPAD_LEFT) //
+                    .whenActive(climber::retractTraverse)
+
+                    .whenInactive(climber::stopTraverse)
+
                 .add("slowMode", RB) // Slow Mode
                     .whenActive(drive::slowDrive, drive)
                     .whenInactive(drive::normalDrive, drive)
@@ -157,6 +170,11 @@ public class RobotContainer {
                     .whenActive(shooter::addRPM, shooter)
                 .add("subtractRPM", DPAD_LEFT)
                     .whenInactive(shooter::subtractRPM, shooter)
+
+                .add("shootingSequence", X)
+                    .whenActive(new IndexSequence(indexer), true)
+                    
+                    .whenInactive(indexer::stopBothIndexer, indexer)
                 .finish()
 
 
@@ -188,33 +206,39 @@ public class RobotContainer {
                 .add("FAR HIGH", Y) // (No PID Control, Percent Output instead)
                     .whenActive(shooter::shootFarHigh, shooter)
                     // .whileActiveContinuous(new ShootingSequence(shooter, indexer, shooter::shootCloseHigh), true)
-                .add("Index sequence", LB)
-                    .whenActive(new IndexSequence(indexer), true)
-                    .whenInactive(indexer::stopBothIndexer, indexer)
-                    
-                .add("stop", LT)
-                    .whenActive(shooter::stop, shooter)
-                    .whenActive(indexer::stopBothIndexer, indexer)
-
-                .add("climberExtend", DPAD_UP) // Climber Up
-                    .whenActive(climber::extend)
-
-                    .whenInactive(climber::stop)
-
-                .add("climberRetract", DPAD_DOWN) // Climber Down
-                    .whenActive(climber::retract)
-
-                    .whenInactive(climber::stop)
-
-                .add("indexerUp", RB) // Indexer Up
-                    .whenActive(indexer::intakeFrontIndexer, indexer)
-
-                    .whenInactive(indexer::stopBothIndexer, indexer)
 
                 .add("indexerUpBoth", X) // Indexer Up Both
                     .whenActive(indexer::intakeBothIndexer, indexer)
 
                     .whenInactive(indexer::stopBothIndexer, indexer)
+
+
+                .add("Index sequence", LB)
+                    .whenActive(new IndexSequence(indexer), true)
+                    .whenInactive(indexer::stopBothIndexer, indexer)
+                    
+                .add("indexerUp", RB) // Indexer Up
+                    .whenActive(indexer::intakeFrontIndexer, indexer)
+
+                    .whenInactive(indexer::stopBothIndexer, indexer)
+
+
+                .add("climberExtend", DPAD_UP) // Climber Up
+                    .whenActive(climber::extendClimber)
+
+                    .whenInactive(climber::stopArm)
+
+                .add("climberRetract", DPAD_DOWN) // Climber Down
+                    .whenActive(climber::retractClimber)
+
+                    .whenInactive(climber::stopArm)
+
+
+                
+
+                .add("stop", LT)
+                    .whenActive(shooter::stop, shooter)
+                    .whenActive(indexer::stopBothIndexer, indexer)
 
                 .add("indexerDown", RT) // Indexer Down
                     .whenActive(indexer::outtakeBothIndexer, indexer)
@@ -234,12 +258,19 @@ public class RobotContainer {
     }
 
     public void getAutoCommands(SendableChooser<Command> autoChooser) {
-        autoChooser.setDefaultOption("2 shots", new HighShots2(drive, shooter, indexer, intake));
+        autoChooser.setDefaultOption("2 Good High Shots", new HighShots2(drive, shooter, indexer, intake));
+        autoChooser.setDefaultOption("2 Good High Shots Hanger", new HighShots2Hanger(drive, shooter, indexer, intake));
+
+        
         autoChooser.addOption("Good Shoot", new GoodShoot(drive, shooter, indexer, intake));
         autoChooser.addOption("gyrodrive", new GyroDrive2Test(drive));
         
         autoChooser.addOption("Intake and Shoot", new IntakeAndShoot(drive, shooter, indexer, intake));
         autoChooser.addOption("Forward And Shoot Low", new ForwardAndShootLow(drive, shooter, indexer, intake));
+        autoChooser.addOption("Right Side", new RightSideAuto(drive, shooter, indexer, intake));
+        autoChooser.addOption("Left Side", new LeftSideAuto(drive, shooter, indexer, intake));
+
+
         
     }
 }

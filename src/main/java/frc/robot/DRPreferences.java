@@ -24,21 +24,9 @@ public class DRPreferences {
         FRONT_SHOOTER_CLOSE_HIGH,
         FRONT_SHOOTER_LOW,
         FRONT_SHOOTER_AUTO_FAR_HIGH,
+        FRONT_SHOOTER_AUTO_FAR_HIGH_HANGER,
         FRONT_SHOOTER_AUTO_CLOSE_HIGH,
         FRONT_SHOOTER_AUTO_LOW,
-
-        BACK_SHOOTER_P,
-        BACK_SHOOTER_I,
-        BACK_SHOOTER_D,
-        BACK_SHOOTER_F,
-        BACK_SHOOTER_I_ZONE,
-
-        BACK_SHOOTER_FAR_HIGH,
-        BACK_SHOOTER_CLOSE_HIGH,
-        BACK_SHOOTER_LOW,
-        BACK_SHOOTER_AUTO_HIGH,
-        BACK_SHOOTER_AUTO_CLOSE_HIGH,
-        BACK_SHOOTER_AUTO_LOW,
 
         BALL_SENSOR_DISTANCE_THRESHOLD,
         RED_BALL_COLOR,
@@ -63,18 +51,20 @@ public class DRPreferences {
     }
 
     private static HashMap<DoubleKey, Double> backupDoubleMap = new HashMap<DoubleKey, Double>(Map.ofEntries(
-        entry(FRONT_SHOOTER_P, 0.04),
+        entry(FRONT_SHOOTER_P, 5),
         entry(FRONT_SHOOTER_I, 0),
         entry(FRONT_SHOOTER_D, 0),
         entry(FRONT_SHOOTER_F, 0.1),
         entry(FRONT_SHOOTER_I_ZONE, 150),
 
-        entry(FRONT_SHOOTER_FAR_HIGH, 4500),
-        entry(FRONT_SHOOTER_CLOSE_HIGH, 3700),
-        entry(FRONT_SHOOTER_LOW, 1800),
+        entry(FRONT_SHOOTER_FAR_HIGH, 2900),
+        entry(FRONT_SHOOTER_CLOSE_HIGH, 2200),
+        entry(FRONT_SHOOTER_LOW, 1000),
 
-        entry(FRONT_SHOOTER_AUTO_FAR_HIGH, 4750),
-        entry(FRONT_SHOOTER_AUTO_CLOSE_HIGH, 3600),
+        entry(FRONT_SHOOTER_AUTO_FAR_HIGH, 2450),
+        entry(FRONT_SHOOTER_AUTO_FAR_HIGH_HANGER, 2450),
+
+        entry(FRONT_SHOOTER_AUTO_CLOSE_HIGH, 2300),
 
         entry(FRONT_SHOOTER_AUTO_LOW, 2000),
 
@@ -96,27 +86,9 @@ public class DRPreferences {
         entry(D_DRIVE_COEFF, 0),
 
         entry(P_TURN_COEFF, 5),
-        entry(D_TURN_COEFF, 0),
+        entry(D_TURN_COEFF, 0)
         
         
-        
-        
-        
-        //Not needed
-        entry(BACK_SHOOTER_P, 0.0465),
-        entry(BACK_SHOOTER_I, 0),
-        entry(BACK_SHOOTER_D, 0),
-        entry(BACK_SHOOTER_F, 0.048),
-        entry(BACK_SHOOTER_I_ZONE, 150),
-
-        entry(BACK_SHOOTER_FAR_HIGH, 6500),
-        entry(BACK_SHOOTER_CLOSE_HIGH, 5600),
-        entry(BACK_SHOOTER_LOW, 1000),
-
-        entry(BACK_SHOOTER_AUTO_HIGH, 4500),
-        entry(BACK_SHOOTER_AUTO_CLOSE_HIGH, 3700),
-
-        entry(BACK_SHOOTER_AUTO_LOW, 2000)
 
     ));
 

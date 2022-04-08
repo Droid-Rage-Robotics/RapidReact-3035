@@ -13,48 +13,42 @@ import frc.robot.subsystems.Intake;
 public class RightSideAuto extends SequentialCommandGroup {
     public RightSideAuto(Drive2 drive, Shooter shooter, Indexer indexer, Intake intake){
         addCommands(
-            new InstantCommand(intake::lift),
-        
             new InstantCommand(shooter::shootHighCloseAuto),
-            new WaitCommand(2),
+            new WaitCommand(1),
     
-            new InstantCommand(indexer::intakeBothIndexer), // starts indexer
+            new InstantCommand(indexer::intakeBothIndexer), // starts indexer for preload
+            new WaitCommand(0.85),
+            new InstantCommand(indexer::stopBothIndexer),
+    
+
+
+            new InstantCommand(intake::lift),
+            new InstantCommand(intake::intake),
+    
+            new EncoderDriveCommand2(44, 0.2, drive),   //Drive forward for intake
+            // new EncoderTurnCommand2(3, 0.15, drive),    //Turn to intake
+            
+            new InstantCommand(shooter::shootHighFarAuto),    //Start shooter
+            new WaitCommand(1.5),
+
+            new InstantCommand(indexer::intakeBothIndexer), // starts indexer for 2nd ball
+            new WaitCommand(1.5),
+            new InstantCommand(indexer::stopBothIndexer),
+
+            
+
+            new EncoderTurnCommand2(-90, 0.15, drive),  //Turn to 3rd
+            new EncoderDriveCommand2(90, 0.3, drive),   //drive to 3rd
+
+            new InstantCommand(shooter::shootHighFarAuto), // rev shooter
+            new EncoderTurnCommand2(55, 0.15, drive),   //Turn to hub
+            new EncoderDriveCommand2(1, 0.3, drive),
+            new InstantCommand (indexer::intakeBothIndexer),    //Start index for 3rd
+            
+
             new WaitCommand(1),
             new InstantCommand(indexer::stopBothIndexer),
-    
-            new InstantCommand(intake::intake),
-            new InstantCommand(indexer::intakeFrontIndexer),// starts indexer
-    
-            new EncoderDriveCommand2(20, 0.2, drive),
-            
-            // new InstantCommand(shooter::shootHighFarAuto),
-            // new WaitCommand(2),
-            
-            // new WaitCommand(3),
-            // new InstantCommand(indexer::stopBothIndexer),
-
-            new EncoderTurnCommand2(-125, 0.2, drive),          //Turns to second ball
-            new InstantCommand(indexer::stopFrontIndexer),
-            new EncoderDriveCommand2(20, 0.3, drive),
-            
-            new InstantCommand(shooter::shootHighFarAuto),  //Starts Shooter
-            new EncoderTurnCommand2(35, 0.2, drive),       //Faces Hub
-            new InstantCommand(indexer::intakeBothIndexer),
-
-            new WaitCommand(2),
-            new InstantCommand(indexer::stopBothIndexer),
-
-            new EncoderTurnCommand2(-55, 0.3, drive),
-            new EncoderDriveCommand2(5, 0.5, drive),
-
-            new EncoderTurnCommand2(180, 0.5, drive),  //Turns shooter to Hanger
-            new InstantCommand(shooter::shootLowAuto),
-            new InstantCommand(indexer::intakeBothIndexer),
-
-            new EncoderTurnCommand2(-80, 0.4, drive),
-            
-            new InstantCommand(indexer::stopBothIndexer),
-            new EncoderDriveCommand2(40, 0.4, drive)   //Goes to ball to kick to Player
+            new InstantCommand(shooter::stop)
         );
         addRequirements(drive, shooter, indexer, intake);
     }

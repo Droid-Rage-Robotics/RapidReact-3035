@@ -66,6 +66,7 @@ public class Shooter extends SubsystemBase {
     // //Config for motorPrimary
     m_front.setInverted(true);
     m_back.setInverted(false);
+
     m_front.config_kP(10, DRPreferences.get(FRONT_SHOOTER_P));
     m_front.config_kI(0, DRPreferences.get(FRONT_SHOOTER_I));   
     m_front.config_kD(0, DRPreferences.get(FRONT_SHOOTER_D));  
@@ -115,27 +116,27 @@ public class Shooter extends SubsystemBase {
     // 60000 milisecs in 1 min
     // RPM to U/100ms is rotations*4096 / 60000ms
     double wheelRpm = Preferences.getDouble("Shooter Setpoint", 1000);
-    double motorVelocity = (wheelRpm / 600 * 2048) / 1.75;
+    double motorVelocity = (wheelRpm / 600 * 2048) / 1;
     m_front.set(ControlMode.Velocity, motorVelocity);
   }
 
   public void setRPM(double wheelRPM){
     // Sensor Velocity in ticks per 100ms / Sensor Ticks per Rev * 600 (ms to min) * 1.5 gear ratio to shooter
     // Motor Velocity in RPM / 600 (ms to min) * Sensor ticks per rev / Gear Ratio 42to24
-    double motorVelocity = (wheelRPM / 600 * 2048) / 1.75;
+    double motorVelocity = (wheelRPM / 600 * 2048) / 1;
     setVelocity(motorVelocity);
   }
 
   public void setRPM(double frontWheelRPM, double backWheelRPM){
     // Sensor Velocity in ticks per 100ms / Sensor Ticks per Rev * 600 (ms to min) * 1.5 gear ratio to shooter
     // Motor Velocity in RPM / 600 (ms to min) * Sensor ticks per rev / Gear Ratio 42to24
-    double frontMotorVelocity = (frontWheelRPM / 600 * 2048) / 1.75;
-    double backMotorVelocity = (backWheelRPM / 600 * 2048) / 1.75;
+    double frontMotorVelocity = (frontWheelRPM / 600 * 2048) / 1;
+    double backMotorVelocity = (backWheelRPM / 600 * 2048) / 1;
     setVelocity(frontMotorVelocity, backMotorVelocity);
   }
 
   public double getWheelRPM() {
-    return (m_front.getSelectedSensorVelocity() * 1.75) / 2048 * 600;
+    return (m_front.getSelectedSensorVelocity()) / 2048 * 600;
   }
 
   public boolean isAtRPM() {
@@ -148,21 +149,21 @@ public class Shooter extends SubsystemBase {
 
   public void shootFarHigh() {
     setRPM(
-      DRPreferences.get(FRONT_SHOOTER_FAR_HIGH) + rpmAdder
+      DRPreferences.get(FRONT_SHOOTER_FAR_HIGH)  + rpmAdder
       // ,DRPreferences.get(BACK_SHOOTER_FAR_HIGH) + rpmAdder
     );
   }
 
     public void shootCloseHigh(){
     setRPM(
-      DRPreferences.get(FRONT_SHOOTER_CLOSE_HIGH) + rpmAdder
+      DRPreferences.get(FRONT_SHOOTER_CLOSE_HIGH)  + rpmAdder
       // DRPreferences.get(BACK_SHOOTER_CLOSE_HIGH) + rpmAdder
     );
   }
   
   public void shootLow() {
     setRPM(
-      DRPreferences.get(FRONT_SHOOTER_LOW) + rpmAdder
+      DRPreferences.get(FRONT_SHOOTER_LOW)  + rpmAdder
       // DRPreferences.get(BACK_SHOOTER_LOW) + rpmAdder
     );
   }
@@ -171,22 +172,25 @@ public class Shooter extends SubsystemBase {
 
   public void shootLowAuto() {
     setRPM(
-      DRPreferences.get(FRONT_SHOOTER_AUTO_LOW) + rpmAdder,
-      DRPreferences.get(BACK_SHOOTER_AUTO_LOW) + rpmAdder
+      DRPreferences.get(FRONT_SHOOTER_AUTO_LOW) + rpmAdder
     );
   }
 
   public void shootHighFarAuto() {
     setRPM(
-      DRPreferences.get(FRONT_SHOOTER_AUTO_FAR_HIGH) + rpmAdder,
-      DRPreferences.get(BACK_SHOOTER_AUTO_HIGH) + rpmAdder
+      DRPreferences.get(FRONT_SHOOTER_AUTO_FAR_HIGH) + rpmAdder
+    );
+  }
+
+  public void shootHighFarAutoHanger() {
+    setRPM(
+      DRPreferences.get(FRONT_SHOOTER_AUTO_FAR_HIGH_HANGER) + rpmAdder
     );
   }
 
   public void shootHighCloseAuto() {
     setRPM(
-      DRPreferences.get(FRONT_SHOOTER_AUTO_CLOSE_HIGH) + rpmAdder,
-      DRPreferences.get(BACK_SHOOTER_AUTO_CLOSE_HIGH) + rpmAdder
+      DRPreferences.get(FRONT_SHOOTER_AUTO_CLOSE_HIGH) + rpmAdder
     );
   }
 

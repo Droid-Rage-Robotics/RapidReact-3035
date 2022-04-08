@@ -9,9 +9,9 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public class HighShots2 extends SequentialCommandGroup {
+public class HighShots2Hanger extends SequentialCommandGroup {
 
-    public HighShots2(Drive2 drive, Shooter shooter, Indexer indexer, Intake intake){
+    public HighShots2Hanger(Drive2 drive, Shooter shooter, Indexer indexer, Intake intake){
     addCommands(
         new InstantCommand(shooter::shootHighCloseAuto),
         new WaitCommand(2),
@@ -29,21 +29,14 @@ public class HighShots2 extends SequentialCommandGroup {
             2,   // seconds
             drive), // moves drivtrain back for 4 seoconds
         
-        new InstantCommand(shooter::shootHighFarAuto),
+        new InstantCommand(shooter::shootHighFarAutoHanger),
         new WaitCommand(2),
         
         
         new InstantCommand(indexer::intakeBothIndexer), // starts indexer
         new WaitCommand(3),
         new InstantCommand(intake::stopIntake),
-        new InstantCommand(indexer::stopBothIndexer),
-
-        new WaitCommand(1),
-
-        new InstantCommand(indexer::stopBothIndexer),
-        new InstantCommand(shooter::stop)
-
-        
+        new InstantCommand(indexer::stopBothIndexer)
     );
 }
 }

@@ -13,34 +13,40 @@ import frc.robot.subsystems.Intake;
 public class LeftSideAuto extends SequentialCommandGroup {
     public LeftSideAuto(Drive2 drive, Shooter shooter, Indexer indexer, Intake intake){
         addCommands(
-        
             new InstantCommand(shooter::shootHighCloseAuto),
-            new WaitCommand(2),
+            new WaitCommand(1),
     
             new InstantCommand(indexer::intakeBothIndexer), // starts indexer
-            new WaitCommand(1),
+            new WaitCommand(0.85),
             new InstantCommand(indexer::stopBothIndexer),
     
             new InstantCommand(intake::lift),
             new InstantCommand(intake::intake),
     
-            new EncoderDriveCommand2(20, 0.2, drive),
+            new EncoderDriveCommand2(40, 0.2, drive),
+            new EncoderTurnCommand2(5, 0.15, drive),
             
-            new InstantCommand(shooter::shootHighFarAuto),
-            new WaitCommand(2),
+            new InstantCommand(shooter::shootHighFarAutoHanger),
+            new WaitCommand(1.5),
 
             new InstantCommand(indexer::intakeBothIndexer), // starts indexer
-            new WaitCommand(3),
+            new WaitCommand(1.5),
             new InstantCommand(indexer::stopBothIndexer),
 
-            new EncoderTurnCommand2(-50, 0.3, drive),
-            new EncoderDriveCommand2(15, 0.3, drive),
+            new EncoderTurnCommand2(-80, 0.15, drive),
+            new EncoderDriveCommand2(23, 0.3, drive),
+
+            new InstantCommand(shooter::shootLowAuto), // rev shooter
+            new WaitCommand(2),
+
+            new EncoderTurnCommand2(-25, 0.3, drive),
+            
+            new InstantCommand (indexer::intakeBothIndexer),
 
             new WaitCommand(1),
 
-            new EncoderDriveCommand2(-10, 0.3, drive),
-            new InstantCommand(shooter::shootLowAuto),
-            new InstantCommand (indexer::intakeBothIndexer)
+            new InstantCommand(indexer::stopBothIndexer),
+            new InstantCommand(shooter::stop)
         );
         addRequirements(drive, shooter, indexer, intake);
     }
