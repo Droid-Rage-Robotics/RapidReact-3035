@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Autos.FRAuto;
 import frc.robot.Autos.ForwardAndShootLow;
 import frc.robot.Autos.GoodShoot;
 import frc.robot.Autos.GyroDrive2Test;
@@ -259,12 +260,14 @@ public class RobotContainer {
     }
 
     public void getAutoCommands(SendableChooser<Command> autoChooser) {
-        autoChooser.setDefaultOption("Left Side (Hanger)", new LeftSideAuto(drive, shooter, indexer, intake));
+        autoChooser.setDefaultOption("3310 Right Side FR", new FRAuto(drive, shooter, indexer, intake));
+        autoChooser.addOption("One Ball Auto", new OneBallAuto(drive, shooter, indexer, intake));
+
+        autoChooser.addOption("Left Side (Hanger)", new LeftSideAuto(drive, shooter, indexer, intake));
         autoChooser.addOption("Right Side (Human Player)", new RightSideAuto(drive, shooter, indexer, intake));
 
+
         autoChooser.addOption("Good Shoot", new GoodShoot(drive, shooter, indexer, intake));
-        autoChooser.addOption("One Ball Auto", new OneBallAuto(drive, shooter, indexer, intake));
-    
         autoChooser.addOption("Gyrodrive", new GyroDrive2Test(drive));
         
         autoChooser.addOption("Intake and Shoot", new IntakeAndShoot(drive, shooter, indexer, intake));

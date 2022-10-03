@@ -3,6 +3,7 @@ package frc.robot.Autos;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.Drive.GryoCommands.EncoderDriveCommand2;
 // import frc.robot.commands.Drive.GryoCommands.EncoderDriveCommand2;
 // import frc.robot.commands.Drive.GryoCommands.EncoderTurnCommand2;
 import frc.robot.subsystems.Drive2;
@@ -18,7 +19,9 @@ public class OneBallAuto extends SequentialCommandGroup {
     
             new InstantCommand(indexer::intakeBothIndexer), // starts indexer
             new WaitCommand(0.85),
-            new InstantCommand(indexer::stopBothIndexer)
+            new InstantCommand(indexer::stopBothIndexer),
+
+            new EncoderDriveCommand2(19, 0.3, drive)  
         );
         addRequirements(drive, shooter, indexer, intake);
     }
