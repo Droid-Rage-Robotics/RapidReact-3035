@@ -57,8 +57,8 @@ public class RobotContainer {
     private final Drive2 drive = new Drive2();
     private final Shooter shooter = new Shooter();
     private final Indexer indexer = new Indexer();
-    private final Intake intake = new Intake();
-    private final ClimberNoEncoder climber = new ClimberNoEncoder();
+    // private final Intake intake = new Intake();
+    // private final ClimberNoEncoder climber = new ClimberNoEncoder();
 
     private XboxController driverController = new XboxController(0);
     private XboxController operatorController = new XboxController(1);
@@ -107,37 +107,37 @@ public class RobotContainer {
                  */
 
             .addCommandsToControllerPort(0)
-                .add("intake", RT) // Intake and Indexer
-                    .whenActive(intake::lift, intake)
-                    .whenActive(intake::intake, intake)
-                // .whenActive(indexer::intakeFrontIndexer, indexer)
+                // .add("intake", RT) // Intake and Indexer
+                //     .whenActive(intake::lift, intake)
+                //     .whenActive(intake::intake, intake)
+                // // .whenActive(indexer::intakeFrontIndexer, indexer)
 
-                .whenInactive(intake::stopIntake)
-                // .whenInactive(indexer::disableFrontIndexer, indexer)
+                // .whenInactive(intake::stopIntake)
+                // // .whenInactive(indexer::disableFrontIndexer, indexer)
 
-                .add("outtake", LT) // Outtake
-                    .whenActive(intake::lift, intake)
-                    .whenActive(indexer::outtakeBothIndexer, indexer)
-                    .whenActive(intake::outtake, intake)
+                // .add("outtake", LT) // Outtake
+                //     .whenActive(intake::lift, intake)
+                //     .whenActive(indexer::outtakeBothIndexer, indexer)
+                //     .whenActive(intake::outtake, intake)
 
-                    .whenInactive(indexer::stopBothIndexer, indexer)
-                    .whenInactive(intake::stopIntake, intake)
+                //     .whenInactive(indexer::stopBothIndexer, indexer)
+                //     .whenInactive(intake::stopIntake, intake)
 
-                .add("intakeDrop", DPAD_DOWN) // Intake Down
-                    .whenActive(intake::drop, intake)
+                // .add("intakeDrop", DPAD_DOWN) // Intake Down
+                //     .whenActive(intake::drop, intake)
 
-                .add("intakeLift", DPAD_UP) // Intake Up
-                    .whenActive(intake::lift, intake)
+                // .add("intakeLift", DPAD_UP) // Intake Up
+                //     .whenActive(intake::lift, intake)
 
-                .add("armExtend", DPAD_RIGHT) //
-                    .whenActive(climber::extendTraverse)
+                // .add("armExtend", DPAD_RIGHT) //
+                //     .whenActive(climber::extendTraverse)
 
-                    .whenInactive(climber::stopTraverse)
+                //     .whenInactive(climber::stopTraverse)
 
-                .add("armRetract", DPAD_LEFT) //
-                    .whenActive(climber::retractTraverse)
+                // .add("armRetract", DPAD_LEFT) //
+                //     .whenActive(climber::retractTraverse)
 
-                    .whenInactive(climber::stopTraverse)
+                //     .whenInactive(climber::stopTraverse)
 
                 .add("slowMode", RB) // Slow Mode
                     .whenActive(drive::slowDrive, drive)
@@ -225,15 +225,15 @@ public class RobotContainer {
                     .whenInactive(indexer::stopBothIndexer, indexer)
 
 
-                .add("climberExtend", DPAD_UP) // Climber Up
-                    .whenActive(climber::extendClimber)
+                // .add("climberExtend", DPAD_UP) // Climber Up
+                //     .whenActive(climber::extendClimber)
 
-                    .whenInactive(climber::stopArm)
+                //     .whenInactive(climber::stopArm)
 
-                .add("climberRetract", DPAD_DOWN) // Climber Down
-                    .whenActive(climber::retractClimber)
+                // .add("climberRetract", DPAD_DOWN) // Climber Down
+                //     .whenActive(climber::retractClimber)
 
-                    .whenInactive(climber::stopArm)
+                //     .whenInactive(climber::stopArm)
 
 
                 
@@ -260,23 +260,20 @@ public class RobotContainer {
     }
 
     public void getAutoCommands(SendableChooser<Command> autoChooser) {
-        autoChooser.setDefaultOption("3310 Right Side FR", new FRAuto(drive, shooter, indexer, intake));
-        autoChooser.addOption("One Ball Auto", new OneBallAuto(drive, shooter, indexer, intake));
+        // autoChooser.setDefaultOption("3310 Right Side FR", new FRAuto(drive, shooter, indexer, intake));
+        // autoChooser.addOption("One Ball Auto", new OneBallAuto(drive, shooter, indexer, intake));
 
-        autoChooser.addOption("Left Side (Hanger)", new LeftSideAuto(drive, shooter, indexer, intake));
-        autoChooser.addOption("Right Side (Human Player)", new RightSideAuto(drive, shooter, indexer, intake));
+        // autoChooser.addOption("Left Side (Hanger)", new LeftSideAuto(drive, shooter, indexer, intake));
+        // autoChooser.addOption("Right Side (Human Player)", new RightSideAuto(drive, shooter, indexer, intake));
 
 
-        autoChooser.addOption("Good Shoot", new GoodShoot(drive, shooter, indexer, intake));
-        autoChooser.addOption("Gyrodrive", new GyroDrive2Test(drive));
+        // autoChooser.addOption("Good Shoot", new GoodShoot(drive, shooter, indexer, intake));
+        // autoChooser.addOption("Gyrodrive", new GyroDrive2Test(drive));
         
-        autoChooser.addOption("Intake and Shoot", new IntakeAndShoot(drive, shooter, indexer, intake));
-        autoChooser.addOption("Forward And Shoot Low", new ForwardAndShootLow(drive, shooter, indexer, intake));
+        // autoChooser.addOption("Intake and Shoot", new IntakeAndShoot(drive, shooter, indexer, intake));
+        // autoChooser.addOption("Forward And Shoot Low", new ForwardAndShootLow(drive, shooter, indexer, intake));
 
-        autoChooser.addOption("2 Good High Shots", new HighShots2(drive, shooter, indexer, intake));
-        autoChooser.addOption("2 Good High Shots Hanger", new HighShots2Hanger(drive, shooter, indexer, intake));
-
-
-        
+        // autoChooser.addOption("2 Good High Shots", new HighShots2(drive, shooter, indexer, intake));
+        // autoChooser.addOption("2 Good High Shots Hanger", new HighShots2Hanger(drive, shooter, indexer, intake));
     }
 }

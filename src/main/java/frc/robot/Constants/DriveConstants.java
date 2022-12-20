@@ -54,7 +54,7 @@ public final class DriveConstants {
 
     public static double 
         kslowModeSpeed = 0.3,
-        knormalModeSpeed = 1,   
+        knormalModeSpeed = 0.2, //Changed frm 1 for State of the District   
         kturboModeSpeed = 0.65;
 
     public static double
