@@ -10,10 +10,10 @@ import static frc.robot.Controllers.Controls.XboxButton.LB;
 import static frc.robot.Controllers.Controls.XboxButton.RB;
 import static frc.robot.Controllers.Controls.XboxButton.X;
 import static frc.robot.Controllers.Controls.XboxButton.Y;
-import static frc.robot.Controllers.Controls.XboxDPAD.DPAD_DOWN;
+// import static frc.robot.Controllers.Controls.XboxDPAD.DPAD_DOWN;
 import static frc.robot.Controllers.Controls.XboxDPAD.DPAD_LEFT;
 import static frc.robot.Controllers.Controls.XboxDPAD.DPAD_RIGHT;
-import static frc.robot.Controllers.Controls.XboxDPAD.DPAD_UP;
+// import static frc.robot.Controllers.Controls.XboxDPAD.DPAD_UP;
 import static frc.robot.Controllers.Controls.XboxTrigger.LT;
 import static frc.robot.Controllers.Controls.XboxTrigger.RT;
 
@@ -23,23 +23,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Autos.FRAuto;
-import frc.robot.Autos.ForwardAndShootLow;
-import frc.robot.Autos.GoodShoot;
-import frc.robot.Autos.GyroDrive2Test;
-import frc.robot.Autos.HighShots2;
-import frc.robot.Autos.HighShots2Hanger;
-import frc.robot.Autos.IntakeAndShoot;
-import frc.robot.Autos.LeftSideAuto;
-import frc.robot.Autos.OneBallAuto;
-import frc.robot.Autos.RightSideAuto;
 import frc.robot.Controllers.Controllers;
 import frc.robot.commands.Drive.DriverControl;
 import frc.robot.commands.Shooter.IndexSequence;
-import frc.robot.subsystems.ClimberNoEncoder;
 import frc.robot.subsystems.Drive2;
 import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -65,7 +53,8 @@ public class RobotContainer {
 
     private Controllers controllers = new Controllers(
             driverController,
-            operatorController);
+            operatorController
+            );
 
     
 

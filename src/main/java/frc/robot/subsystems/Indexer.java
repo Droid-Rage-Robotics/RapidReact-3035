@@ -4,9 +4,11 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+// import com.revrobotics.CANSparkMax;
+// import com.revrobotics.CANSparkMax.IdleMode;
+// import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.DRPreferences;
@@ -19,18 +21,23 @@ public class Indexer extends SubsystemBase {
         frontIndexerPort = 10,
         backIndexerPort = 8; 
     
-    private CANSparkMax
-        frontIndexer,
-        backIndexer;
-  
+    // private CANSparkMax
+    //     frontIndexer,
+    //     backIndexer;
+        private VictorSPX 
+          frontIndexer,
+          backIndexer;
+
     /** Creates a new Indexer Subsystem. */
       public Indexer() {
-        frontIndexer = new CANSparkMax(frontIndexerPort, MotorType.kBrushed);
-        frontIndexer.setIdleMode(IdleMode.kCoast);
+        frontIndexer = new VictorSPX(frontIndexerPort);
+        backIndexer = new VictorSPX(backIndexerPort);
+        // frontIndexer = new CANSparkMax(frontIndexerPort, MotorType.kBrushed);
+        // frontIndexer.setIdleMode(IdleMode.kCoast);
         
-        backIndexer = new CANSparkMax(backIndexerPort, MotorType.kBrushed);
-        backIndexer.setIdleMode(IdleMode.kBrake);
-        backIndexer.setInverted(true);    //Invert Back Motor  
+        // backIndexer = new CANSparkMax(backIndexerPort, MotorType.kBrushed);
+        // backIndexer.setIdleMode(IdleMode.kBrake);
+        // backIndexer.setInverted(true);    //Invert Back Motor  
       }
 
 
@@ -76,11 +83,13 @@ public class Indexer extends SubsystemBase {
 
       //Set Intake Power - (Used in other functions)
       public void setFrontIndexPower(double power){
-        frontIndexer.set(power);
+        // frontIndexer.set(power);
+        frontIndexer.set(ControlMode.PercentOutput, power);
         
       }
 
       public void setBackIndexPower(double power) {
-        backIndexer.set(power);
+        // backIndexer.set(power);
+        backIndexer.set(ControlMode.PercentOutput, power);
       }
 }
