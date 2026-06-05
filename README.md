@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains the competition code for Team 3035's 2022 FRC robot, **Droid Rage**, built for the **Rapid React** season.
+This repository contains the competition code for Team 3035's 2022 FRC robot built for the **Rapid React** season.
 
 ---
 
