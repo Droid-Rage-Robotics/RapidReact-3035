@@ -2,13 +2,11 @@
 
 ## Overview
 
-This repository contains the competition code for Team 3035's 2022 FRC robot built for the **Rapid React** season.
+This repository contains the competition code for Team 3035's FRC robot from the 2022 **Rapid React** season.
 
 ---
 
 ## Season Summary
-
-The 2022 season saw Team 3035 compete at two FIRST in Texas district events and the District Championship. Throughout the season, Droid Rage demonstrated consistent performance and qualified for the playoffs at every event attended.
 
 ### Events Attended
 
