@@ -18,7 +18,7 @@ This repository contains the competition code for Team 3035's FRC robot from the
 
 | Category                   | Result                         |
 | -------------------------- | ------------------------------ |
-| Qualification Match Record | 28–23–0                        |
+| Qualification Match Record | 6–13–0                         |
 | Playoff Appearances        | 3 / 3 Events                   |
 | Event Wins                 | 0                              |
 | Awards Earned              | District Championship Finalist |
